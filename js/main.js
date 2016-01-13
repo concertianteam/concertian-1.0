@@ -253,6 +253,8 @@ function addspinner(){
 // Load all concert for month ajax call
 function loadAllConcert(monthNumber){
     $("#resultsList").empty();
+    chartData = new Array();
+    
 	$.ajax({ 'url' : 'https://api.concertian.com/agents/events/month/' + monthNumber,
 		  'method' : 'GET',
           beforeSend: function (request)
@@ -375,16 +377,17 @@ function addElements(json){
 			minus = 1;
 		}
 		
-		if(chartData.length > 0 && bufferedArray.length === 0 && value.stringDate == chartData[chartData.length - 1][0][0]){
+		// filter date duplication
+		if(chartData.length > 0 && bufferedArray.length === 0 && value.date == chartData[chartData.length - 1][0][0]){
 			bufferedArray = chartData[chartData.length - 1];
 			chartData = jQuery.grep(chartData, function( a ) {
 							  return a !== bufferedArray;
 						});
 		}
 		
-		bufferedArray.push(new Array(value.stringDate, value.time, value.urlPhoto, value.eventName));
+		bufferedArray.push(new Array(value.date, value.time, value.urlPhoto, value.eventName));
 		
-		if((i + 1 < json.events.length && value.stringDate != json.events[i+1].stringDate) || i + 1 == json.events.length){
+		if((i + 1 < json.events.length && value.date != json.events[i+1].date) || i + 1 == json.events.length){
 			chartData.push(bufferedArray);
 			bufferedArray = new Array();
 		}
@@ -406,27 +409,16 @@ function addElements(json){
 		loadConcertForClub(selectClub);
 	});
 	
-	$("#concerts").empty();
-	$("#concertsDate").empty();
-	$("#custom_program_menu").empty();
-	
-	for(var i = 0; i < chartData.length; i++){
-		var arrayForDay = chartData[i];
-		var element = '<td>';
-		for(var j = 0; j < arrayForDay.length; j++){
-			element = element + '<span class="venuePointChart">' + i + '</span>';
-		}
-	}
 	//* Timeline - vertical align based on time *//
-		$("#concerts").empty();
+	$("#concerts").empty();
 	$("#concertsDate").empty();
 	$("#lineContainer").empty();
 	
 	var height = $("#concerts").innerHeight() - 75;
 //	For 24 hour
-//	var constant = height / 1440;
+	var constant = height / 1440;
 //	For 10 hours
-	var constant = height / 600;
+//	var constant = height / 600;
 	var counter = 0;
 	/*
 	 *  <= 5  - yelow
@@ -477,7 +469,8 @@ function getMinutes(time){
 	var hour = parseInt(timeSplit[0]);
 	var minute = parseInt(timeSplit[1]);
 	
-	return (hour * 60) + minute - 840;
+	// ignore 14 hours  840
+	return (hour * 60) + minute;
 }
 	//* ----- On click concerts showcase ----- *//
 	$(".venuePointChart").on('mouseenter', function(){
