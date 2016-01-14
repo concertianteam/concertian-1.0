@@ -450,15 +450,18 @@ function addElements(json){
 //	22 = 1320
 //	20 = 1200
 	
-	$("#lineContainer").append(	'<span class="timeLine" style="top: ' + (height - 480 * constant) + 'px;">' +
+// 22 = 480
+// 20 = 360
+	
+	$("#lineContainer").append(	'<span class="timeLine" style="top: ' + (height - 1320 * constant) + 'px;">' +
 						  	   		'<span class="timeLineText">22:00</span>' +
 						  	   		'<span class="timeLineLine"></span>' +
 					  	   		'</span>' +
-					  	   		'<span class="timeLine" style="top: ' + (height - 360 * constant) + 'px;">' +
+					  	   		'<span class="timeLine" style="top: ' + (height - 1200 * constant) + 'px;">' +
 									'<span class="timeLineText">20:00</span>' +
 									'<span class="timeLineLine"></span>' +
 							   	'</span>' +
-								'<span class="timeLine" style="top: ' + height + 'px;">' +
+								'<span class="timeLine" style="top: ' + (height - 840 * constant) + 'px;">' +
 									'<span class="timeLineText">14:00</span>' +
 									'<span class="timeLineLine"></span>' +
 							   	'</span>');
