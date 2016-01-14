@@ -59,10 +59,10 @@ div.loginBox{
 }
 div.loginBox .header{
     position: relative;
-    margin-left: 75px;
-    background: url('../img/sprite.png')  no-repeat -133px -2px;
-	width: 155px;
-	height: 18px;
+    margin-left: 55px;
+    background: url('../img/sprite.png') no-repeat -188px -2px;
+	width: 319px;
+	height: 35px;
 }
 .paddingtop{
     padding-top: 25%;

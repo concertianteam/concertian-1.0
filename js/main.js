@@ -93,6 +93,34 @@ $(document).ready(function() {
             });
         });
     });
+    
+    //Go to welcom screen (tutorial)
+        $("#welcome").on('click', function(){
+            $("#contentPanel").empty();
+            $("#contentPanel").load("welcome.html", function(){
+                $("#statisticsExplanation").on('click', function(){
+                $( "#contentPanel" ).load("statistics.html", function() {
+                    loadAllConcert(01);
+                    });
+                });
+                $("#mycalendarExplanation").on('click', function(){
+                $( "#contentPanel" ).load("mycalendar.html", function() {
+
+                    });
+                });
+                $("#propagationExplanation").on('click', function(){
+                $( "#contentPanel" ).load("propagation.html", function() {
+                        var clickedClubId = idVenue;
+                        loadConcertForClub(clickedClubId);
+                    });
+                });
+                $("#settingsExplanation").on('click', function(){
+                $( "#contentPanel" ).load("manageaccount.html", function()                  {
+
+                    });
+                });
+            });
+        });
         
     //Go to statistics
         $("#statistics").on('click', function(){
@@ -118,11 +146,10 @@ $(document).ready(function() {
     //Go to Propagation
          $("#propagation").on('click', function(){
             $("#contentPanel").empty();
-            //$("").schow();
-            $("#contentPanel").load("propagation.html", function() {
+            addspinner();
+            $("#contentPanel").load("propagation.html", '.#propagationButton', function() {
                 var clickedClubId = idVenue;
                 loadConcertForClub(clickedClubId);
-                
             $("#contentPanel").remove(".spinner");
             });
         });
@@ -133,10 +160,10 @@ $(document).ready(function() {
          $("#settings").on('click', function(){
             $("#contentPanel").empty();
             //$("").schow();
-            $("#contentPanel").load("manageaccount.html"/*, null, $("").hide()*/);
-        });
-    
-    //Payment Braintree
+            $("#contentPanel").load("manageaccount.html", null, function(){
+                $.getScript("https://js.braintreegateway.com/v2/braintree.js")
+                .done(function(){
+                    //Payment Braintree
         // We generated a client token for you so you can test out this code
             // immediately. In a production-ready integration, you will need to
             // generate a client token on your server (see section below).
@@ -173,7 +200,7 @@ $(document).ready(function() {
     }); */
     
     //Braintree Manage Account
-    $("#unsubscribebutton").click(function(){
+    $("#unsubscribebutton").on('click', function(){
         var subscription = Cookies.get('subscriptionId');
         $.ajax({
           url: 'php/cancelsubscription.php?subscription=' + subscription,
@@ -182,6 +209,9 @@ $(document).ready(function() {
           }
         });
     });
+            });
+            });
+        });
     
     //* Mouse position tracker *//
 	$(document).mousemove(function(e){
@@ -219,14 +249,27 @@ $(document).ready(function() {
 			},
 		});
 	});
+    
+    /* ---- Facebook graph stories ----- */
+		/* Facebook jquery sdk implementation */
+	  $.ajaxSetup({ cache: true });
+	  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+		FB.init({
+		  appId: '1128811043811214',
+		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
+		});     
+		$('#loginbutton,#feedbutton').removeAttr('disabled');
+		FB.getLoginStatus(updateStatusCallback);
+	  });
 });
 var page = 0;
 var monthNumber = 01;
 var chartData = new Array();
 var results = [];
-var idVenue = Cookies.get('idVenue')
+var idVenue = Cookies.get('idVenue');
 var apiKey = Cookies.get('apiKey');
 var language;
+var results = [];
 var mouseX,mouseY,windowWidth,windowHeight;
 var popupLeft,popupTop;
 var slovak ={
@@ -535,14 +578,20 @@ function getMinutes(time){
 //Load concerts for manager
 function addPropagationElements(json){
     
+    var length = results.length;
+    
     for(var i = 0; i < json.events.length; i++){
+        results[length + i] = value;
         var value = json.events[i];
         var element = 
             '<span class="propagationElement">'+
                 '<ul>'+
+                    '<li id="eventShareButton">'+
+        '<span class="eventShareButtonText">'+ (length + i) +'</span>'+
+                    '</li>'+
                     '<li class="eventDate">'+ value.stringDate +'</li>'+
                     '<li class="eventTime">'+ value.time +'</li>'+
-                    '<li class="eventPhoto"><img class="eventPhotoImg" src="'+ value.imgUrl +'"></li>'+
+                    '<li class="propagationeventPhoto">'+(value.imgUrl === "" ? '<span class="uploadimgUrlButton"><span class="upload_icon"></span>' : '<img class="propagationeventPhotoImg" src="'+ value.imgUrl +'">')+'</li>'+
                     '<li class="eventName">'+ value.eventName +'</li>'+
                     '<li class="eventDetail">'+ value.detail +'</li>'+
                     '<li class="eventEntry">'+ value.entry +'</li>'+
@@ -562,5 +611,28 @@ function addPropagationElements(json){
     $(".eventDelete").on("click", function(){
     eventID = $(this).find("#idEvent").val();
     deleteConcert(eventID);
+    });
+    //Share Button Handler
+    $("li#eventShareButton").on("click", function(){
+        $(this).css("background", "#ffbb33");
+		var value = results[$(this).find(".eventShareButtonText").text()];
+				FB.ui({
+				  method: 'feed',
+				  picture: value.imgUrl,
+				  name: value.eventName,
+				  caption: value.venueName,
+				  description: value.date +" o "+value.time+" lístky "+value.entry,
+				}, function(response){});
+	});
+    // Concert to share selector
+    $("#propagationButton").on('click', function(){        
+        $("#shareButton").addClass("display");
+        $("li#eventShareButton").each(function(){
+            $(this).addClass("display");
+        });
+        $("li.eventAudience").hide();
+        $(".eventDelete").hide();
+        $("#eventAudience").hide();
+        $("#eventDelete").hide();
     });
 }
