@@ -8,6 +8,7 @@ body{
     font-family: 'Open Sans', sans-serif;	
     font-weight: normal;
     color: #333333;
+    overflow: hidden;
 }
 a{
     text-decoration: none !important;
@@ -230,7 +231,7 @@ div#bottom_bar :-ms-input-placeholder {
     .header{
         margin-top: 30%;
     }
-    .explanation .text{
+    .explanationtext{
         font-size: 0.8em;
     }
     .explanation .icon{
@@ -284,9 +285,9 @@ header{
 }
 #welcome_icon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -482px -3px;
-	width: 25px;
-	height: 23px;
+    background: url('../img/sprite.png') -534px -2px;
+	width: 26px;
+	height: 24px;
     margin-left: 17px;
 }
 #statistics_icon{
@@ -379,6 +380,12 @@ header{
 @media screen and (max-height: 570px) {
     #logoff{
         display: none;
+    }
+    .explanationtext{
+        text-align: center;
+    }
+    .explanationtext strong{
+        display: none !important;
     }
 }
 section{ 
@@ -556,7 +563,7 @@ div #contentPanel{
     margin-left: 40%;
     margin-bottom: 2%;
 }
-.explanation .text{
+.explanationtext{
     display: block;
     width: 100%;
 }
@@ -646,6 +653,7 @@ input[name="cityName"]{
     outline: none;
     text-align: center;
     font-size: 1em;
+    background: transparent;
 }
 input[name="submit"]{
     display: inline-block;
@@ -670,6 +678,7 @@ input[name="submit"]{
     height: calc(100% - 50x);
     box-sizing: border-box;
     padding-top: 0px; 
+    padding-right: 5px;
     overflow-y: scroll;
 }
 .resultElement{
@@ -721,7 +730,7 @@ input[name="submit"]{
 }
 .thirdPart{
     display: inline-block;
-    width: 160px;
+    width: 150px;
     height: 80px;
     float: left;
 }
@@ -751,7 +760,7 @@ input[name="submit"]{
     display: inline-block;
     vertical-align: middle;
     font-size: 0.6em;
-    width: 125px;
+    width: 120px;
     height: 25px;
     overflow: hidden;
     cursor: pointer;
@@ -769,6 +778,7 @@ input[name="submit"]{
     border-radius: 4px;
     width: 100%;
     height: 100%;
+    overflow-x: scroll;
 }
 /* program */
 .program_outer{
@@ -960,6 +970,12 @@ input[name="submit"]{
     margin-bottom: 5px;
 }
 .heading_venueName{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.1em;
+    margin-left: 1%;
+}
+.heading_venueName2{
     display: inline-block;
     vertical-align: middle;
     font-size: 1.1em;
@@ -1211,7 +1227,7 @@ li.eventAudience{
     padding: 10px 20px;
 }
 @media screen and (max-height: 700px){
-    .explanation .text{
+    .explanationtext{
         font-size: 0.8em;
     }
 }

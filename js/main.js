@@ -16,7 +16,6 @@ $(document).ready(function() {
 		}
 	}
 	setLanguage(language);
-    
 	//COOKIE LOADER
 	if (Cookies.get('apiKey') === undefined) {
 			window.location = 'index.html';
@@ -33,19 +32,6 @@ $(document).ready(function() {
 		$('#venue_logo').append('<img class="logo" src="' + urlPhoto + '">');
 		}
     //Mode cookie reader
-    /*if (Cookies.get('mode') === undefined){
-        $('link[href="css/main.css"]').attr('href','css/main.css');
-    }
-    else{
-        if (Cookies.get('mode') === 'day'){
-            $('link[href="css/main.css"]').attr('href','css/main.css');
-        }
-        else{
-            $('link[href="css/main.css"]').attr('href','css/main.night.css');
-        }
-    }*/
-    
-    //Mode cookie reader
     if (Cookies.get('mode') === undefined){
         $('link[href="css/main.css"]').attr('href','css/main.css');
     }
@@ -54,7 +40,7 @@ $(document).ready(function() {
             $('link[href="css/main.css"]').attr('href','css/main.css');
         }
         else{
-            $('link[href="css/main.css"]').attr('href','css/main.night.css');
+         $('link[href="css/main.css"]').attr('href','css/main.night.css');
         }
     }
     
@@ -68,136 +54,97 @@ $(document).ready(function() {
         Cookies.set('mode', 'day');
 	});
     
-    //Default load - welcome.html
-    $("#contentPanel").empty();
-    $("#contentPanel").load("welcome.html", function(){
-        $("#statisticsExplanation").on('click', function(){
-            $( "#contentPanel" ).load("statistics.html", function() {
-            loadAllConcert(01);
+    //Go to welcome screen (tutorial)
+    $("#welcome").on('click', function(){
+        $("#contentPanel").empty();
+        addspinner();
+        $("#contentPanel").load("welcome.html", function(){
+            $("#statisticsExplanation").on('click', function(){
+                $("#statistics").trigger( "click" );
             });
-        });
-        $("#mycalendarExplanation").on('click', function(){
-            $( "#contentPanel" ).load("mycalendar.html", function() {
-            
+            $("#mycalendarExplanation").on('click', function(){
+                $("#mycalendar").trigger( "click" );
             });
-        });
-        $("#propagationExplanation").on('click', function(){
-            $( "#contentPanel" ).load("propagation.html", function() {
-                var clickedClubId = idVenue;
-                loadConcertForClub(clickedClubId);
+            $("#propagationExplanation").on('click', function(){
+                $("#propagation").trigger( "click" );
             });
-        });
-        $("#settingsExplanation").on('click', function(){
-            $( "#contentPanel" ).load("manageaccount.html", function() {
-            
+            $("#settingsExplanation").on('click', function(){
+                $("#settings").trigger( "click" );
             });
+            $("#contentPanel").remove(".spinner");
         });
     });
     
-    //Go to welcom screen (tutorial)
-        $("#welcome").on('click', function(){
-            $("#contentPanel").empty();
-            $("#contentPanel").load("welcome.html", function(){
-                $("#statisticsExplanation").on('click', function(){
-                $( "#contentPanel" ).load("statistics.html", function() {
-                    loadAllConcert(01);
-                    });
-                });
-                $("#mycalendarExplanation").on('click', function(){
-                $( "#contentPanel" ).load("mycalendar.html", function() {
-
-                    });
-                });
-                $("#propagationExplanation").on('click', function(){
-                $( "#contentPanel" ).load("propagation.html", function() {
-                        var clickedClubId = idVenue;
-                        loadConcertForClub(clickedClubId);
-                    });
-                });
-                $("#settingsExplanation").on('click', function(){
-                $( "#contentPanel" ).load("manageaccount.html", function()                  {
-
-                    });
-                });
-            });
-        });
+    //Default load - welcome.html
+    $("#contentPanel").empty();
+    $("#welcome").trigger("click");
         
     //Go to statistics
         $("#statistics").on('click', function(){
             $("#contentPanel").empty();
             addspinner();
-            $( "#contentPanel" ).load("statistics.html", function() {
-                
+            $( "#contentPanel" ).load("statistics.html", null, function() {
             loadAllConcert(01);
-                
             $("#contentPanel").remove(".spinner");
             });
         });
             
     //Go to My Calendar
-        $("#mycalendar").on('click', function(){
-            $("#contentPanel").empty();
-            //$("").schow();
-            $("#contentPanel").load("mycalendar.html"/*, null, $("").hide()*/);
+    $("#mycalendar").on('click', function(){
+        $("#contentPanel").empty();
+        addspinner();
+        $("#contentPanel").load("mycalendar.html", null, function() {
+            $(".heading_venueName").append(language["calendarTitle"]);
+            $("#contentPanel").remove(".spinner");
         });
-            
-            
+    });   
             
     //Go to Propagation
-         $("#propagation").on('click', function(){
-            $("#contentPanel").empty();
-            addspinner();
-            $("#contentPanel").load("propagation.html", '.#propagationButton', function() {
-                var clickedClubId = idVenue;
-                loadConcertForClub(clickedClubId);
+    $("#propagation").on('click', function(){
+        $("#contentPanel").empty();
+        addspinner();
+        $("#contentPanel").load("propagation.html", null, function(){
+            var clickedClubId = Cookies.get('idVenue');
+            loadConcertForClub(clickedClubId);
+            setLanguage(language);
             $("#contentPanel").remove(".spinner");
-            });
-        });
-            
-            
-            
+          });
+    });
+              
     //Go to settings
-         $("#settings").on('click', function(){
-            $("#contentPanel").empty();
-            //$("").schow();
-            $("#contentPanel").load("manageaccount.html", null, function(){
-                $.getScript("https://js.braintreegateway.com/v2/braintree.js")
-                .done(function(){
-                    //Payment Braintree
-        // We generated a client token for you so you can test out this code
-            // immediately. In a production-ready integration, you will need to
-            // generate a client token on your server (see section below).
-            var clientToken;
+    $("#settings").on('click', function(){
+        $("#contentPanel").empty();
+        addspinner();
+        $("#contentPanel").load("manageaccount.html", null, function(){
+$.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
+        
+        var clientToken;
 
-                $(document).ready(function(){
-                    $.ajax({
-                        url: "php/generateClientToken.php",
-                        success: function (ret) {
-                            clientToken = ret;
-                            braintree.setup(clientToken, 'dropin',{
-                                container: "payment-form"
-                            });
-                        }
+            $.ajax({
+                url: "php/generateClientToken.php",
+                success: function (ret) {
+                    clientToken = ret;
+                    braintree.setup(clientToken, 'dropin',{
+                        container: "payment-form"
                     });
-                });
+                }
+            });
     
-    /* TRANSACTION CHECKOUT
+    //TRANSACTION CHECKOUT
     $('#checkout').submit(function(event) {
-		  event.preventDefault();
+    event.preventDefault();
         $.ajax({
           url: 'php/transactionCheckout.php',
           dataType: 'json',
           success: function(data) {
-              console.log(data);
-            alert('Plán bol vytvorený');
+            window.location = "response.html";
           },
           error: function(data){
-              console.log(data);
-            alert('Platba neprebehla!');
+            window.location = "response.html";
           },
         });
         event.preventDefault();
-    }); */
+    });
     
     //Braintree Manage Account
     $("#unsubscribebutton").on('click', function(){
@@ -205,13 +152,14 @@ $(document).ready(function() {
         $.ajax({
           url: 'php/cancelsubscription.php?subscription=' + subscription,
           success: function(data) {
-            alert('Plán bol prerušený');
+            window.location = "response.html";
           }
         });
     });
-            });
-            });
-        });
+});
+            $("#contentPanel").remove(".spinner");
+});
+});
     
     //* Mouse position tracker *//
 	$(document).mousemove(function(e){
@@ -255,7 +203,7 @@ $(document).ready(function() {
 	  $.ajaxSetup({ cache: true });
 	  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
 		FB.init({
-		  appId: '1128811043811214',
+		  appId: '468434010007064',
 		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
 		});     
 		$('#loginbutton,#feedbutton').removeAttr('disabled');
@@ -268,23 +216,152 @@ var chartData = new Array();
 var results = [];
 var idVenue = Cookies.get('idVenue');
 var apiKey = Cookies.get('apiKey');
-var language;
+var language = {};
 var results = [];
 var mouseX,mouseY,windowWidth,windowHeight;
 var popupLeft,popupTop;
 var slovak ={
-    
+    //app.html
+    day:"DEŇ",
+    night:"NOC",
+    header1:"Nová úroveň organizovania koncertov",
+    header2:"Z pohodlia vášho pc alebo tabletu",
+    //welcome.html
+    statistics:"Majte pod kontrolou svoje okolie<br><strong>Jednoducho a ľahko analyzujte najlepší termín pre koncert, alebo si nechajte poradiť naším concertian, ktorý Vám vždy poradí čo najlepší dátum a čas na koncert.</strong>",
+    mycalendar:"Zahoďte svoju excelovskú tabuľku<br><strong>Vytvárajte koncerty, upravujte a presúvajte. Poznámky a potrebné informácie sa ukladajú pri vytváraní koncertu a ak chcete podujatie zverejniť, jednoducho zmeňte jeho status.</strong>",
+    propagation:"Propagujte vytvorené koncerty<br><strong>1. Majte v momente svoj koncertný program na svojom fan page<br>2. Sledujte odozvu prostredníctvom nášho počítadla návštevnosti<br>3. Nenechajte veci na náhodu a reagujte na dopyt!</strong></span>",
+    settings:"Aby toho nebolo málo<br><strong>Tu môžete spravovať svoj profil a uskutočniť platbu za produkt. Pozor - concertian LITE je na prvých</strong> 15 dní zadarmo.",
+    placeholderCity:"city",
+    //mycalendar.html
+    calendarTitle:"Môj program <strong>LaFiesta</strong>",
+    //propagation.html
+    propagationTitle:"Propagácia koncertov <strong>' + value.venueName + '</strong>",
+    legendDate:"DÁTUM",
+    legendTime:"ČAS",
+    legendPhoto:"OBRÁZOK",
+    legendName:"NÁZOV",
+    legendDetail:"POPIS",
+    legendEntry:"VSTUPNÉ",
+    legendAudience:"PRÍDU",
+    legendDelete:"VYMAZAŤ",
+    propagationText:"Propagovať koncerty jednoducho na facebook",
+    propagationTextButton:"PROPAGOVAŤ",
+    //manageaccount.html
+    text2:"Meno",
+    text3:"Priezvisko",
+    text4:"Obchodné meno",
+    text5:"Zaplatiť 19€",
+    unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
+    unsubscribeTextButton:"ZRUŠIŤ ODBER"
 };
 var english = {
-    
+        //app.html
+    day:"DAY",
+    night:"NIGHT",
+    header1:"Whole new level of creating concerts",
+    header2:"With comfort of your pc or tablet",
+    //welcome.html
+    statistics:"All concerts in your neighborhood<br><strong>By our statistics we provide ease and simple way how to choose the best date for concert. What more - the system does it for you.</strong>",
+    mycalendar:"Forget about your excel sheet<br><strong>Create, edit and delete concerts within your personal calendar with all data you need, replacing your current notebook.</strong>",
+    propagation:"Promote concert you have created<br><strong>1. Send concert program to your fan page by one click<br>2. Analyze the response by our traffic counter<br>3. React on your feedback for best outcome!</strong></span>",
+    settings:"Manage your account here<br><strong>Contains payment gateway and subscription management settings.</strong>",
+    placeholderCity:"city",
+    //mycalendar.html
+    calendarTitle:"My program <strong>LaFiesta</strong>",
+    //propagation.html
+    propagationTitle:"Concerts propagation <strong>' + value.venueName + '</strong>",
+    legendDate:"DATE",
+    legendTime:"TIME",
+    legendPhoto:"PHOTO",
+    legendName:"NAME",
+    legendDetail:"DETAIL",
+    legendEntry:"ENTRY",
+    legendAudience:"COMING",
+    legendDelete:"DELETE",
+    propagationText:"Promote concerts on facebook",
+    propagationTextButton:"PROMOTE",
+    //manageaccount.html
+    text2:"Name",
+    text3:"Surname",
+    text4:"Company name",
+    text5:"Pay 19€",
+    unsubscribeText:"By clicking unsubscribe, you are not going to be able to use concertian LITE anymore.Therefore you should consider your decision and its impact on your club visit rate. You will be able to access your account until the end of your current month subscription.",
+    unsubscribeTextButton:"UNSUBSCRIBE"
 };
 var czech = {
-    
+        //app.html
+    day:"DEN",
+    night:"NOC",
+    header1:"Zcela nová úroveň organizování koncertů",
+    header2:"Z pohodlí vašeho pc nebo tabletu",
+    //welcome.html
+    statistics:"Mějte pod kontrolou své okolí<br><strong>Jednoduše a snadno analyzujte nejlepší termín pro koncert, nebo si nechte poradit naším concertian, který Vám vždy poradí co nejlepší datum a čas na koncert.</strong>",
+    mycalendar:"Zahoďte svou excelovskou tabulku<br><strong>Vytvářejte koncerty, upravujte a vymažte. Poznámky a potřebné informace se ukládají při vytváření koncertu a pokud chcete událost zveřejnit, prostě změňte její status.</strong>",
+    propagation:"Propagujte vytvořené koncerty<br><strong>1. Mějte v momentě svůj koncertní program na svém fan page<br>2. Sledujte odezvu prostřednictvím našeho počítadla návštěvnosti<br>3. Nenechte věci náhodě a reagujte na poptávku!</strong></span>",
+    settings:"Aby toho nebylo málo<br><strong>Zde můžete spravovat svůj profil a provést platbu za produkt. Pozor - concertian LITE je na prvních </ strong> 15 dnů zdarma.",
+    placeholderCity:"město",
+    //mycalendar.html
+    calendarTitle:"Můj program <strong>LaFiesta</strong>",
+    //propagation.html
+    propagationTitle:"Propagace koncertů <strong>' + value.venueName + '</strong>",
+    legendDate:"DATUM",
+    legendTime:"ČAS",
+    legendPhoto:"OBRÁZEK",
+    legendName:"NÁZEV",
+    legendDetail:"DETAIL",
+    legendEntry:"VSTUPNÍ",
+    legendAudience:"PŘIJDOU",
+    legendDelete:"SMAZAT",
+    propagationText:"Propagovat koncerty jednoduše na facebook",
+    propagationTextButton:"ZVEŘEJNIT",
+    //manageaccount.html
+    text2:"Jméno",
+    text3:"Příjmení",
+    text4:"Obchodní jméno",
+    text5:"Zaplatiť 19€",
+    unsubscribeText:"Kliknutím na přerušit odběr, již nebude možné více využívat balíček concertian LITE. Přerušit odběr je možné v jakémkoli okamžiku bez ohledu na to jestli jste s námi měsíc, dva nebo 6 měsíců. Samozřejmě je třeba zvážit dopad na pokles návštěvnosti ve vašem klubu, jelikož po zrušení odběru nebude moci následující měsíc již přistupovat do aplikace.",
+    unsubscribeTextButton:"ZRUŠIT ODBĚR"
 };
 
 // Setting language
 // SET TEXT BUILDER
-function setLanguage(language){}
+function setLanguage(language){
+    //app.html
+    $("#day").text(language["day"]);
+    $("#night").text(language["night"]);
+    $(".leftBanner_text").text(language["header1"]);
+    $(".rightBanner_text").text(language["header2"]);
+    $(".rightBanner_text").text(language["header2"]);
+    //welcome.html
+    $("#explanationtext1").html(language["statistics"]);
+    $("#explanationtext2").html(language["mycalendar"]);
+    $("#explanationtext3").html(language["propagation"]);
+    $("#explanationtext4").html(language["settings"]);
+    //statistics.html
+    $("#cityName").attr("placeholder", language["placeholderCity"]);
+    $("#cityName").attr("placeholder", language["placeholderCity"]);
+    //mycalendar.html
+    $(".heading_venueName").html(language["calendarTitle"]);
+    //propagation.html
+    $(".heading_venueName2").html(language["propagationTitle"]);
+    $("#lidate").text(language["legendDate"]);
+    $("#litime").text(language["legendTime"]);
+    $("#eventphoto").text(language["legendPhoto"]);
+    $("#liname").text(language["legendName"]);
+    $("#detail").text(language["legendDetail"]);
+    $("#lientry").text(language["legendEntry"]);
+    $("#eventAudience").text(language["legendAudience"]);
+    $("#eventDelete").text(language["legendDelete"]);
+    $(".propagationText").text(language["propagationText"]);
+    $("#propagationButton").text(language["propagationTextButton"]);
+    //manageaccount.html
+    $("#text2").append(language["text2"]);
+    $("#text3").append(language["text3"]);
+    $("#text4").append(language["text4"]);
+    $("#text5").append(language["text5"]);
+    $(".unsubscribetext").append(language["unsubscribeText"]);
+    $("#unsubscribebutton").append(language["unsubscribeTextButton"]);
+}
 
 // ADDING SPINER WHILE LOADING #contentPanel
 function addspinner(){
@@ -315,7 +392,7 @@ function loadAllConcert(monthNumber){
     });
 }
 //Load concert by city ajax call
-function loadConcertByCity(city){
+/*function loadConcertByCity(city){
 	$.ajax({ 'url' : 'https://api.concertian.com/users/events/city',
 		  'method' : 'POST',
 		  'data' : { 'results' : "20",
@@ -330,7 +407,7 @@ function loadConcertByCity(city){
 	  		console.log('Error. ' + error);
 	  	}
     });
-}
+}*/
 
 // Load concerts for Club (on club click) by ajax call
 function loadConcertForClub(clickedClubId){
@@ -573,7 +650,6 @@ function getMinutes(time){
 
 //Load concerts for manager
 function addPropagationElements(json){
-    
     var length = results.length;
     
     for(var i = 0; i < json.events.length; i++){

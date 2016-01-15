@@ -8,6 +8,7 @@ body{
     font-family: 'Open Sans', sans-serif;	
     font-weight: normal;
     color: #C3CBD9;
+    overflow: hidden;
 }
 a{
     text-decoration: none !important;
@@ -59,9 +60,9 @@ div.loginBox{
 }
 div.loginBox .header{
     position: relative;
-    margin-left: 55px;
-    background: url('../img/sprite.png') no-repeat -188px -2px;
-	width: 319px;
+    margin-left: 15px;
+    background: url('../img/sprite.png') no-repeat -239px 0;
+	width: 292px;
 	height: 35px;
 }
 .paddingtop{
@@ -230,7 +231,7 @@ div#bottom_bar :-ms-input-placeholder {
     .header{
         margin-top: 30%;
     }
-    .explanation .text{
+    .explanationtext{
         font-size: 0.8em;
     }
     .explanation .icon{
@@ -266,7 +267,7 @@ header{
     position: absolute;
     width: 60px;
     left: 0;
-    top: 20%;
+    top: 18%;
     margin: 0;
     padding: 0;
 }
@@ -281,6 +282,13 @@ header{
 }
 #leftmenu li:hover{
     background-color: #ffc95c;
+}
+#welcome_icon{
+    display: block;
+    background: url('../img/sprite.png') -534px -2px;
+	width: 26px;
+	height: 24px;
+    margin-left: 17px;
 }
 #statistics_icon{
     display: block;
@@ -372,6 +380,12 @@ header{
 @media screen and (max-height: 570px) {
     #logoff{
         display: none;
+    }
+    .explanationtext{
+        text-align: center;
+    }
+    .explanationtext strong{
+        display: none !important;
     }
 }
 section{ 
@@ -549,7 +563,7 @@ div #contentPanel{
     margin-left: 40%;
     margin-bottom: 2%;
 }
-.explanation .text{
+.explanationtext{
     display: block;
     width: 100%;
 }
@@ -575,9 +589,13 @@ div #contentPanel{
     display: inline-block;
     height: 25px;
     width: 7%;
-    text-align: center;
-    color: #333333;
+    text-align: center !important;
+    color: #C3CBD9;
     cursor: pointer;
+}
+#monthSelector a{
+    box-sizing: border-box;
+    padding: 10px 25px;
 }
 #monthSelector ul li:hover{
     border-bottom: 2px solid #ffbb33;
@@ -635,8 +653,8 @@ input[name="cityName"]{
     outline: none;
     text-align: center;
     font-size: 1em;
-    background: transparent;
-    color: #C3CBD9 !important;
+    background: #253B55;
+    color: #C3CBD9;
 }
 input[name="submit"]{
     display: inline-block;
@@ -661,6 +679,7 @@ input[name="submit"]{
     height: calc(100% - 50x);
     box-sizing: border-box;
     padding-top: 0px; 
+    padding-right: 5px;
     overflow-y: scroll;
 }
 .resultElement{
@@ -712,7 +731,7 @@ input[name="submit"]{
 }
 .thirdPart{
     display: inline-block;
-    width: 160px;
+    width: 150px;
     height: 80px;
     float: left;
 }
@@ -742,7 +761,7 @@ input[name="submit"]{
     display: inline-block;
     vertical-align: middle;
     font-size: 0.6em;
-    width: 125px;
+    width: 120px;
     height: 25px;
     overflow: hidden;
     cursor: pointer;
@@ -756,10 +775,11 @@ input[name="submit"]{
     margin: 5% 5%;
 } 
 #program_part{
-    background: #fff;
+    background: #253B55;
     border-radius: 4px;
     width: 100%;
     height: 100%;
+    overflow-x: scroll;
 }
 /* program */
 .program_outer{
@@ -783,7 +803,7 @@ input[name="submit"]{
     height: -o-calc(100% - 50px);
     /* Standard */
     height: calc(100% - 50px);
-    background: #F3F4F7;
+    background: #253B55;
 }
 #graph{
 	height: 100%;
@@ -877,7 +897,7 @@ input[name="submit"]{
 	display: none;
 	width: 200px;
 	height: auto;
-	background: #fff;
+	background: #253B55;
 	border: 1px solid #f5f5f5;
 	border-radius: 4px;
 	overflow-y: scroll;
@@ -956,6 +976,12 @@ input[name="submit"]{
     font-size: 1.1em;
     margin-left: 1%;
 }
+.heading_venueName2{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.1em;
+    margin-left: 1%;
+}
 .heading_venuePhoto{
     display: inline-block;
     vertical-align: middle;
@@ -1022,6 +1048,12 @@ input[name="submit"]{
 }
 #detail{
     width: 200px !important;
+    margin: 0 5px;
+}
+#shareButton{
+    display: none;
+    display: none;
+    width: 20px;
 }
 #propagationElements{
     display: block;
@@ -1050,18 +1082,41 @@ input[name="submit"]{
 }
 li.eventDate,
 li.eventTime,
-li.eventName,
 li.eventEntry,
 li.eventAudience{
     box-sizing: border-box;
-    padding-top: 35px;
 }
-li.eventPhoto{
-    box-sizing: border-box;
-    padding-top: 30px;
+li.propagationeventPhoto{
+    overflow: hidden;
+}
+.propagationeventPhotoImg{
+    width: 100px;
+    height: 100px;
+}
+.uploadimgUrlButton{
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 25px;
+    width: 50px;
+    height: 50px;
+    background: #ffbb33 !important;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.upload_icon{
+    display: block;
+    background: url('../img/sprite.png') -216px -2px;
+	width: 20px;
+	height: 20px;
+    margin-left: 14px;
+    margin-top: 13px;
 }
 li.eventDetail{
     width: 200px !important;
+    font-size: 0.8em !important;
+    margin: 0 5px;
+}
+li.eventName{
     font-size: 0.8em !important;
 }
 li.eventAudience{
@@ -1075,6 +1130,23 @@ li.eventAudience{
     margin-left: 40%;
     margin-top: 33px;
     cursor: pointer;
+}
+#eventShareButton{
+    display: none;
+    vertical-align: middle;
+    width: 20px !important;
+    margin-right: 10% !important;
+    height: 20px;
+    border-radius: 4px;
+    background: transparent;
+    border: 2px solid #ffbb33;
+    cursor: pointer;
+}
+.display{
+    display: inline-block !important;
+}
+.eventShareButtonText{
+    font-size: 0 !important;
 }
 .facebookpropagation{
     display: block;
@@ -1110,12 +1182,15 @@ li.eventAudience{
     .propagationElement li{
         width: 80px !important;
     }
+    #eventShareButton{
+        margin-right: 15% !important;
+    }
 }
 @media screen and (max-width: 620px) {
     li.eventPhoto{
         display: none !important;
     }
-    li#eventphoto{
+    .eventphoto{
         display: none !important;
     }
 }
@@ -1153,7 +1228,7 @@ li.eventAudience{
     padding: 10px 20px;
 }
 @media screen and (max-height: 700px){
-    .explanation .text{
+    .explanationtext{
         font-size: 0.8em;
     }
 }
@@ -1335,6 +1410,6 @@ li.eventAudience{
   transition-property: transform;
 }
 .hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
 }
