@@ -113,7 +113,7 @@ $(document).ready(function(){
                 url: 'php/checkoutValidation.php?subscription=' + json.subscriptionId,
                 success: function(data){
                     if (data == 1){
-                        window.location="http://localhost/manager.concertian.com/app.html";
+                        window.location = "../app.html";//"http://localhost/manager.concertian.com/app.html";
                     }
                     else{
  window.location="../payment.html";
@@ -122,7 +122,7 @@ $(document).ready(function(){
             });   
            }
             else{
-                window.location ="http://localhost/manager.concertian.com/app.html";
+                window.location = "../app.html";//"http://localhost/manager.concertian.com/app.html";
             }
         },
 		  error: function(json){

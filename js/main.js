@@ -94,6 +94,7 @@ $(document).ready(function() {
         $("#contentPanel").empty();
         addspinner();
         $("#contentPanel").load("mycalendar.html", null, function() {
+            initCalendar();
             $(".heading_venueName").append(language["calendarTitle"]);
             $("#contentPanel").remove(".spinner");
         });
@@ -194,7 +195,7 @@ $.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
         url: base_url,
         success: function(json){
 			window.location = 'index.html';
-			},
+			}
 		});
 	});
     
@@ -391,6 +392,7 @@ function loadAllConcert(monthNumber){
 	  	}
     });
 }
+
 //Load concert by city ajax call
 /*function loadConcertByCity(city){
 	$.ajax({ 'url' : 'https://api.concertian.com/users/events/city',
