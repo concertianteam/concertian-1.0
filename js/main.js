@@ -16,6 +16,7 @@ $(document).ready(function() {
 				break;
 		}
 	}
+    var calendarLang  = language["calendarLang"];
 	setLanguage(language);
 	//COOKIE LOADER
 	if (Cookies.get('apiKey') === undefined) {
@@ -95,7 +96,7 @@ $(document).ready(function() {
         $("#contentPanel").empty();
         addspinner();
         $("#contentPanel").load("mycalendar.html", null, function() {
-            initCalendar();
+            initCalendar(calendarLang);
             renderEdit();
             $(".heading_venueName").append(language["calendarTitle"]);
             $("#contentPanel").remove(".spinner");
@@ -224,6 +225,7 @@ var results = [];
 var mouseX,mouseY,windowWidth,windowHeight;
 var popupLeft,popupTop;
 var slovak ={
+    calendarLang: 'sk',
     //app.html
     day:"DEŇ",
     night:"NOC",
@@ -258,6 +260,7 @@ var slovak ={
     unsubscribeTextButton:"ZRUŠIŤ ODBER"
 };
 var english = {
+    calendarLang: 'en',
         //app.html
     day:"DAY",
     night:"NIGHT",
@@ -292,6 +295,7 @@ var english = {
     unsubscribeTextButton:"UNSUBSCRIBE"
 };
 var czech = {
+    calendarLang: 'cs',
         //app.html
     day:"DEN",
     night:"NOC",

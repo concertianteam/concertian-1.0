@@ -1,4 +1,4 @@
-function initCalendar() {
+function initCalendar(calendarLanguage) {
     $.ajax({
         'url': 'https://api.concertian.com/agents/events',
         'method': 'GET',
@@ -8,15 +8,15 @@ function initCalendar() {
         },
         contentType: "application/x-www-form-urlencoded",
         success: function (json) {
-            renderCalendar(json);
+            renderCalendar(json, calendarLanguage);
         },
         error: function (error) {
-            renderCalendar();
+            renderCalendar(false, calendarLanguage);
         }
     });
 
     $("#contentPanel #createConcertForm").load("concertForm.html", null, function() {
-        $("#date").datepicker({dateFormat: "yy-mm-dd"});
+        $("#date").datepicker($.datepicker.regional[ calendarLanguage ], {dateFormat: "yy-mm-dd"});
         $("#time").timepicker();
 
         $('#deleteEvent').on('click', function(){
@@ -79,11 +79,12 @@ function initCalendar() {
     });
 }
 
-function renderCalendar(json){
+function renderCalendar(json, calendarLanguage){
     var eventsArr = [];
     if(json) {
         json.events.forEach(function (data) {
             var event = {};
+            event.id = data.idEvent;
             event.title = data.name;
             event.start = data.date + 'T' + data.time;
             event.status = data.status;
@@ -91,18 +92,20 @@ function renderCalendar(json){
             eventsArr.push(event);
         });
     }
-    //idEvents, name, date, time, status, visible
+
     $('#myCalendar').fullCalendar({
-        lang: 'sk',
+        lang: calendarLanguage,
         header: {
             left: 'prev,next today',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
         defaultDate: '2016-01-12',
-        editable: true,
-        eventLimit: true, // allow "more" link when too many events
-        events: eventsArr
+        eventLimit: true,
+        events: eventsArr,
+        eventClick: function(event) {
+            renderEdit(event.id);
+        }
     });
 }
 
