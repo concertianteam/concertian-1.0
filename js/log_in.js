@@ -75,7 +75,7 @@ $(document).ready(function(){
 
 	var loginData = {
             'email' : $('#email').val(),
-            'password'  : $('#password').val(),
+            'password'  : $('#password').val()
     };
 
 	if (loginData['email'] && loginData['password']) { // values are not empty

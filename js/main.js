@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     //Language handler
     if(Cookies.get('language') == null){
 		language = slovak;
@@ -95,6 +96,7 @@ $(document).ready(function() {
         addspinner();
         $("#contentPanel").load("mycalendar.html", null, function() {
             initCalendar();
+            renderEdit();
             $(".heading_venueName").append(language["calendarTitle"]);
             $("#contentPanel").remove(".spinner");
         });
@@ -142,7 +144,7 @@ $.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
           },
           error: function(data){
             window.location = "response.html";
-          },
+          }
         });
         event.preventDefault();
     });
@@ -452,7 +454,7 @@ function deleteConcert(eventID){
                 },
                 error       : function(json){
                     console.log("Nevymazané");
-                },
+                }
                 });
 }
 
