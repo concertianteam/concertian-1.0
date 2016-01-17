@@ -1,7 +1,29 @@
 $(document).ready(function() {
     initLanguage();
 	setLanguage();
-	//COOKIE LOADER
+
+    //Language handler
+    if(Cookies.get('language') == null){
+		language = slovak;
+	}else{
+		switch(Cookies.get('language')){
+			case "slovak":
+				language = slovak;
+				break;
+			case "english":
+				language = english;
+				break;
+			case "czech":
+				language = czech;
+				break;
+		}
+	}
+
+    var calendarLang  = language["calendarLang"];
+    window.language = language;
+	setLanguage(language);
+
+    //COOKIE LOADER
 	if (Cookies.get('apiKey') === undefined) {
 			window.location = 'index.html';
     	}
@@ -12,6 +34,9 @@ $(document).ready(function() {
 		  var idAccount = Cookies.get('idAccount');
 		  var idVenue = Cookies.get('idVenue');
           var language = Cookies.get('language');
+
+
+
 		$('#idVenue').val(idVenue);
 		$('#apiKey').val(apiKey);
 		$('#venue_logo').append('<img class="logo" src="' + urlPhoto + '">');
@@ -83,6 +108,8 @@ $(document).ready(function() {
             initCalendar();
             setLanguage();
             $(".heading_venueName").append(language["calendarTitle"]);
+            renderEdit();
+            $(".heading_venueName").append(window.language["calendarTitle"]);
             $("#contentPanel").remove(".spinner");
         });
     });   
@@ -139,7 +166,7 @@ $.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
           },
           error: function(data){
             window.location = "response.html";
-          },
+          }
         });
         event.preventDefault();
     });
@@ -225,7 +252,78 @@ var mouseX,mouseY,windowWidth,windowHeight;
 var popupLeft,popupTop;
 
 function initLanguage(){
-        slovak ={
+var slovak ={
+    calendarLang: 'sk',
+    //app.html
+    day:"DEŇ",
+    night:"NOC",
+    header1:"Nová úroveň organizovania koncertov",
+    header2:"Z pohodlia vášho pc alebo tabletu",
+    //welcome.html
+    statistics:"Majte pod kontrolou svoje okolie<br><strong>Jednoducho a ľahko analyzujte najlepší termín pre koncert, alebo si nechajte poradiť naším concertian, ktorý Vám vždy poradí čo najlepší dátum a čas na koncert.</strong>",
+    mycalendar:"Zahoďte svoju excelovskú tabuľku<br><strong>Vytvárajte koncerty, upravujte a presúvajte. Poznámky a potrebné informácie sa ukladajú pri vytváraní koncertu a ak chcete podujatie zverejniť, jednoducho zmeňte jeho status.</strong>",
+    propagation:"Propagujte vytvorené koncerty<br><strong>1. Majte v momente svoj koncertný program na svojom fan page<br>2. Sledujte odozvu prostredníctvom nášho počítadla návštevnosti<br>3. Nenechajte veci na náhodu a reagujte na dopyt!</strong></span>",
+    settings:"Aby toho nebolo málo<br><strong>Tu môžete spravovať svoj profil a uskutočniť platbu za produkt. Pozor - concertian LITE je na prvých</strong> 15 dní zadarmo.",
+    placeholderCity:"city",
+    //mycalendar.html
+    calendarTitle:"Môj program <strong>LaFiesta</strong>",
+    //propagation.html
+    propagationTitle:"Propagácia koncertov <strong>' + value.venueName + '</strong>",
+    legendDate:"DÁTUM",
+    legendTime:"ČAS",
+    legendPhoto:"OBRÁZOK",
+    legendName:"NÁZOV",
+    legendDetail:"POPIS",
+    legendEntry:"VSTUPNÉ",
+    legendAudience:"PRÍDU",
+    legendDelete:"VYMAZAŤ",
+    propagationText:"Propagovať koncerty jednoducho na facebook",
+    propagationTextButton:"PROPAGOVAŤ",
+    //manageaccount.html
+    text2:"Meno",
+    text3:"Priezvisko",
+    text4:"Obchodné meno",
+    text5:"Zaplatiť 19€",
+    unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
+    unsubscribeTextButton:"ZRUŠIŤ ODBER"
+};
+var english = {
+    calendarLang: 'en',
+        //app.html
+    day:"DAY",
+    night:"NIGHT",
+    header1:"Whole new level of creating concerts",
+    header2:"With comfort of your pc or tablet",
+    //welcome.html
+    statistics:"All concerts in your neighborhood<br><strong>By our statistics we provide ease and simple way how to choose the best date for concert. What more - the system does it for you.</strong>",
+    mycalendar:"Forget about your excel sheet<br><strong>Create, edit and delete concerts within your personal calendar with all data you need, replacing your current notebook.</strong>",
+    propagation:"Promote concert you have created<br><strong>1. Send concert program to your fan page by one click<br>2. Analyze the response by our traffic counter<br>3. React on your feedback for best outcome!</strong></span>",
+    settings:"Manage your account here<br><strong>Contains payment gateway and subscription management settings.</strong>",
+    placeholderCity:"city",
+    //mycalendar.html
+    calendarTitle:"My program <strong>LaFiesta</strong>",
+    //propagation.html
+    propagationTitle:"Concerts propagation <strong>' + value.venueName + '</strong>",
+    legendDate:"DATE",
+    legendTime:"TIME",
+    legendPhoto:"PHOTO",
+    legendName:"NAME",
+    legendDetail:"DETAIL",
+    legendEntry:"ENTRY",
+    legendAudience:"COMING",
+    legendDelete:"DELETE",
+    propagationText:"Promote concerts on facebook",
+    propagationTextButton:"PROMOTE",
+    //manageaccount.html
+    text2:"Name",
+    text3:"Surname",
+    text4:"Company name",
+    text5:"Pay 19€",
+    unsubscribeText:"By clicking unsubscribe, you are not going to be able to use concertian LITE anymore.Therefore you should consider your decision and its impact on your club visit rate. You will be able to access your account until the end of your current month subscription.",
+    unsubscribeTextButton:"UNSUBSCRIBE"
+};
+var czech = {
+    calendarLang: 'cs',
         //app.html
         day:"DEŇ",
         night:"NOC",
@@ -474,7 +572,7 @@ function deleteConcert(eventID){
                 },
                 error       : function(json){
                     console.log("Nevymazané");
-                },
+                }
                 });
 }
 
