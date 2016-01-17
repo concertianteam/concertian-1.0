@@ -57,15 +57,21 @@ $(document).ready(function(){
     if (Cookies.get('name') === undefined) {
         $("#log_inForm").addClass("paddingtop");
         $(".venue_name").text(language["text1"]);
-        $(".login_venue_img").hide();
     }
     else{
         var name = Cookies.get('name');
-        var urlPhoto = Cookies.get('urlPhoto');
-        var element = '<img class="venue_img" src="'+urlPhoto+'">';
+        var urlPhoto;
+        if((urlPhoto = Cookies.get('urlPhoto')) != undefined){
+            var element = '<img class="venue_img" src="'+urlPhoto+'">';
+            $(".login_venue_img").append(element);
+        }
+        else{
+            $(".login_venue_img").hide();
+            $(".venue_name").css('margin-top', '32%');
+        }
+        
         $("#log_inForm").removeClass("paddingtop");
         $(".venue_name").append(name);
-        $(".login_venue_img").append(element);
         $("#hide").hide();
     }
 	// LOGIN SCRIPT
@@ -75,7 +81,7 @@ $(document).ready(function(){
 
 	var loginData = {
             'email' : $('#email').val(),
-            'password'  : $('#password').val(),
+            'password'  : $('#password').val()
     };
 
 	if (loginData['email'] && loginData['password']) { // values are not empty
@@ -104,6 +110,7 @@ $(document).ready(function(){
             var subscription = json.subscriptionId;
 			  Cookies.set('apiKey', apiKey, { expires: 7 });
 			  Cookies.set('name', name, { expires: 7 });
+                if(urlPhoto)
 			  Cookies.set('urlPhoto', urlPhoto, { expires: 7 });
 			  Cookies.set('idAccount', idAccount, { expires: 7 });
 			  Cookies.set('idVenue', idVenue, { expires: 7 });
@@ -113,7 +120,7 @@ $(document).ready(function(){
                 url: 'php/checkoutValidation.php?subscription=' + json.subscriptionId,
                 success: function(data){
                     if (data == 1){
-                        window.location = "../app.html";//"http://localhost/manager.concertian.com/app.html";
+                        window.location ="http://localhost/manager.concertian.com/app.html";
                     }
                     else{
  window.location="../payment.html";
@@ -122,7 +129,7 @@ $(document).ready(function(){
             });   
            }
             else{
-                window.location = "../app.html";//"http://localhost/manager.concertian.com/app.html";
+                window.location ="http://localhost/manager.concertian.com/app.html";
             }
         },
 		  error: function(json){
