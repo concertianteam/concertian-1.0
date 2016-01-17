@@ -1,4 +1,21 @@
 $(document).ready(function() {
+	$(window).resize(function() {
+	    if (timeout === false){
+	        rtime = new Date();
+	        timeout = true;
+	    }else if( (new Date() - rtime) > delta && !disabled && $(window).width() < limitWidth) {
+	        setNormal = false;
+	        timeout = false;
+	        disabled = true;
+	        console.log ($( window ).width());
+	        repaindTextSecond();
+	    }else if ( $(window).width() > limitWidth){
+	        disabled = false;
+	        setNormal = true;
+	        restore();
+	    }
+	});
+	
     //Language handler
     if(Cookies.get('language') == null){
 		language = slovak;
@@ -494,7 +511,8 @@ function addElements(json){
                     '<span class="spacer"></span>';
 		
 		$("#resultsList").append(element);
-		if(json.events.length % 20 === 0 && i == json.events.length - 5)		{
+		
+		if(json.events.length % 20 === 0 && i == json.events.length - 5) {
 			$("#resultsList").append('<span id="spinnerActivator"></span>');
 			minus = 1;
 		}
@@ -555,10 +573,10 @@ function addElements(json){
 		var arrayForDay = chartData[i];
 		var element = '<td>';
 		for(var j = 0; j < arrayForDay.length; j++){
-			if((j+1 < arrayForDay.length && arrayForDay[j][1] != arrayForDay[j+1][1]) || j+1 == arrayForDay.length){
-				if(arrayForDay[j][1].split(':')[0] > 13){
+			if((j + 1 < arrayForDay.length && arrayForDay[j][1] != arrayForDay[j+1][1]) || j + 1 == arrayForDay.length){
+//				if(arrayForDay[j][1].split(':')[0] > 13){
 					element = element + '<span class="venuePointChart" style="top:' + (height - getMinutes(arrayForDay[j][1]) * constant) + 'px; background-color: ' + (counter <= 5 ? color['yelow'] : (counter <= 12 ? color['blue'] : color['red'])) + ';">' + i + '</span>';
-				}
+//				}
 				counter = 0;
 			}else{
 				counter++;
@@ -575,27 +593,23 @@ function addElements(json){
 // 22 = 480
 // 20 = 360
 	
-	$("#lineContainer").append(	'<span class="timeLine" style="top: ' + (height - 1320 * constant) + 'px;">' +
-						  	   		'<span class="timeLineText">22:00</span>' +
-						  	   		'<span class="timeLineLine"></span>' +
-					  	   		'</span>' +
-					  	   		'<span class="timeLine" style="top: ' + (height - 1200 * constant) + 'px;">' +
-									'<span class="timeLineText">20:00</span>' +
-									'<span class="timeLineLine"></span>' +
-							   	'</span>' +
-								'<span class="timeLine" style="top: ' + (height - 840 * constant) + 'px;">' +
-									'<span class="timeLineText">14:00</span>' +
-									'<span class="timeLineLine"></span>' +
-							   	'</span>');
-
-
+	for(var i = 1; i <= 24; i++){
+		$("#lineContainer").append('<span class="timeLine" style="top: ' + (height - (60 * i) * constant) + 'px;">' +
+							  	   		'<span class="timeLineText">' + (i < 10 ? '0' + i : i) + ':00</span>' +
+							  	   		'<span class="timeLineLine"></span>' +
+							   	   '</span>');
+	}
+	
 function getMinutes(time){
 	var timeSplit = time.split(":");
 	var hour = parseInt(timeSplit[0]);
 	var minute = parseInt(timeSplit[1]);
+	var result = (hour * 60) + minute;
+	
+//	console.log(time + " => " + result);
 	
 	// ignore 14 hours  840
-	return (hour * 60) + minute;
+	return result == 0 ? 1440 : result;
 }
 	//* ----- On click concerts showcase ----- *//
 	$(".venuePointChart").on('mouseenter', function(){
