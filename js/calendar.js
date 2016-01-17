@@ -1,4 +1,4 @@
-function initCalendar(calendarLanguage) {
+function initCalendar() {
     $.ajax({
         'url': 'https://api.concertian.com/agents/events',
         'method': 'GET',
@@ -8,16 +8,21 @@ function initCalendar(calendarLanguage) {
         },
         contentType: "application/x-www-form-urlencoded",
         success: function (json) {
-            renderCalendar(json, calendarLanguage);
+            renderCalendar(json);
         },
         error: function (error) {
-            renderCalendar(false, calendarLanguage);
+            renderCalendar(false);
         }
     });
 
     $("#contentPanel #createConcertForm").load("concertForm.html", null, function() {
-        $("#date").datepicker($.datepicker.regional[ calendarLanguage ], {dateFormat: "yy-mm-dd"});
+        $("#date").datepicker($.datepicker.regional[ window.language["calendarLang"] ], {dateFormat: "yy-mm-dd"});
         $("#time").timepicker();
+
+        $("#deleteEvent").hide();
+        //default select
+        $("#status_1").attr('checked', 'checked');
+        $("#visible_1").attr('checked', 'checked');
 
         $('#deleteEvent').on('click', function(){
             $.ajax({
@@ -57,6 +62,10 @@ function initCalendar(calendarLanguage) {
                         time: $("#time").val(),
                         detail: $("#detail").val(),
                         entry: $("#entry").val(),
+                        imgUrl: $("#imgUrl").val(),
+                        note: $("#note").val(),
+                        performerEmail: $("#performerEmail").val(),
+                        performerPhoneNumber: $("#performerPhoneNumber").val(),
                         status: $('input[name=status]:checked').val() ,
                         visible: $('input[name=visible]:checked').val()
                     },
@@ -79,7 +88,7 @@ function initCalendar(calendarLanguage) {
     });
 }
 
-function renderCalendar(json, calendarLanguage){
+function renderCalendar(json){
     var eventsArr = [];
     if(json) {
         json.events.forEach(function (data) {
@@ -94,7 +103,7 @@ function renderCalendar(json, calendarLanguage){
     }
 
     $('#myCalendar').fullCalendar({
-        lang: calendarLanguage,
+        lang: window.language["calendarLang"],
         header: {
             left: 'prev,next today',
             center: 'title',
@@ -110,7 +119,7 @@ function renderCalendar(json, calendarLanguage){
 }
 
 function renderEdit(eventId){
-    var dataEvent;
+
     if(eventId){
         $.ajax({
             url: 'https://api.concertian.com/agents/events/' + eventId,
@@ -127,14 +136,16 @@ function renderEdit(eventId){
                 $("#time").val(data.time);
                 $("#detail").val(data.detail);
                 $("#entry").val(data.entry);
+                $("#imgUrl").val(data.imgUrl);
+                $("#note").val(data.note);
+                $("#performerEmail").val(data.performerEmail);
+                $("#performerPhoneNumber").val(data.performerPhoneNumber);
                 $("#status_" + data.status).attr('checked', 'checked');
                 $("#visible_" + data.visible).attr('checked', 'checked');
+                $("#deleteEvent").show();
             },
             contentType: "application/x-www-form-urlencoded"
         });
-    }
-    else{
-        $("#deleteEvent").hide();
     }
 }
 

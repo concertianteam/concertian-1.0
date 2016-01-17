@@ -16,7 +16,9 @@ $(document).ready(function() {
 				break;
 		}
 	}
+
     var calendarLang  = language["calendarLang"];
+    window.language = language;
 	setLanguage(language);
 	//COOKIE LOADER
 	if (Cookies.get('apiKey') === undefined) {
@@ -29,6 +31,9 @@ $(document).ready(function() {
 		  var idAccount = Cookies.get('idAccount');
 		  var idVenue = Cookies.get('idVenue');
           var language = Cookies.get('language');
+
+
+
 		$('#idVenue').val(idVenue);
 		$('#apiKey').val(apiKey);
 		$('#venue_logo').append('<img class="logo" src="' + urlPhoto + '">');
@@ -96,9 +101,9 @@ $(document).ready(function() {
         $("#contentPanel").empty();
         addspinner();
         $("#contentPanel").load("mycalendar.html", null, function() {
-            initCalendar(calendarLang);
+            initCalendar();
             renderEdit();
-            $(".heading_venueName").append(language["calendarTitle"]);
+            $(".heading_venueName").append(window.language["calendarTitle"]);
             $("#contentPanel").remove(".spinner");
         });
     });   
