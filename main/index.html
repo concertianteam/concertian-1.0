@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>concertian - local concert search engine</title>
+
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/js.cookie.js"></script>
+        
+        <script type="text/javascript">
+        	map = null;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('columnMap'), {
+                	center: new google.maps.LatLng(48.3124827, 18.0182663),
+                    zoom: 12,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    disableDefaultUI: true
+                  });
+
+                init();
+            }
+		</script>
+		<script async defer
+	 		src="https://maps.googleapis.com/maps/api/js?key= AIzaSyDMkYXW-SqynB-eACTqCPWfaT0Wv3bpI5I&callback=initMap">
+        </script>
+        
+        <meta name="author" content="QUAWER">
+        <meta name="robots" content="nofollow, noindex">
+    </head>
+
+    <body>
+        <header>
+            <span class="titlerow">
+                <span id="logo">
+                    <span class="logo_picture"></span>
+                    <span class="logo_text"></span>
+                    <span class="language_selector">
+						<a id="language_menu">SK</a>
+                            <ul class="languagemenu">
+                                <li><a id="en">EN</a></li>
+                                <li><a id="sk">SK</a></li>
+                                <li><a id="cz">CZ</a></li>
+                            </ul>
+            		</span>
+                </span>
+                <span class="share_concertian">
+                    <ul>
+                        <li><span class="facebook"></span></li>
+                        <li><span class="twitter"></span></li>
+                        <li><span class="googleplus"></span></li>
+                    </ul>
+                </span>
+            </span>
+            <span id="citySelect"></span>
+        </header>
+        <section>
+            <span id="popup">
+            </span>
+            <span id="concertlist">
+                <span class="searchbar">
+                    <span class="searchBySelector">
+                        <span class="byClub"></span>
+                        <span class="byCity"></span>
+                    </span>
+                    <form id="form">
+                        <input id="search_input" type="text" name="city" placeholder=""/>
+						<input id="clubId" type="hidden"/>
+                        <input class="imgSearch" type="submit" value=""/>
+                    </form>
+                </span>
+                <span id="listofConcerts">
+                    <span class="outer"></span>
+                </span>
+            </span>
+            <span id="columnMap"></span>
+        </section>
+    </body>
+</html>    
