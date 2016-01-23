@@ -28,7 +28,7 @@ var slovak ={
     //mycalendar.html
     calendarTitle:"Môj program <strong>LaFiesta</strong>",
     //propagation.html
-    propagationTitle:"Propagácia koncertov <strong>' + value.venueName + '</strong>",
+    propagationTitle:"Propagácia koncertov <strong>" + Cookies.get('name') + "</strong>",
     legendDate:"DÁTUM",
     legendTime:"ČAS",
     legendPhoto:"OBRÁZOK",
@@ -37,6 +37,7 @@ var slovak ={
     legendEntry:"VSTUPNÉ",
     legendAudience:"PRÍDU",
     legendDelete:"VYMAZAŤ",
+    noConcertsResult:"Žiadne koncerty!",
     propagationText:"Propagovať koncerty jednoducho na facebook",
     propagationTextButton:"PROPAGOVAŤ",
     //manageaccount.html
@@ -63,7 +64,7 @@ var english = {
     //mycalendar.html
     calendarTitle:"My program <strong>LaFiesta</strong>",
     //propagation.html
-    propagationTitle:"Concerts propagation <strong>' + value.venueName + '</strong>",
+    propagationTitle:"Concerts propagation <strong>" + Cookies.get('name') + "</strong>",
     legendDate:"DATE",
     legendTime:"TIME",
     legendPhoto:"PHOTO",
@@ -72,6 +73,7 @@ var english = {
     legendEntry:"ENTRY",
     legendAudience:"COMING",
     legendDelete:"DELETE",
+    noConcertsResult:"No concerts result!",
     propagationText:"Promote concerts on facebook",
     propagationTextButton:"PROMOTE",
     //manageaccount.html
@@ -107,6 +109,7 @@ var czech = {
     legendEntry:"VSTUPNÉ",
     legendAudience:"PRÍDU",
     legendDelete:"VYMAZAŤ",
+    noConcertsResult:"Žádne koncerty nenalezeny!",
     propagationText:"Propagovať koncerty jednoducho na facebook",
     propagationTextButton:"PROPAGOVAŤ",
     //manageaccount.html
@@ -152,11 +155,9 @@ $(document).ready(function() {
 		}
 	}
     
-	setLanguage();
-
     var calendarLang  = language["calendarLang"];
     window.language = language;
-	setLanguage(language);
+	setLanguage();
 
     //COOKIE LOADER
 	if (Cookies.get('apiKey') === undefined) {
@@ -217,6 +218,7 @@ $(document).ready(function() {
                 $("#marketPlace").trigger( "click" );
             });
             $("#contentPanel").remove(".spinner");
+            setLanguage();
         });
     });
     
@@ -291,52 +293,52 @@ $(document).ready(function() {
         $("#contentPanel").empty();
         addspinner();
         $("#contentPanel").load("manageaccount.html", null, function(){
-$.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
-        
-        var clientToken;
-
-            $.ajax({
-                url: "php/generateClientToken.php",
-                success: function (ret) {
-                    $('#payment-form').empty();
-                    clientToken = ret;
-                    braintree.setup(clientToken, 'dropin',{
-                        container: "payment-form"
-                    });
-                }
-            });
-    
-    //TRANSACTION CHECKOUT
-    $('#checkout').submit(function(event) {
-    event.preventDefault();
-        $.ajax({
-          url: 'php/transactionCheckout.php',
-          dataType: 'json',
-          success: function(data) {
-            window.location = "response.html";
-          },
-          error: function(data){
-            window.location = "response.html";
-          }
-        });
-        event.preventDefault();
-    });
-    
-    //Braintree Manage Account
-    $("#unsubscribebutton").on('click', function(){
-        var subscription = Cookies.get('subscriptionId');
-        $.ajax({
-          url: 'php/cancelsubscription.php?subscription=' + subscription,
-          success: function(data) {
-            window.location = "response.html";
-          }
-        });
-    });
-});
+			$.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
+			        
+			        var clientToken;
+			
+			            $.ajax({
+			                url: "php/generateClientToken.php",
+			                success: function (ret) {
+			                    $('#payment-form').empty();
+			                    clientToken = ret;
+			                    braintree.setup(clientToken, 'dropin',{
+			                        container: "payment-form"
+			                    });
+			                }
+			            });
+			    
+			    //TRANSACTION CHECKOUT
+			    $('#checkout').submit(function(event) {
+			    event.preventDefault();
+			        $.ajax({
+			          url: 'php/transactionCheckout.php',
+			          dataType: 'json',
+			          success: function(data) {
+			            window.location = "response.html";
+			          },
+			          error: function(data){
+			            window.location = "response.html";
+			          }
+			        });
+			        event.preventDefault();
+			    });
+			    
+			    //Braintree Manage Account
+			    $("#unsubscribebutton").on('click', function(){
+			        var subscription = Cookies.get('subscriptionId');
+			        $.ajax({
+			          url: 'php/cancelsubscription.php?subscription=' + subscription,
+			          success: function(data) {
+			            window.location = "response.html";
+			          }
+			        });
+			    });
+			});
             setLanguage();
             $("#contentPanel").remove(".spinner");
-});
-});
+        });
+    });
     
     //* Mouse position tracker *//
 	$(document).mousemove(function(e){
@@ -398,10 +400,10 @@ function setLanguage(){
     $(".rightBanner_text").text(language["header2"]);
     $(".rightBanner_text").text(language["header2"]);
     //welcome.html
-    $("#explanationtext1").html(language["statistics"]);
-    $("#explanationtext2").html(language["mycalendar"]);
-    $("#explanationtext3").html(language["propagation"]);
-    $("#explanationtext4").html(language["settings"]);
+    $("#explanationtext1").append(language["statistics"]);
+    $("#explanationtext2").append(language["mycalendar"]);
+    $("#explanationtext3").append(language["propagation"]);
+    $("#explanationtext4").append(language["settings"]);
     //statistics.html
     $("#cityName").attr("placeholder", language["placeholderCity"]);
     $("#cityName").attr("placeholder", language["placeholderCity"]);
@@ -471,7 +473,7 @@ function loadAllConcert(month){
 	  		
 	  		var element = 
                 '<span class="resultElement">'+
-                    '<span class="noDataResult">No data result.</span>'+
+                    '<span class="noDataResult">' + language["noConcertsResult"] + '</span>'+
                 '</span>'+
                 '<span class="spacer"></span>';
 	  		
