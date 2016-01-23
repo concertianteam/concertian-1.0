@@ -830,7 +830,8 @@ input[name="submit"]{
 }
 #graph td{
 	position: relative;
-	min-width: 35px;
+	min-width: 36px;
+	max-width: 36px;
 	text-align: center;
 	padding: 0px 5px;
 }
@@ -873,6 +874,20 @@ input[name="submit"]{
     /* Standard */
     width: calc(100% - 50px);
 	height: 1px;
+	background-color: #dadfe7;
+}
+.timeLineVertic{
+	position: absolute;
+	width: 1px;
+	height: 100%;
+	display: block;
+}
+.timeLineLineVertic{
+	position: absolute;
+	top: 0px;
+	left: 18px;
+	height: 100%;
+	width: 1px;
 	background-color: #dadfe7;
 }
 .venuePointChart{

@@ -443,6 +443,7 @@ function loadAllConcert(month){
     $("#resultsList").empty();
     $("#concerts").empty();
 	$("#concertsDate").empty();
+	$("#lineContainer").empty();
 
 	$("#resultsList").append('<div class="spinner">' +
 				             	'<div class="dot1"></div>'+
@@ -682,7 +683,7 @@ function addElements(json){
 }
 
 function setChart(chartData){
-	var height = $("#concerts").innerHeight() - 75;
+	var height = $("#concerts").outerHeight() - 75;
 //	For 24 hour
 	var constant = height / 1440;
 //	For 10 hours
@@ -702,11 +703,14 @@ function setChart(chartData){
 	
 	for(var i = 0; i < chartData.length; i++){
 		var arrayForDay = chartData[i];
-		var element = '<td>';
+		var element = '<td>'+
+						'<span class="timeLineVertic" style="top: 10px">' +
+					   		'<span class="timeLineLineVertic"></span>' +
+					    '</span>';
 		for(var j = 0; j < arrayForDay.length; j++){
 			if((j + 1 < arrayForDay.length && arrayForDay[j][1] != arrayForDay[j+1][1]) || j + 1 == arrayForDay.length){
 //				if(arrayForDay[j][1].split(':')[0] > 13){
-					element = element + '<span class="venuePointChart" style="top:' + (height - getMinutes(arrayForDay[j][1]) * constant) + 'px; background-color: ' + (counter <= 5 ? color['yelow'] : (counter <= 12 ? color['blue'] : color['red'])) + ';">' + i + '</span>';
+					element = element + '<span class="venuePointChart" style="top:' + (height - (getMinutes(arrayForDay[j][1]) * constant) + 3) + 'px; background-color: ' + (counter <= 5 ? color['yelow'] : (counter <= 12 ? color['blue'] : color['red'])) + ';">' + i + '</span>';
 //				}
 				counter = 0;
 			}else{
@@ -717,8 +721,12 @@ function setChart(chartData){
 		arr = arrayForDay[0][0].split('-');
 		
 		// add missing days between previous and actual day
-		for(var j = parseInt(previousDay + 1); j < parseInt(arr[2]); j++){
-			$("#concerts").append('<td></td>');
+		for(var j = parseInt(previousDay) + 1; j < parseInt(arr[2]); j++){
+			$("#concerts").append('<td>'+
+								  	'<span class="timeLineVertic" style="top: 10px">' +
+							  	   		'<span class="timeLineLineVertic"></span>' +
+							   	    '</span>'+
+						   	      '</td>');
 			$("#concertsDate").append('<td>' + (j < 10 ? "0" + j : j) + ' ' + arr[1] + "<br>" + arr[0] + '</td>');
 		}
 		
@@ -741,7 +749,11 @@ function setChart(chartData){
 	
 	// add days to end of month
 	for(var i = arrInt[2]; i <= monthDays; i++){
-		$("#concerts").append('<td></td>');
+		$("#concerts").append('<td>'+
+							  	'<span class="timeLineVertic" style="top: 10px">' +
+						  	   		'<span class="timeLineLineVertic"></span>' +
+						   	    '</span>'+
+					   	      '</td>');
 		$("#concertsDate").append('<td>' + (i < 10 ? "0" + i : i) + ' ' + (arrInt[1] < 10 ? "0" + arrInt[1] : arrInt[1] ) + "<br>" + arrInt[0] + '</td>');
 	}
 	
