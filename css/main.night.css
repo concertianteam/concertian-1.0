@@ -600,6 +600,9 @@ div #contentPanel{
 #monthSelector ul li:hover{
     border-bottom: 2px solid #ffbb33;
 }
+.selectedMonth{
+	border-bottom: 2px solid #ffbb33;
+}
 #searchPanel{
     display: inline-block;
     width: 310px;
@@ -687,6 +690,11 @@ input[name="submit"]{
     width: 100%;
     height: 80px;
     box-sizing: border-box;
+}
+.noDataResult{
+	text-align: center;
+	display: block;
+	padding-top: 35px;	
 }
 .firstPart{
     display: inline-block;

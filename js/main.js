@@ -1,3 +1,123 @@
+var page = 0;
+var monthNumber = 01;
+var chartData = new Array();
+var dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+var results = [];
+var idVenue = Cookies.get('idVenue');
+var apiKey = Cookies.get('apiKey');
+var venueName = Cookies.get('name');
+var language = {};
+var slovak = {};
+var english = {};
+var czech = {};
+var mouseX,mouseY,windowWidth,windowHeight;
+var popupLeft,popupTop;
+var slovak ={
+    calendarLang: 'sk',
+    //app.html
+    day:"DEŇ",
+    night:"NOC",
+    header1:"Nová úroveň organizovania koncertov",
+    header2:"Z pohodlia vášho pc alebo tabletu",
+    //welcome.html
+    statistics:"Majte pod kontrolou svoje okolie<br><strong>Jednoducho a ľahko analyzujte najlepší termín pre koncert, alebo si nechajte poradiť naším concertian, ktorý Vám vždy poradí čo najlepší dátum a čas na koncert.</strong>",
+    mycalendar:"Zahoďte svoju excelovskú tabuľku<br><strong>Vytvárajte koncerty, upravujte a presúvajte. Poznámky a potrebné informácie sa ukladajú pri vytváraní koncertu a ak chcete podujatie zverejniť, jednoducho zmeňte jeho status.</strong>",
+    propagation:"Propagujte vytvorené koncerty<br><strong>1. Majte v momente svoj koncertný program na svojom fan page<br>2. Sledujte odozvu prostredníctvom nášho počítadla návštevnosti<br>3. Nenechajte veci na náhodu a reagujte na dopyt!</strong></span>",
+    settings:"Aby toho nebolo málo<br><strong>Tu môžete spravovať svoj profil a uskutočniť platbu za produkt. Pozor - concertian LITE je na prvých</strong> 15 dní zadarmo.",
+    placeholderCity:"city",
+    //mycalendar.html
+    calendarTitle:"Môj program <strong>LaFiesta</strong>",
+    //propagation.html
+    propagationTitle:"Propagácia koncertov <strong>' + value.venueName + '</strong>",
+    legendDate:"DÁTUM",
+    legendTime:"ČAS",
+    legendPhoto:"OBRÁZOK",
+    legendName:"NÁZOV",
+    legendDetail:"POPIS",
+    legendEntry:"VSTUPNÉ",
+    legendAudience:"PRÍDU",
+    legendDelete:"VYMAZAŤ",
+    propagationText:"Propagovať koncerty jednoducho na facebook",
+    propagationTextButton:"PROPAGOVAŤ",
+    //manageaccount.html
+    text2:"Meno",
+    text3:"Priezvisko",
+    text4:"Obchodné meno",
+    text5:"Zaplatiť 19€",
+    unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
+    unsubscribeTextButton:"ZRUŠIŤ ODBER"
+};
+var english = {
+    calendarLang: 'en',
+        //app.html
+    day:"DAY",
+    night:"NIGHT",
+    header1:"Whole new level of creating concerts",
+    header2:"With comfort of your pc or tablet",
+    //welcome.html
+    statistics:"All concerts in your neighborhood<br><strong>By our statistics we provide ease and simple way how to choose the best date for concert. What more - the system does it for you.</strong>",
+    mycalendar:"Forget about your excel sheet<br><strong>Create, edit and delete concerts within your personal calendar with all data you need, replacing your current notebook.</strong>",
+    propagation:"Promote concert you have created<br><strong>1. Send concert program to your fan page by one click<br>2. Analyze the response by our traffic counter<br>3. React on your feedback for best outcome!</strong></span>",
+    settings:"Manage your account here<br><strong>Contains payment gateway and subscription management settings.</strong>",
+    placeholderCity:"city",
+    //mycalendar.html
+    calendarTitle:"My program <strong>LaFiesta</strong>",
+    //propagation.html
+    propagationTitle:"Concerts propagation <strong>' + value.venueName + '</strong>",
+    legendDate:"DATE",
+    legendTime:"TIME",
+    legendPhoto:"PHOTO",
+    legendName:"NAME",
+    legendDetail:"DETAIL",
+    legendEntry:"ENTRY",
+    legendAudience:"COMING",
+    legendDelete:"DELETE",
+    propagationText:"Promote concerts on facebook",
+    propagationTextButton:"PROMOTE",
+    //manageaccount.html
+    text2:"Name",
+    text3:"Surname",
+    text4:"Company name",
+    text5:"Pay 19€",
+    unsubscribeText:"By clicking unsubscribe, you are not going to be able to use concertian LITE anymore.Therefore you should consider your decision and its impact on your club visit rate. You will be able to access your account until the end of your current month subscription.",
+    unsubscribeTextButton:"UNSUBSCRIBE"
+};
+var czech = {
+	calendarLang: 'cs',
+    //app.html
+    day:"DEŇ",
+    night:"NOC",
+    header1:"Nová úroveň organizovania koncertov",
+    header2:"Z pohodlia vášho pc alebo tabletu",
+    //welcome.html
+    statistics:"Majte pod kontrolou svoje okolie<br><strong>Jednoducho a ľahko analyzujte najlepší termín pre koncert, alebo si nechajte poradiť naším concertian, ktorý Vám vždy poradí čo najlepší dátum a čas na koncert.</strong>",
+    mycalendar:"Zahoďte svoju excelovskú tabuľku<br><strong>Vytvárajte koncerty, upravujte a presúvajte. Poznámky a potrebné informácie sa ukladajú pri vytváraní koncertu a ak chcete podujatie zverejniť, jednoducho zmeňte jeho status.</strong>",
+    propagation:"Propagujte vytvorené koncerty<br><strong>1. Majte v momente svoj koncertný program na svojom fan page<br>2. Sledujte odozvu prostredníctvom nášho počítadla návštevnosti<br>3. Nenechajte veci na náhodu a reagujte na dopyt!</strong></span>",
+    settings:"Predaj lístkov online<br><strong>Zadajte množstvo a jednotkovú cenu lístku a my sa postaráme o zvyšok a to</strong> bez nároku na províziu.",
+    placeholderCity:"city",
+    //mycalendar.html
+    calendarTitle:"Môj program <strong></strong>",
+    //propagation.html
+    propagationTitle:"Propagácia koncertov <strong></strong>",
+    legendDate:"DÁTUM",
+    legendTime:"ČAS",
+    legendPhoto:"OBRÁZOK",
+    legendName:"NÁZOV",
+    legendDetail:"POPIS",
+    legendEntry:"VSTUPNÉ",
+    legendAudience:"PRÍDU",
+    legendDelete:"VYMAZAŤ",
+    propagationText:"Propagovať koncerty jednoducho na facebook",
+    propagationTextButton:"PROPAGOVAŤ",
+    //manageaccount.html
+    text2:"Meno",
+    text3:"Priezvisko",
+    text4:"Obchodné meno",
+    text5:"Zaplatiť 19€",
+    unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
+    unsubscribeTextButton:"ZRUŠIŤ ODBER"
+};
+
 $(document).ready(function() {
 	$(window).resize(function() {
 	    if (timeout === false){
@@ -7,7 +127,6 @@ $(document).ready(function() {
 	        setNormal = false;
 	        timeout = false;
 	        disabled = true;
-	        console.log ($( window ).width());
 	        repaindTextSecond();
 	    }else if ( $(window).width() > limitWidth){
 	        disabled = false;
@@ -16,11 +135,7 @@ $(document).ready(function() {
 	    }
 	});
 	
-
-    initLanguage();
-	setLanguage();
-
-    //Language handler
+	//Language handler
     if(Cookies.get('language') == null){
 		language = slovak;
 	}else{
@@ -36,6 +151,8 @@ $(document).ready(function() {
 				break;
 		}
 	}
+    
+	setLanguage();
 
     var calendarLang  = language["calendarLang"];
     window.language = language;
@@ -113,7 +230,23 @@ $(document).ready(function() {
             $("#contentPanel").empty();
             addspinner();
             $( "#contentPanel" ).load("statistics.html", null, function() {
-            loadAllConcert(01);
+            	var monthName = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            	$("#monthSelectorList").empty();
+	          
+            	var date = new Date();
+            	var month = date.getMonth() + 1;
+            	
+            	for(var i = month; i <= monthName.length; i++){
+            		$("#monthSelectorList").append('<li><a onclick="loadAllConcert(' + (i < 10 ? '0' + i : i) + ')" >' + monthName[i-1] + '</a></li>');
+            	}
+            	
+            	if(month > 1){
+            		for(var i = 1; i < month; i++){
+                		$("#monthSelectorList").append('<li><a onclick="loadAllConcert(' + (i < 10 ? '0' + i : i) + ')">' + monthName[i-1] + '</a></li>');
+                	}
+            	}
+	        	
+            	loadAllConcert(01);
             });
             $("#contentPanel").remove(".spinner");
         });
@@ -254,213 +387,6 @@ $.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
 		FB.getLoginStatus(updateStatusCallback);
 	  });
 });
-var page = 0;
-var monthNumber = 01;
-var chartData = new Array();
-var results = [];
-var idVenue = Cookies.get('idVenue');
-var apiKey = Cookies.get('apiKey');
-var venueName = Cookies.get('name');
-var language = {};
-var slovak = {};
-var english = {};
-var czech = {};
-var results = [];
-var mouseX,mouseY,windowWidth,windowHeight;
-var popupLeft,popupTop;
-
-function initLanguage(){
-var slovak ={
-    calendarLang: 'sk',
-    //app.html
-    day:"DEŇ",
-    night:"NOC",
-    header1:"Nová úroveň organizovania koncertov",
-    header2:"Z pohodlia vášho pc alebo tabletu",
-    //welcome.html
-    statistics:"Majte pod kontrolou svoje okolie<br><strong>Jednoducho a ľahko analyzujte najlepší termín pre koncert, alebo si nechajte poradiť naším concertian, ktorý Vám vždy poradí čo najlepší dátum a čas na koncert.</strong>",
-    mycalendar:"Zahoďte svoju excelovskú tabuľku<br><strong>Vytvárajte koncerty, upravujte a presúvajte. Poznámky a potrebné informácie sa ukladajú pri vytváraní koncertu a ak chcete podujatie zverejniť, jednoducho zmeňte jeho status.</strong>",
-    propagation:"Propagujte vytvorené koncerty<br><strong>1. Majte v momente svoj koncertný program na svojom fan page<br>2. Sledujte odozvu prostredníctvom nášho počítadla návštevnosti<br>3. Nenechajte veci na náhodu a reagujte na dopyt!</strong></span>",
-    settings:"Aby toho nebolo málo<br><strong>Tu môžete spravovať svoj profil a uskutočniť platbu za produkt. Pozor - concertian LITE je na prvých</strong> 15 dní zadarmo.",
-    placeholderCity:"city",
-    //mycalendar.html
-    calendarTitle:"Môj program <strong>LaFiesta</strong>",
-    //propagation.html
-    propagationTitle:"Propagácia koncertov <strong>' + value.venueName + '</strong>",
-    legendDate:"DÁTUM",
-    legendTime:"ČAS",
-    legendPhoto:"OBRÁZOK",
-    legendName:"NÁZOV",
-    legendDetail:"POPIS",
-    legendEntry:"VSTUPNÉ",
-    legendAudience:"PRÍDU",
-    legendDelete:"VYMAZAŤ",
-    propagationText:"Propagovať koncerty jednoducho na facebook",
-    propagationTextButton:"PROPAGOVAŤ",
-    //manageaccount.html
-    text2:"Meno",
-    text3:"Priezvisko",
-    text4:"Obchodné meno",
-    text5:"Zaplatiť 19€",
-    unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
-    unsubscribeTextButton:"ZRUŠIŤ ODBER"
-};
-var english = {
-    calendarLang: 'en',
-        //app.html
-    day:"DAY",
-    night:"NIGHT",
-    header1:"Whole new level of creating concerts",
-    header2:"With comfort of your pc or tablet",
-    //welcome.html
-    statistics:"All concerts in your neighborhood<br><strong>By our statistics we provide ease and simple way how to choose the best date for concert. What more - the system does it for you.</strong>",
-    mycalendar:"Forget about your excel sheet<br><strong>Create, edit and delete concerts within your personal calendar with all data you need, replacing your current notebook.</strong>",
-    propagation:"Promote concert you have created<br><strong>1. Send concert program to your fan page by one click<br>2. Analyze the response by our traffic counter<br>3. React on your feedback for best outcome!</strong></span>",
-    settings:"Manage your account here<br><strong>Contains payment gateway and subscription management settings.</strong>",
-    placeholderCity:"city",
-    //mycalendar.html
-    calendarTitle:"My program <strong>LaFiesta</strong>",
-    //propagation.html
-    propagationTitle:"Concerts propagation <strong>' + value.venueName + '</strong>",
-    legendDate:"DATE",
-    legendTime:"TIME",
-    legendPhoto:"PHOTO",
-    legendName:"NAME",
-    legendDetail:"DETAIL",
-    legendEntry:"ENTRY",
-    legendAudience:"COMING",
-    legendDelete:"DELETE",
-    propagationText:"Promote concerts on facebook",
-    propagationTextButton:"PROMOTE",
-    //manageaccount.html
-    text2:"Name",
-    text3:"Surname",
-    text4:"Company name",
-    text5:"Pay 19€",
-    unsubscribeText:"By clicking unsubscribe, you are not going to be able to use concertian LITE anymore.Therefore you should consider your decision and its impact on your club visit rate. You will be able to access your account until the end of your current month subscription.",
-    unsubscribeTextButton:"UNSUBSCRIBE"
-};
-var czech = {
-    calendarLang: 'cs',
-        //app.html
-        day:"DEŇ",
-        night:"NOC",
-        header1:"Nová úroveň organizovania koncertov",
-        header2:"Z pohodlia vášho pc alebo tabletu",
-        //welcome.html
-        statistics:"Majte pod kontrolou svoje okolie<br><strong>Jednoducho a ľahko analyzujte najlepší termín pre koncert, alebo si nechajte poradiť naším concertian, ktorý Vám vždy poradí čo najlepší dátum a čas na koncert.</strong>",
-        mycalendar:"Zahoďte svoju excelovskú tabuľku<br><strong>Vytvárajte koncerty, upravujte a presúvajte. Poznámky a potrebné informácie sa ukladajú pri vytváraní koncertu a ak chcete podujatie zverejniť, jednoducho zmeňte jeho status.</strong>",
-        propagation:"Propagujte vytvorené koncerty<br><strong>1. Majte v momente svoj koncertný program na svojom fan page<br>2. Sledujte odozvu prostredníctvom nášho počítadla návštevnosti<br>3. Nenechajte veci na náhodu a reagujte na dopyt!</strong></span>",
-        settings:"Predaj lístkov online<br><strong>Zadajte množstvo a jednotkovú cenu lístku a my sa postaráme o zvyšok a to</strong> bez nároku na províziu.",
-        placeholderCity:"city",
-        //mycalendar.html
-        calendarTitle:"Môj program <strong></strong>",
-        //propagation.html
-        propagationTitle:"Propagácia koncertov <strong></strong>",
-        legendDate:"DÁTUM",
-        legendTime:"ČAS",
-        legendPhoto:"OBRÁZOK",
-        legendName:"NÁZOV",
-        legendDetail:"POPIS",
-        legendEntry:"VSTUPNÉ",
-        legendAudience:"PRÍDU",
-        legendDelete:"VYMAZAŤ",
-        propagationText:"Propagovať koncerty jednoducho na facebook",
-        propagationTextButton:"PROPAGOVAŤ",
-        //manageaccount.html
-        text2:"Meno",
-        text3:"Priezvisko",
-        text4:"Obchodné meno",
-        text5:"Zaplatiť 19€",
-        unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
-        unsubscribeTextButton:"ZRUŠIŤ ODBER"
-    };
-        english = {
-            //app.html
-        day:"DAY",
-        night:"NIGHT",
-        header1:"Whole new level of creating concerts",
-        header2:"With comfort of your pc or tablet",
-        //welcome.html
-        statistics:"All concerts in your neighborhood<br><strong>By our statistics we provide ease and simple way how to choose the best date for concert. What more - the system does it for you.</strong>",
-        mycalendar:"Forget about your excel sheet<br><strong>Create, edit and delete concerts within your personal calendar with all data you need, replacing your current notebook.</strong>",
-        propagation:"Promote concert you have created<br><strong>1. Send concert program to your fan page by one click<br>2. Analyze the response by our traffic counter<br>3. React on your feedback for best outcome!</strong></span>",
-        settings:"Get yout tickets sold via internet<br><strong>Just enter the number of tickets to be sell and unit price for ticket. We will do the rest without any commision</strong>",
-        placeholderCity:"city",
-        //mycalendar.html
-        calendarTitle:"My program <strong></strong>",
-        //propagation.html
-        propagationTitle:"Concerts propagation <strong></strong>",
-        legendDate:"DATE",
-        legendTime:"TIME",
-        legendPhoto:"PHOTO",
-        legendName:"NAME",
-        legendDetail:"DETAIL",
-        legendEntry:"ENTRY",
-        legendAudience:"COMING",
-        legendDelete:"DELETE",
-        propagationText:"Promote concerts on facebook",
-        propagationTextButton:"PROMOTE",
-        //manageaccount.html
-        text2:"Name",
-        text3:"Surname",
-        text4:"Company name",
-        text5:"Pay 19€",
-        unsubscribeText:"By clicking unsubscribe, you are not going to be able to use concertian LITE anymore.Therefore you should consider your decision and its impact on your club visit rate. You will be able to access your account until the end of your current month subscription.",
-        unsubscribeTextButton:"UNSUBSCRIBE"
-    };
-        czech = {
-            //app.html
-        day:"DEN",
-        night:"NOC",
-        header1:"Zcela nová úroveň organizování koncertů",
-        header2:"Z pohodlí vašeho pc nebo tabletu",
-        //welcome.html
-        statistics:"Mějte pod kontrolou své okolí<br><strong>Jednoduše a snadno analyzujte nejlepší termín pro koncert, nebo si nechte poradit naším concertian, který Vám vždy poradí co nejlepší datum a čas na koncert.</strong>",
-        mycalendar:"Zahoďte svou excelovskou tabulku<br><strong>Vytvářejte koncerty, upravujte a vymažte. Poznámky a potřebné informace se ukládají při vytváření koncertu a pokud chcete událost zveřejnit, prostě změňte její status.</strong>",
-        propagation:"Propagujte vytvořené koncerty<br><strong>1. Mějte v momentě svůj koncertní program na svém fan page<br>2. Sledujte odezvu prostřednictvím našeho počítadla návštěvnosti<br>3. Nenechte věci náhodě a reagujte na poptávku!</strong></span>",
-        settings:"Prodej lístků online<br><strong>Zadejte množství a jednotkovou cenu lístku a my se postaráme o zbytek a to </ strong> bez nároku naprovíziu.",
-        placeholderCity:"město",
-        //mycalendar.html
-        calendarTitle:"Můj program <strong></strong>",
-        //propagation.html
-        propagationTitle:"Propagace koncertů <strong></strong>",
-        legendDate:"DATUM",
-        legendTime:"ČAS",
-        legendPhoto:"OBRÁZEK",
-        legendName:"NÁZEV",
-        legendDetail:"DETAIL",
-        legendEntry:"VSTUPNÍ",
-        legendAudience:"PŘIJDOU",
-        legendDelete:"SMAZAT",
-        propagationText:"Propagovat koncerty jednoduše na facebook",
-        propagationTextButton:"ZVEŘEJNIT",
-        //manageaccount.html
-        text2:"Jméno",
-        text3:"Příjmení",
-        text4:"Obchodní jméno",
-        text5:"Zaplatiť 19€",
-        unsubscribeText:"Kliknutím na přerušit odběr, již nebude možné více využívat balíček concertian LITE. Přerušit odběr je možné v jakémkoli okamžiku bez ohledu na to jestli jste s námi měsíc, dva nebo 6 měsíců. Samozřejmě je třeba zvážit dopad na pokles návštěvnosti ve vašem klubu, jelikož po zrušení odběru nebude moci následující měsíc již přistupovat do aplikace.",
-        unsubscribeTextButton:"ZRUŠIT ODBĚR"
-    };
-    
-    //Language handler
-    if(Cookies.get('language') == null){
-		language = slovak;
-	}else{
-		switch(Cookies.get('language')){
-			case "slovak":
-				language = slovak;
-				break;
-			case "english":
-				language = english;
-				break;
-			case "czech":
-				language = czech;
-				break;
-		}
-	}
-}
 
 // Setting language
 // SET TEXT BUILDER
@@ -510,8 +436,22 @@ function addspinner(){
                              '</div>');
 }
 // Load all concert for month ajax call
-function loadAllConcert(monthNumber){
+function loadAllConcert(month){
+	monthNumber = month;
     $("#resultsList").empty();
+    $("#concerts").empty();
+	$("#concertsDate").empty();
+
+	$("#resultsList").append('<div class="spinner">' +
+				             	'<div class="dot1"></div>'+
+					            '<div class="dot2"></div>'+
+				       		 '</div>');
+	
+	setChart(new Array());
+	
+	$("#monthSelectorList").children(".selectedMonth").removeClass();
+	$("#monthSelectorList").find("li:nth-child(" + monthNumber + ")").addClass("selectedMonth");
+	
     chartData = new Array();
     
 	$.ajax({ 'url' : 'https://api.concertian.com/agents/events/month/' + monthNumber,
@@ -527,6 +467,17 @@ function loadAllConcert(monthNumber){
 	  	},
 	  	'error': function(error){
 	  		console.log('Error. ' + error);
+	  		$("#resultsList").empty();
+	  		
+	  		var element = 
+                '<span class="resultElement">'+
+                    '<span class="noDataResult">No data result.</span>'+
+                '</span>'+
+                '<span class="spacer"></span>';
+	  		
+	  		$("#resultsList").append(element);
+	  		
+	  		
 	  	}
     });
 }
@@ -675,63 +626,8 @@ function addElements(json){
 	$("#concertsDate").empty();
 	$("#lineContainer").empty();
 	
-	var height = $("#concerts").innerHeight() - 75;
-//	For 24 hour
-	var constant = height / 1440;
-//	For 10 hours
-//	var constant = height / 600;
-	var counter = 0;
-	/*
-	 *  <= 5  - yelow
-	 *  <= 12 - blue
-	 *  > 12 - red
-	 */
-	var color = {'yelow' : '#ffbb33',
-        		  'blue'  : '#5F7395',
-        		  'red'  : '#FF4747'};
+	setChart(chartData);
 	
-	for(var i = 0; i < chartData.length; i++){
-		var arrayForDay = chartData[i];
-		var element = '<td>';
-		for(var j = 0; j < arrayForDay.length; j++){
-			if((j + 1 < arrayForDay.length && arrayForDay[j][1] != arrayForDay[j+1][1]) || j + 1 == arrayForDay.length){
-//				if(arrayForDay[j][1].split(':')[0] > 13){
-					element = element + '<span class="venuePointChart" style="top:' + (height - getMinutes(arrayForDay[j][1]) * constant) + 'px; background-color: ' + (counter <= 5 ? color['yelow'] : (counter <= 12 ? color['blue'] : color['red'])) + ';">' + i + '</span>';
-//				}
-				counter = 0;
-			}else{
-				counter++;
-			}
-		}
-		$("#concerts").append(element + '</td>');
-		var arr = arrayForDay[0][0].split('-');
-		$("#concertsDate").append('<td>' + arr[2] + ' ' + arr[1] + "<br>" + arr[0] + '</td>');
-	}
-	
-//	22 = 1320
-//	20 = 1200
-	
-// 22 = 480
-// 20 = 360
-	
-	for(var i = 1; i <= 24; i++){
-		$("#lineContainer").append('<span class="timeLine" style="top: ' + (height - (60 * i) * constant) + 'px;">' +
-							  	   		'<span class="timeLineText">' + (i < 10 ? '0' + i : i) + ':00</span>' +
-							  	   		'<span class="timeLineLine"></span>' +
-							   	   '</span>');
-	}
-	
-function getMinutes(time){
-	var timeSplit = time.split(":");
-	var hour = parseInt(timeSplit[0]);
-	var minute = parseInt(timeSplit[1]);
-	var result = (hour * 60) + minute;
-	
-//	console.log(time + " => " + result);
-	
-	// ignore 14 hours  840
-	return result == 0 ? 1440 : result;
-}
 	//* ----- On click concerts showcase ----- *//
 	$(".venuePointChart").on('mouseenter', function(){
 		$("#custom_program_menu").empty();
@@ -783,7 +679,96 @@ function getMinutes(time){
 	page++;
 }
 
+function setChart(chartData){
+	var height = $("#concerts").innerHeight() - 75;
+//	For 24 hour
+	var constant = height / 1440;
+//	For 10 hours
+//	var constant = height / 600;
+	var counter = 0;
+	/*
+	 *  <= 5  - yelow
+	 *  <= 12 - blue
+	 *  > 12 - red
+	 */
+	var color = {'yelow' : '#ffbb33',
+        		  'blue'  : '#5F7395',
+        		  'red'  : '#FF4747'};
+	
+	var arr = [2016, monthNumber, 0];
+	var previousDay = 0;
+	
+	for(var i = 0; i < chartData.length; i++){
+		var arrayForDay = chartData[i];
+		var element = '<td>';
+		for(var j = 0; j < arrayForDay.length; j++){
+			if((j + 1 < arrayForDay.length && arrayForDay[j][1] != arrayForDay[j+1][1]) || j + 1 == arrayForDay.length){
+//				if(arrayForDay[j][1].split(':')[0] > 13){
+					element = element + '<span class="venuePointChart" style="top:' + (height - getMinutes(arrayForDay[j][1]) * constant) + 'px; background-color: ' + (counter <= 5 ? color['yelow'] : (counter <= 12 ? color['blue'] : color['red'])) + ';">' + i + '</span>';
+//				}
+				counter = 0;
+			}else{
+				counter++;
+			}
+		}
+		
+		arr = arrayForDay[0][0].split('-');
+		
+		// add missing days between previous and actual day
+		for(var j = parseInt(previousDay + 1); j < parseInt(arr[2]); j++){
+			$("#concerts").append('<td></td>');
+			$("#concertsDate").append('<td>' + (j < 10 ? "0" + j : j) + ' ' + arr[1] + "<br>" + arr[0] + '</td>');
+		}
+		
+		$("#concerts").append(element + '</td>');
+		$("#concertsDate").append('<td>' + arr[2] + ' ' + arr[1] + "<br>" + arr[0] + '</td>');
+		
+		previousDay = arr[2];
+	}
+	
+	// change sting to integer
+	var arrInt = [parseInt(arr[0]), parseInt(arr[1]), parseInt(arr[2]) + 1];
+	var monthDays;
+	
+	// check if is gap year
+	if(arrInt[1] == 2 && ((arrInt[0] % 4 == 0) && (arrInt[0] % 100 != 0)) || (arrInt[0] % 400 == 0)){
+		monthDays = parseInt(dayInMonth[monthNumber-1]) + 1;
+	}else{
+		monthDays = parseInt(dayInMonth[monthNumber-1]);
+	}
+	
+	// add days to end of month
+	for(var i = arrInt[2]; i <= monthDays; i++){
+		$("#concerts").append('<td></td>');
+		$("#concertsDate").append('<td>' + (i < 10 ? "0" + i : i) + ' ' + (arrInt[1] < 10 ? "0" + arrInt[1] : arrInt[1] ) + "<br>" + arrInt[0] + '</td>');
+	}
+	
+	
+//	22 = 1320
+//	20 = 1200
+	
+// 22 = 480
+// 20 = 360
+	
+	for(var i = 1; i <= 24; i++){
+		$("#lineContainer").append('<span class="timeLine" style="top: ' + (height - (60 * i) * constant) + 'px;">' +
+							  	   		'<span class="timeLineText">' + (i < 10 ? '0' + i : i) + ':00</span>' +
+							  	   		'<span class="timeLineLine"></span>' +
+							   	   '</span>');
+	}
+}
 
+function getMinutes(time){
+	var timeSplit = time.split(":");
+	var hour = parseInt(timeSplit[0]);
+	var minute = parseInt(timeSplit[1]);
+	var result = (hour * 60) + minute;
+	
+//	console.log(time + " => " + result);
+	
+	// ignore 14 hours  840
+	return result == 0 ? 1440 : result;
+}
 
 //Load concerts for manager
 function addPropagationElements(json){
