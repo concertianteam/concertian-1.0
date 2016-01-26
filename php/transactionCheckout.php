@@ -1,7 +1,6 @@
 <?php
 include('../brainTreePhp/lib/Braintree.php');
 $nonceFromTheClient = $_POST['payment_method_nonce'];
-echo "<script type='text/javascript'>alert('$nonceFromTheClient');</script>";
 Braintree_Configuration::environment('sandbox');
 Braintree_Configuration::merchantId('zn8d4c74dbnp5ntw');
 Braintree_Configuration::publicKey('ttwrprnsj83thjjz');

@@ -1,19 +1,33 @@
 $(document).ready(function() {
+    //ScrolBar
+    $(".outer").perfectScrollbar();    
+    $("#citySelect").perfectScrollbar({
+        suppressScrollY : true,
+    });    
+    
     //Setting language
     if(Cookies.get('language') == null){
 		language = slovak;
+        citySource = citySK;
+        setSelector(citySource);
 	}else{
 		switch(Cookies.get('language')){
 			case "slovak":
 				language = slovak;
+                citySource = citySK;
+                setSelector(citySource);
 				$("#language_menu").text('SK');
 				break;
 			case "english":
 				language = english;
+                citySource = cityEN;
+                setSelector(citySource);
 				$("#language_menu").text('EN');
 				break;
 			case "czech":
 				language = czech;
+                citySource = cityCZ;
+                setSelector(citySource);
 				$("#language_menu").text('CZ');
 				break;
 		}
@@ -32,18 +46,24 @@ $(document).ready(function() {
     //SET COOKIE FOR LANGUAGE
     $("#en").on('click', function(){
 		language = english;
+        citySource = cityEN;
+        setSelector(citySource);
 		$("#language_menu").text('EN');
 		setLanguage();
         Cookies.set('language', 'english', { expires: 100 });
     });
     $("#sk").on('click', function(){
 		language = slovak;
+        citySource = citySK;
+        setSelector(citySource);
 		$("#language_menu").text('SK');
 		setLanguage();
         Cookies.set('language', 'slovak', { expires: 100 });
     });
     $("#cz").on('click', function(){
 		language = czech;
+        citySource = cityCZ;
+        setSelector(citySource);
 		$("#language_menu").text('CZ');
 		setLanguage();
         Cookies.set('language', 'czech', { expires: 100 });
@@ -52,30 +72,6 @@ $(document).ready(function() {
     // Default load
     loadAllConcert();
     selectLoad = all;
-    
-    /*$(function () {
-    //construct an unordered list of presedents
-    var cityItems = [];
-    //Fill citySelect element
-    $.each(citySK, function(){
-        cityItems.push('<li>' + citySK.city + '</i>');
-    });
-    //add all <li> items to a <ul> element
-      $("<ul />", {
-        "id": "cityList",
-        "class": "list",
-        html: items.join("")
-      }).appendTo("#citySelect");
-    });*/
-    
-    // Load by city
-    $("#citySelect li").on('click', function(){
-        city = $(this).text();
-        selectLoad = byCity;
-        emptyContainerAddSpinner();
-        removeAllMarkers();
-        loadConcertByCity(city);
-    });
     
     // FORM after enter press don't reload page
 	$('#form').attr('action', 'javascript:void(0);');
@@ -92,6 +88,7 @@ $(document).ready(function() {
                     var city = $("#search_input").val();
                     loadConcertByCity(city);
                 }else if(selectLoad == byClub){
+                    var selectedClubId = $("#clubId").val();
                     loadConcertByClub(selectedClubId);
                 }
             }
@@ -114,7 +111,6 @@ $(document).ready(function() {
         $("#search_input").attr("placeholder", language["searchplaceholder1"]);
         selectLoad = byCity;
     });
-    $(".byClub").trigger('click');
     
     var autocomplete = $("#search_input").autocomplete({
         minLength: 2,
@@ -239,7 +235,7 @@ $(document).ready(function() {
   	return t;
 	}
 	(document, "script", "twitter-wjs"));
-    
+    console.log(selectLoad);
     
 });
                   
@@ -251,14 +247,33 @@ var markers = [];
 var results = [];
 var mouseX,mouseY,windowWidth,windowHeight;
 var popupLeft,popupTop;
+var citySource;
 var citySK = [
-    {"city":"Bratislava"},
-    {"city":"Nitra"},
-    {"city":"Banská Bystrica"},
-    {"city":"Martyn"},
-    {"city":"Žilina"},
-    {"city":"Košice"},
-    {"city":"Prešov"}
+    "Bratislava",
+    "Nitra",
+    "Banská Bystrica",
+    "Martyn",
+    "Žilina",
+    "Košice",
+    "Prešov"
+];
+var cityEN = [
+    "Bratislava",
+    "Praha",
+    "Brno",
+    "Košice",
+    "Prešov",
+    "Ostrava",
+    "Plzeň",
+];
+var cityCZ = [
+    "Praha",
+    "Brno",
+    "Ostrava",
+    "Plzeň",
+    "Liberec",
+    "Olomouc",
+    "Ústí nad Labem"
 ];
 var language;
 var slovak = {
@@ -276,6 +291,7 @@ var slovak = {
     priceLegend:"Jednotková cena",
     submitForm:"KÚPIŤ VSTUPENKU",
     submitPayment:"Zaplatiť '+price+'€",
+    noResult:"Žiadne výsledky hľadania",
 };
 var english = {
     byclub:"CLUB",
@@ -292,6 +308,7 @@ var english = {
     priceLegend:"Unit price",
     submitForm:"BUY TICKETS",
     submitPayment:"PAY '+price+'€",
+    noResult:"No resulsts",
 };
 var czech = {
     byclub:"KLUB",
@@ -308,6 +325,7 @@ var czech = {
     priceLegend:"Jednotková cena",
     submitForm:"KOUPIT VSTUPENKU",
     submitPayment:"Zaplatit '+price+'€",
+    noResult:"Žádné výsledky hledání",
 };
 
 // SET TEXT BUILDER
@@ -316,7 +334,21 @@ function setLanguage(){
     $(".byCity").text(language["bycity"]);
     $("#search_input").attr("placeholder", language["searchplaceholder2"]);
 }
-
+//Fill citySelect element
+function setSelector(citySource){
+    $("#citySelectList").empty();
+    $.each(citySource, function(key, city){
+        $("#citySelectList").append('<li>' + city + '</li>');
+            // Load by city
+            $("#citySelectList li").on('click', function(){
+                city = $(this).text();
+                selectLoad = byCity;
+                emptyContainerAddSpinner();
+                removeAllMarkers();
+                loadConcertByCity(city);
+            });
+    });
+}
 // Empty container before load
 function emptyContainerAddSpinner(){
         page = 0;
@@ -337,7 +369,7 @@ function removeAllMarkers(){
 // The resource does not exists
 function noResults(){
     $(".outer").html('<span id="response"></span>');
-    $("#response").text("Žiadne výsledky hľadania");
+    $("#response").text(language["noResult"]);
 }
 
 // Load all concert by URL
@@ -650,7 +682,7 @@ function addElements(json){
     });
     
     //By tickets handler
-    $("li #tickets").on("click", function(){
+    $(".buttonsElement").on("click", function(){
         var value = results[$(this).find(".lenght").text()];
         var eventID = value.id;
         var price = value.entry;
