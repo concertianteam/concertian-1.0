@@ -1,61 +1,82 @@
 <form id="eventEditForm" onsubmit="return false;">
+        <span class="actionButtons">
+        <button id="saveEvent"><span class="saveEventicon"></span></button>
+        <button id="cancelEvent" type="reset"><span class="cancelEventicon"></span></button>
+        <button id="deleteEvent" type="button">
+            <span class="deleteEventicon"></span>
+            <span class="deleteEventiconText">Vymazať</span>
+        </button>
+        </span>
+        <span class="eventformInputs">
     <input type="hidden" name="idEvent" id="idEvent">
     <input type="hidden" name="imgUrl" id="imgUrl">
     <p>
-        <label for="name">Event name:</label>
+        <label for="name">
+        <span class="fieldName">Názov podujatia</span>
         <input type="text" id="name" name="name" value="" required>
+        </label>
     </p>
-
+    <span class="group">
     <p>
-        <label for="date">Event date:</label>
+        <label for="date">
+        <span class="fieldName">Dátum</span>
         <input type="text" id="date" name="date" value="" required>
+        </label>
     </p>
 
     <p>
-        <label for="time">Event time:</label>
+        <label for="time">
+        <span class="fieldName">Čas</span>
         <input type="text" id="time" name="time" value="" required>
+        </label>
+    </p>
+    </span>
+    <p>
+        <label for="detail">
+        <span class="fieldName">Detaili podujatia</span>
+            <input type="text" id="detail" name="detail" value="" required>
+        </label>
     </p>
 
     <p>
-        <label for="detail">Event detail:</label>
-        <input type="text" id="detail" name="detail" value="" required>
-    </p>
-
-    <p>
-        <label for="entry">Vstupne</label>
+        <label for="entry">
+        <span class="fieldName">Vstupné</span>
         <input type="text" id="entry" name="entry" value="" required>
+        </label>
     </p>
 
     <p>
-        <label for="note">Poznamka</label>
-        <input type="text" id="note" name="note" value="" required>
+        <label for="note">
+        <span class="fieldName">Poznámka</span>
+            <input type="text" id="note" name="note" value="" required>        </label>
     </p>
 
     <p>
-        <label for="performerEmail">Email</label>
+        <label for="performerEmail">
+        <span class="fieldName">Email</span>    
         <input type="text" id="performerEmail" name="performerEmail" value="" required>
+        </label>
     </p>
 
     <p>
-        <label for="performerPhoneNumber">Telefon</label>
+        <label for="performerPhoneNumber">
+        <span class="fieldName">Telefón</span>
         <input type="text" id="performerPhoneNumber" name="performerPhoneNumber" value="" required>
+        </label>
     </p>
 
     <p>
-    <div><legend id="status">Status:</legend>
-        <label><input type="radio" name="status" id="status_1" value="1" required> Open</label>
-        <label><input type="radio" name="status" id="status_2" value="2" required> Complete</label>
+    <div id="checkbox"><legend id="status" class="fieldName">Stav:</legend>
+        <label><input type="radio" name="status" id="status_1" value="1" required>Otvorené</label>
+        <label><input type="radio" name="status" id="status_2" value="2" required>Uzavreté</label>
     </div>
     </p>
 
     <p>
-    <div><legend id="visible">Visible:</legend>
+    <div id="checkbox"><legend id="visible" class="fieldName">Viditeľnosť</legend>
         <label><input type="radio" name="visible" id="visible_1" value="1" required> Yes</label>
         <label><input type="radio" name="visible" id="visible_0" value="0" required> No</label>
     </div>
     </p>
-
-    <button id="saveEvent">Save</button>
-    <button id="cancelEvent" type="reset">Cancel</button>
-    <button id="deleteEvent" type="button">Delete</button>
+    </span>
 </form>

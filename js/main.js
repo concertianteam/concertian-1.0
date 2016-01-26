@@ -229,8 +229,6 @@ $(document).ready(function() {
         
     //Go to statistics
         $("#statistics").on('click', function(){
-            $("#contentPanel").empty();
-            addspinner();
             $( "#contentPanel" ).load("statistics.html", null, function() {
             	var monthName = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             	$("#monthSelectorList").empty();
@@ -505,7 +503,6 @@ function loadAllConcert(month){
 
 // Load concerts for Club (on club click) by ajax call
 function loadConcertForClub(clickedClubId){
-    $("#propagationElements").empty();
 	$.ajax({ 'url' : 'https://api.concertian.com/users/events/venue',
 		  'method' : 'POST',
 		  'data' : { 'results' : "20",
@@ -514,7 +511,7 @@ function loadConcertForClub(clickedClubId){
 				   },
 		  contentType : "application/x-www-form-urlencoded",
 		  'success' : function (json){
-			  addPropagationElements(json);
+			  addElements(json);
 		},
 		'error': function(error){
 			console.log('Error. ' + error);
@@ -570,7 +567,7 @@ function addElements(json){
                         '</span>'+
                         '<span class="secondPart">'+
                             '<span class="eventPhototext">'+
-                            '<img class="eventPhoto" src="'+ value.imgUrl +'">'+ (length + i) +
+                            '<img class="eventPhoto" src="'+ value.urlPhoto +'">'+ (length + i) +
                             '</span>'+
                         '</span>'+
                         '<span class="thirdPart">'+
@@ -612,16 +609,15 @@ function addElements(json){
 		$(".secondPart").off();
 	}
 	
-    $(".wrapper").on( "click", function() {
+    $(".secondPart").on( "click", function() {
         $("#resultsList").empty();
         $("#concerts").empty();
 		$("#concertsDate").empty();
 		$("#custom_program_menu").empty();
 		chartData = new Array();
 		page = 0;
-		selectLoad = byClub;
-		selectClub = results[$(this).find(".eventPhototext").text()].venueId;
-		loadConcertForClub(selectClub);
+		selectClubId = results[$(this).find(".eventPhototext").text()].venueId;        
+		loadConcertForClub(selectClubId);
 	});
 	
 	//* Timeline - vertical align based on time *//

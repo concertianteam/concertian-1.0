@@ -1195,7 +1195,7 @@
 		showOnFocus: true,
 		step: 30,
 		stopScrollPropagation: false,
-		timeFormat: 'g:ia',
+		timeFormat: 'H:i:s',
 		typeaheadHighlight: true,
 		useSelect: false
 	};

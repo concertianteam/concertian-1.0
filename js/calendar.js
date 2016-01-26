@@ -16,8 +16,10 @@ function initCalendar() {
     });
 
     $("#contentPanel #createConcertForm").load("concertForm.html", null, function() {
-        $("#date").datepicker($.datepicker.regional[ window.language["calendarLang"] ], {dateFormat: "yy-mm-dd"});
+        $("#date").datepicker($.datepicker.regional[ window.language["calendarLang"]]);
+        $("#date").datepicker("option", "dateFormat", "yy-mm-dd ");
         $("#time").timepicker();
+        $('#time').timepicker({ 'timeFormat': 'H:i:s' });
 
         $("#deleteEvent").hide();
         //default select
@@ -79,6 +81,7 @@ function initCalendar() {
                         $("#mycalendar").trigger( "click" );
                     },
                     error: function (error) {
+                        console.log(data);
                         alert('chyba');
                     }
                 });
