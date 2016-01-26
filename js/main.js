@@ -527,42 +527,48 @@ function buyTickets(eventID, price, origin){
 
             $.ajax({
                 url: "php/generateClientToken.php",
+
                 success: function (ret) {
                     $('#payment-form').empty();
                     clientToken = ret;
                     braintree.setup(clientToken, 'dropin',{
-                        container: "payment-form"
+                        container: "payment-form",
+                        paymentMethodNonceReceived: function (event, nonce) {
+                            $.ajax({
+                                url: 'php/transactionCheckout.php?price='+price,
+                                dataType: 'json',
+                                method: 'POST',
+                                data:{
+                                    payment_method_nonce: nonce
+                                },
+                                success: function(data) {
+                                    console.log(data);
+                                    //alert("zaplatene");
+                                    /* $.ajax({ 'url' : 'https://api.concertian.com/tickets/buy',
+                                     'method' : 'POST',
+                                     'data' : formData,
+                                     contentType : "application/x-www-form-urlencoded",
+                                     'success' : function (json){
+                                     },
+                                     'error': function(error){
+                                     console.log('Error. ' + error);
+                                     $(".spinner").remove();
+                                     }
+                                     });*/
+                                },
+                                error: function(data){
+                                    console.log(data);
+                                    //alert("nezaplatil si");
+                                }
+                            });
+                        }
                     });
                 }
             });
                 
         $('#checkout').submit(function(event){
             event.preventDefault();
-                $.ajax({
-                  url: 'php/transactionCheckout.php?price='+price,
-                  dataType: 'json',
-                  success: function(data) {
-                      
-                    //alert("zaplatene");
-        /* $.ajax({ 'url' : 'https://api.concertian.com/tickets/buy',
-                  'method' : 'POST',
-                  'data' : formData,
-                  contentType : "application/x-www-form-urlencoded",
-                  'success' : function (json){
-                },
-                'error': function(error){
-                    console.log('Error. ' + error);
-                    $(".spinner").remove();
-                }
-    });*/
-                  },
-                  error: function(data){
-                      console.log(data);
-                    //alert("nezaplatil si");
-                  }
-        });
-        event.preventDefault();
-    });
+            });
         });
         }
         else{
