@@ -1,4 +1,4 @@
-function initCalendar() {
+function initCalendar(language) {
     $.ajax({
         'url': 'https://api.concertian.com/agents/events',
         'method': 'GET',
@@ -16,6 +16,23 @@ function initCalendar() {
     });
 
     $("#contentPanel #createConcertForm").load("concertForm.html", null, function() {
+        $(".deleteEventiconText").text(window.language["deleteEventiconText"]);
+        $("#createEventName").text(window.language["createEventName"]);
+        $("#createEventDate").text(window.language["createEventDate"]);
+        $("#createEventTime").text(window.language["createEventTime"]);
+        $("#createEventDetails").text(window.language["createEventDetails"]);
+        $("#createEventEntry").text(window.language["createEventEntry"]);
+        $("#createEventNotes").text(window.language["createEventNotes"]);
+        $("#createEventEmail").text(window.language["createEventEmail"]);
+        $("#createEventPhone").text(window.language["createEventPhone"]);
+        $("#status").text(window.language["status"]);
+        $("#status_1").text(window.language["status_1"]);
+        $("#status_2").text(window.language["status_2"]);
+        $("#visible").text(window.language["visible"]);
+        $("#visible_1").text(window.language["visible_1"]);
+        $("#visible_2").text(window.language["visible_2"]);
+    //propagation.html
+        $(".eventformInputs").perfectScrollbar();
         $("#date").datepicker($.datepicker.regional[ window.language["calendarLang"]]);
         $("#date").datepicker("option", "dateFormat", "yy-mm-dd ");
         $("#time").timepicker();
@@ -87,7 +104,6 @@ function initCalendar() {
                 });
             }
         });
-
     });
 }
 

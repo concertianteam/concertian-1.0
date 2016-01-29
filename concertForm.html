@@ -4,7 +4,7 @@
         <button id="cancelEvent" type="reset"><span class="cancelEventicon"></span></button>
         <button id="deleteEvent" type="button">
             <span class="deleteEventicon"></span>
-            <span class="deleteEventiconText">Vymazať</span>
+            <span class="deleteEventiconText"></span>
         </button>
         </span>
         <span class="eventformInputs">
@@ -12,70 +12,70 @@
     <input type="hidden" name="imgUrl" id="imgUrl">
     <p>
         <label for="name">
-        <span class="fieldName">Názov podujatia</span>
+        <span class="fieldName" id="createEventName"></span>
         <input type="text" id="name" name="name" value="" required>
         </label>
     </p>
     <span class="group">
     <p>
         <label for="date">
-        <span class="fieldName">Dátum</span>
+        <span class="fieldName" id="createEventDate"></span>
         <input type="text" id="date" name="date" value="" required>
         </label>
     </p>
 
     <p>
         <label for="time">
-        <span class="fieldName">Čas</span>
+        <span class="fieldName" id="createEventTime"></span>
         <input type="text" id="time" name="time" value="" required>
         </label>
     </p>
     </span>
     <p>
         <label for="detail">
-        <span class="fieldName">Detaili podujatia</span>
+        <span class="fieldName" id="createEventDetails"></span>
             <input type="text" id="detail" name="detail" value="" required>
         </label>
     </p>
 
     <p>
         <label for="entry">
-        <span class="fieldName">Vstupné</span>
+        <span class="fieldName" id="createEventEntry"></span>
         <input type="text" id="entry" name="entry" value="" required>
         </label>
     </p>
 
     <p>
         <label for="note">
-        <span class="fieldName">Poznámka</span>
+        <span class="fieldName" id="createEventNotes"></span>
             <input type="text" id="note" name="note" value="" required>        </label>
     </p>
 
     <p>
         <label for="performerEmail">
-        <span class="fieldName">Email</span>    
+        <span class="fieldName" id="createEventEmail"></span>    
         <input type="text" id="performerEmail" name="performerEmail" value="" required>
         </label>
     </p>
 
     <p>
         <label for="performerPhoneNumber">
-        <span class="fieldName">Telefón</span>
+        <span class="fieldName" id="createEventPhone"></span>
         <input type="text" id="performerPhoneNumber" name="performerPhoneNumber" value="" required>
         </label>
     </p>
 
     <p>
-    <div id="checkbox"><legend id="status" class="fieldName">Stav:</legend>
-        <label><input type="radio" name="status" id="status_1" value="1" required>Otvorené</label>
-        <label><input type="radio" name="status" id="status_2" value="2" required>Uzavreté</label>
+    <div id="checkbox"><legend id="status" class="fieldName"></legend>
+        <label><input type="radio" name="status" id="status_1" value="1" required></label>
+        <label><input type="radio" name="status" id="status_2" value="2" required></label>
     </div>
     </p>
 
     <p>
-    <div id="checkbox"><legend id="visible" class="fieldName">Viditeľnosť</legend>
-        <label><input type="radio" name="visible" id="visible_1" value="1" required> Yes</label>
-        <label><input type="radio" name="visible" id="visible_0" value="0" required> No</label>
+    <div id="checkbox"><legend id="visible" class="fieldName"></legend>
+        <label><input type="radio" name="visible" id="visible_1" value="1" required></label>
+        <label><input type="radio" name="visible" id="visible_0" value="0" required></label>
     </div>
     </p>
     </span>

@@ -677,6 +677,7 @@ input[name="submit"]{
     cursor: pointer;
 }
 #resultsList{
+    position: relative;
     display: block;
     width: 100%;
     height: -moz-calc(100% - 50px);
@@ -689,7 +690,7 @@ input[name="submit"]{
     box-sizing: border-box;
     padding-top: 0px; 
     padding-right: 5px;
-    overflow-y: scroll;
+    overflow: hidden;
 }
 .resultElement{
     display: block;
@@ -1080,7 +1081,6 @@ input[name="submit"]{
     cursor: pointer;
 }
 #deleteEvent{
-    visibility: hidden;
     width: 100%;
     height: 40px;
     margin: 0;
@@ -1116,6 +1116,7 @@ input[name="submit"]{
 	height: 22px;
 }
 .eventformInputs{
+    position: relative;
     display: block;
     width: 100%;
     box-sizing: border-box;
@@ -1127,7 +1128,7 @@ input[name="submit"]{
     height: -o-calc(100% - 80px);
     /* Standard */
     height: calc(100% - 80px);
-    overflow-y: scroll;
+    overflow: hidden;
 }
 #eventEditForm p{
     display: block;
@@ -1203,7 +1204,8 @@ span .fieldName{
 .propagationList ul{
     list-style: none;
     margin: 0;
-    padding: 0;
+    box-sizing: border-box;
+    padding-left: 120px;
     height: 30px;
     text-align: center;
     box-sizing: border-box;
@@ -1213,6 +1215,7 @@ span .fieldName{
     display: inline-block;
     width: 120px;
     font-size: 0.8em;
+    overflow: hidden !important;
 }
 #detail{
     width: 200px !important;
@@ -1224,6 +1227,7 @@ span .fieldName{
     width: 20px;
 }
 #propagationElements{
+    position: relative;
     display: block;
     width: 100%;
     height: -moz-calc(100% - 30px);
@@ -1233,7 +1237,7 @@ span .fieldName{
     height: -o-calc(100% - 30px);
     /* Standard */
     height: calc(100% - 30x);
-    overflow-y: scroll;
+    overflow: hidden;
 }
 .propagationElement{
     display: block;
@@ -1278,6 +1282,7 @@ li.propagationeventPhoto{
 	height: 23px;
     margin-left: 13px;
     margin-top: 13px;
+    font-size: 0 !important;
 }
 li.eventDetail{
     width: 200px !important;
@@ -1289,14 +1294,6 @@ li.eventName{
 }
 li.eventAudience{
     color: #ffbb33;
-}
-.eventDelete{
-    display: block;
-    background: url('../img/sprite.png') no-repeat -166px -2px;
-	width: 20px;
-	height: 25px;
-    margin-left: 40%;
-    cursor: pointer;
 }
 #eventShareButton{
     display: none;
@@ -1420,6 +1417,7 @@ li.eventAudience{
     width: 10%;
 }
 .ticketsResultList{
+    position: relative;
     display: block;
     width: 100%;
    /* Firefox */
@@ -1432,7 +1430,7 @@ li.eventAudience{
     height: calc(100% - 200px);
     box-sizing: border-box;
     padding: 1% 2%;
-    overflow-y: scroll;
+    overflow: hidden;
 }
 .ticketResult{
     display: block;
@@ -1466,6 +1464,15 @@ li.eventAudience{
 .ticketResult .sold{
     width: 10%;
     text-align: center;
+}
+.ticketResult .beginSellingButton{
+    display: block;
+    font-size: 0.7em !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background: #ffbb33;
+    color: #fff;
+    cursor: pointer;
 }
 .ticketSoldOverview{
     display: block;
@@ -1513,6 +1520,7 @@ li.eventAudience{
     padding-top: 10px;
 }
 #placeOrder{
+    position: relative;
     display: block;
     /* Firefox */
     height: -moz-calc(100% - 50px);
@@ -1522,7 +1530,7 @@ li.eventAudience{
     height: -o-calc(100% - 50px);
     /* Standard */
     height: calc(100% - 50px);
-    overflow-y: scroll;
+    overflow: hidden;
 }
 .custom_input_label{
     display: block;
@@ -1547,7 +1555,11 @@ li.eventAudience{
     transition: transform 0s ease 0s, opacity 0s ease 0s;
     font-weight: 100;
 }
+#sellTickets input,
+#sellTickets select,
+#sellTickets textarea,
 #placeOrder input,
+#placeOrder select,
 #placeOrder textarea{
     display: block;
     font-weight: 100;
@@ -1562,7 +1574,8 @@ li.eventAudience{
     background-image: none;
     color: #283036;
 }
-#placeOrder input[type="submit"]{
+#placeOrder input[type="submit"],
+#sellTickets input[type="submit"]{
     width: 100%;
     height: 45px;
     border: none;
@@ -1573,7 +1586,8 @@ li.eventAudience{
     font-weight: 100;
 	cursor: pointer;
 }
-#placeOrder input[type="submit"]:hover{
+#placeOrder input[type="submit"]:hover,
+#sellTickets input[type="submit"]:hover{
     background: #ffc95c;
 }
 /* -------------- Manage account ----------- */
@@ -1812,8 +1826,8 @@ li.eventAudience{
 #closeButton{
     display: block;
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
     border-radius: 30px;
     z-index: 100;
     top: 10px;
@@ -1870,10 +1884,11 @@ li.eventAudience{
 }
 #files{
     display: block;
+    position: relative;
     text-align: center !important;
     width: 100%;
     height: 300px;
-    overflow-y: scroll;
+    overflow: hidden;
 }
 #files span{
     color: #fff;

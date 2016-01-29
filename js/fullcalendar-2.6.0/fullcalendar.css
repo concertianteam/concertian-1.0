@@ -687,6 +687,8 @@ a.fc-more:hover {
 .fc-toolbar {
 	text-align: center;
 	margin-bottom: 1em;
+    height: 10%;
+    margin: 0 !important;
 }
 
 .fc-toolbar .fc-left {
@@ -751,6 +753,7 @@ a.fc-more:hover {
 .fc-view-container *,
 .fc-view-container *:before,
 .fc-view-container *:after {
+    height: 90%;
 	-webkit-box-sizing: content-box;
 	   -moz-box-sizing: content-box;
 	        box-sizing: content-box;
