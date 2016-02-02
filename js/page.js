@@ -128,7 +128,7 @@ function setLanguage(){
 	 $("#inputcountry").text(language["country"]);
 	 $("#inputcity").text(language["city"]);
 	 $(".checkbox_text").text(language["checkbox_text"]);
-	 $("#submitregistration").text(language["registration_submit"]);
+	 $("#submitregistration").attr("value", language["registration_submit"]);
 }
 
 // Filling out registrate formula
