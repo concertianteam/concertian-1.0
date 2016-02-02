@@ -255,7 +255,7 @@ $(document).ready(function() {
 
     //COOKIE LOADER
 	if (Cookies.get('apiKey') === undefined) {
-			window.location = 'index.html';
+			window.location = 'login.html';
     	}
 		else{
 		  var apiKey = Cookies.get('apiKey');

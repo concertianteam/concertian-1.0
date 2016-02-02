@@ -1,57 +1,180 @@
 <!DOCTYPE html>
 <html dir="ltr">
-	<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-	<title>concertian</title>
-	
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:700,500&amp;subset=latin,latin-ext">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="js/js.cookie.js"></script>
-	<script src="js/log_in.js"></script>
-	
-	<meta name="author" content="QUAWER">
-	<meta name="robots" content="nofollow, noindex">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>concertian - local concert search engine and manager</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Ubuntu:300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<link type="text/css" rel="stylesheet" href="css/page.css">
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/page.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.jquery.min.js"></script>
+	<script type="text/javascript" src="js/js.cookie.js"></script>
 </head>
-<body id="login">
-
-<div id="core">
-<div class="loginBox">
-    
-    <div class="header"></div>
-
-	<form id="log_inForm" class="loginBox-area">
-        <div class="login_venue_img"></div>
-        <div class="venue_name"></div>
-
-		<label><input id="email" type="text" name="email" value="" placeholder="name@email.com" required></label>
-		<label><input id="password" type="password" name="password" value="" placeholder="********" autocomplete="off" required ></label>
-		<label id="hide"><input type="checkbox" name="login[remember]" value="1">&nbsp;&nbsp;</label>
-		<button type="submit" id="submit" name="submit"></button>
-        <span id="registrate"></span>
-	</form>
-	<div class="fix">
-        <div id="loginResult"></div>
-    </div>
-</div>
-</div>
-
-<div id="bottom_bar">
-    
-    <h2 id="invitation"></h2>
-    
-    <form id="mc_embed_signup" action="//concertian.us11.list-manage.com/subscribe/post?u=e093ef781a825976ba9b91f1a&amp;id=6a3d93656a" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate send_invitation" target="_blank" novalidate>
-        <div id="mc-embedded-subscribe-form">
-            <label for="mce-EMAIL"></label>
-            <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="partnerskypodnik@email.com">
-            <input type="submit" value="" name="subscribe" id="mc-embedded-subscribe" class="button">
-        </div>
-    </form>
-    
-</div>
-
-
+<body>
+	<header>
+		<div id="topBar">
+		<span id="logoPart">
+			<span class="logoPart_text"></span>
+			<span class="logoPart_img"></span>
+		</span>
+		<span id="navigationPart">
+			<ul>
+				<li><a class="login" href="login.html">LOG IN</a></li>
+				<li>
+					<span id="languageButton">LANGUAGE
+						<ul class="languagemenu">
+							<li>
+								<a href="index_sk.html" id="sk">Slovak</a>
+							</li>
+							<li>
+								<a href="index_cz.html" id="cz">Czech</a>
+							</li>
+							<li>
+								<a href="index_en.html" id="en">English</a>
+							</li>
+						</ul>
+					</span>
+				</li>
+				<li><a href="registration.html">REGISTRATION</a></li>
+				<li><a id="hide" href="terms&services.html">OBCHODNÉ PODMIENKY</a></li>
+			</ul>
+		</span>
+		</div>
+		<div id="underBar">
+			<span class="leftPart">
+				<span class="leftPartHeading">SMART TERM,<br>MY CALENDAR,<br>GOSOCIAL,<br><strong>a</strong> TICKETAGENT</span>
+				<span class="leftPartHeadingSub">pre úspešné podujatie nepotrebujete nič viac</span>
+				<span class="leftPartButton">Prvých 15 dní zadarmo</span>
+				<span class="pack">
+					<span class="bounceArrow"></span>
+				</span>
+			</span>
+			<span class="rightPart">
+				<img class="rightPartImg" src="img/mockup1.png">
+			</span>
+		</div>
+	</header>
+	<div id="queteFirst">
+		<span class="queteFirstText">"win win situácia pre organizátora a aj vystupujúcich,<br>lepší prehľad rovná sa lepšie koncerty"</span>
+	</div>
+	<section id="tablet">
+		<span class="leftMockup">
+			<img class="leftMockupImg" src="img/mockup2.png">
+		</span>
+		<span class="functionTable">
+				<ul>
+					<li>
+						<span class="create">
+							<span class="createicon"></span>
+							<span class="text">Vytvorte</span>	
+						</span>
+					</li>
+					<li>
+						<span class="create">
+							<span class="editicon"></span>
+							<span class="text">Upravte</span>	
+						</span>
+					</li>
+					<li>
+						<span class="create">
+							<span class="deleteicon"></span>
+							<span class="text">Zmažte</span>	
+						</span>
+					</li>
+					<li>
+						<span class="create">
+							<span class="publicicon"></span>
+							<span class="text">Zverejnite</span>	
+						</span>
+					</li>
+					<li>
+						<span class="create">
+							<span class="noteicon"></span>
+							<span class="text">Poznámkujte</span>	
+						</span>
+					</li>
+					<li>
+						<span class="create">	
+							<span class="cloudicon"></span>
+							<span class="text">Zjednotte</span>
+						</span>
+					</li>
+				</ul>
+		</span>
+	</section>
+	<div id="queteSecond">
+		<span class="functionList">
+			<ul>
+				<li>
+					<span class="listStyle">1</span>
+					<span class="primaryText">SMART TERM</span>
+					<span class="secondaryText"><strong>Prehľadné zobrazenie všetkých koncertov z okolia, aby ste pre koncert vo vašom klube zvolili vždy ten najlepší termín. </strong>Minimalizujte riziko nízkej návštevnosti z dôvodu atraktívnejšieho podujatia v tom istom čase<strong>, alebo sa inšpirujte vystupujúcimi interpretmi a využite možnosť priamej správy.</strong></span>
+				</li>
+				<li>
+					<span class="listStyle">2</span>
+					<span class="primaryText">MY CALENDAR</span>
+					<span class="secondaryText"><strong>Hravá a intuitívna forma spravovania a manažovania programu</strong> inšpirovaná Google kalendárom a prispôsobená požiadavkám každého organizátora<strong>. Vytvárajte, editujte a spravujte svoje podujatia prehľadnou formou so všetkým čo k tomu patrí – termíny, rýchle kontakty a technické poznámky.</strong></span>
+				</li>
+			</ul>
+		</span>
+	</div>
+	<section id="postToFacebook">
+		<span class="buttonPart">
+			<span class="buttonPartHeading">Vyskúšajte teraz na 15 dní zadarmo </span>
+			<span class="buttonPartButton">REGISTRÁCIA</span>
+		</span>
+		<span class="postToFacebookText">
+			<ul>
+				<li>
+					<span class="listStyle">3</span>
+					<span class="primaryText">GO SOCIAL</span>
+					<span class="secondaryText"><strong>Pridajte svoje koncerty</strong> jedným klikom na svoj funpage<strong> – obrázok a popis nahráte iba raz a o ostatné sa už postará systém concertian.</strong></span>
+				</li>
+				<li> 
+					<span class="listStyle">4</span>
+					<span class="primaryText">TICKET AGENT</span>
+					<span class="secondaryText"><strong>Predávať vstupenky online sa vyplatí. O to viac, keď</strong> si nenárokujeme žiadnu províziu a zakúpené vstupenky obratom doručíme formou pdf<strong>. Hodinu pred vystúpením Vám bude doručení zoznam zakúpených vstupeniek na rýchle a bezpečné overovanie.</strong></span>
+				</li>
+			</ul>
+		</span>
+		<span class="postToFacebookMockup">
+			<img class="postToFacebookMockupImg" src="img/mockup4.png">
+		</span>
+	</section>
+	<section id="propagation">
+		<span class="propagationHeading">Predávajte vstupenky online</span>
+		<span class="propagationSubheading">Je to jednoduché - zadajte množstvo a jednotkovú cenu.</span>
+		<span class="propagationMockup">
+			<img class="propagationMockupImg" src="img/mockup3.png">
+		</span>
+	</section>
+	<section id="bottom">
+		<span class="pricingHeading">Mesačne bez viazanosti</span>
+		<span class="pricing">
+			<span class="pricingPrice">19€<br><strong>mesačne</strong></span>
+			<span class="benefits">
+				<ul>
+					<li><strong>Analýza</strong>termínu pre podujatie</li>
+					<li><strong>Správa koncertov</strong> vo vašom kalendáry</li>
+					<li>Propagácia koncertov <strong>na concertian.com</strong></li>
+					<li><strong>Posielanie podujatí</strong> priamo na facebook</li>
+					<li><strong>Jednoduchý</strong> predaj online vstupeniek</li>
+				</ul>
+			</span>
+		</span>
+	</section>
+	<section id="bottomCTA">
+		<span class="CTAheading"><strong>Využite možnosť vyskúšať predaj vstupeniek online a ďaľšie výhody</strong> na 15 dní zadarmo</span>
+		<span class="CTAbutton">Začať</span>
+	</section>
+	<section id="footer">
+			<span class="socialicons">
+				<div class="addthis_sharing_toolbox"></div>
+			</span>
+			<span class="authors"><p>quawer s.r.o<br>Braneckého 4 <br>Nitra 949 01</p></span>
+	</section>
 </body>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55d9f3747523b0bc" async="async"></script>
 </html>
