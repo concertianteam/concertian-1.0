@@ -45,6 +45,7 @@ header{
 	width: 40%;
 	height: 100%;
 	float: left;
+    cursor: pointer;
 }
 .logoPart_text{
 	display: inline-block;
@@ -655,16 +656,20 @@ input{
 	margin-bottom: 1%;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #fff;
+  color: #00060a;
+    opacity: 0.8;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: #fff;
+  color: #00060a;
+    opacity: 0.8;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: #fff;
+  color: #00060a;
+    opacity: 0.8;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: #fff;
+  color: #00060a;
+    opacity: 0.8;
 }
 /* -------- After verify email --------------- */
 .group{
@@ -714,6 +719,30 @@ input{
 	padding: 5px 15px;
 	background: #FF4747;
 	cursor: pointer;
+}
+/* -------------- Terms and services (terms.html) --------------- */
+#termsOuter{
+    display: block;
+    width: 90%;
+    margin-left: 5%;
+    height: 100%;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 2%;
+}
+.wrapper{
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
+#termsOuter p{
+    font-size: 1.1em;
+}
+.terms_header{
+    color: #00060a;
+    font-size: 1.2em;
 }
 /*--------------- responsivity ---------------*/
 @media screen and (max-width: 1126px) {

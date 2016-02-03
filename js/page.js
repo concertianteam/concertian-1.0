@@ -1,15 +1,15 @@
 $(document).ready(function(){
 	// Perfect scrollbar
-	//$("document").ready(function(){
-		//$("body").perfectScrollbar();
-	//});
+	$("document").ready(function(){
+		$(".wrapper").perfectScrollbar();
+	});
 	//Language handler
     if(Cookies.get('language') == null){
 		language = slovak;
 	}else{
 		switch(Cookies.get('language')){
 			case "slovak":
-				language = slovak;
+                language = slovak;
 				break;
 			case "english":
 				language = english;
@@ -45,16 +45,16 @@ $(document).ready(function(){
 	// Email Verify
 	$("#verify").submit(function(event){
 		event.preventDefault();
-		var email = $('#email').val();
+		var email = $('input[name=email]').val();
  $.ajax({ 'url' 		: 'https://api.concertian.com/agents/verifyemail',
 		  'method'  	: 'POST',
-		  'data'		: {'email':$('input[name=email]').val()},
+		  'data'		: {'email': email},
 		  'contentType' : "application/x-www-form-urlencoded",
 		  'success' 	: function (json){
 			  	$("#appendOuter").empty();		  
 				$("#appendOuter").load("form.html", function(){
 					setLanguage();
-					filloutform(json, email);
+					filloutform(json,email);
 					$("#registration_form").submit(function(event){
 						event.preventDefault();
 						registrate();
@@ -62,9 +62,7 @@ $(document).ready(function(){
 				});
           },
           'error': function(error){
-            	$("#appendOuter").empty();
-				$("#appendOuter").load("form.html", function(){			$("#response_1").text("Došlo k chybe. Skúste to ešte raz z domovskej stránky. Ďakujeme.");
-				});
+                window.location = 'index.html';             
 		  },
         });
 	});
@@ -116,7 +114,6 @@ var czech = {
 
 // Set language
 function setLanguage(){
-	console.log(language);
 	 $("#registration_nav").text(language["registration"]);
 	 $("#hide").text(language["terms"]);
 	 $("#verifyemailfieldname").text(language["verifyemailfieldname"]);
@@ -128,7 +125,7 @@ function setLanguage(){
 	 $("#inputcountry").text(language["country"]);
 	 $("#inputcity").text(language["city"]);
 	 $(".checkbox_text").text(language["checkbox_text"]);
-	 $("#submitregistration").text(language["registration_submit"]);
+	 $("#submitregistration").attr("value", language["registration_submit"]);
 }
 
 // Filling out registrate formula
@@ -142,6 +139,7 @@ function filloutform(json,email){
 	
 	
 	if  (name == undefined) {
+        $('#email').val(email);
             switch(Cookies.get('language')){
                 case "slovak":
 		$( "#response1" ).append( "<p>Emailovú adresu, ktroú ste zadali nemáme v databáze. Prosím zaregistrujte sa.</p>");
@@ -185,16 +183,10 @@ function filloutform(json,email){
 //Submit Registrate formula
 function registrate(){
 	if($('.checkbox').prop('checked') == true){
-	var pwdNe =	$('input[name=password]').val();
-	$.ajax({ 		
-		'url' 		: 'php/registrate.php',
-		'type'		: 'POST',
-		'data'		: pwdNe,
-		'success' 	: function(pwd){
 var formData = {
     'email'          : $('input[name=email]').val(),
     'name'           : $('input[name=venue_name]').val(),
-    'password'       : pwd,
+    'password'       : $('input[name=password]').val(),
     'addressFirst'   : $('input[name=address]').val(),
     'state'          : $('input[name=state]').val(),
     'city'           : $('input[name=city]').val(),
@@ -217,11 +209,7 @@ var formData = {
 		  'error': function(error){
 				$("#appendOuter").empty();
 		  },
-	});
-	},
-		'error': function(error){
-		},
-     });
+        });
 	}
 }
 function responseScript(response){
@@ -232,28 +220,28 @@ function responseScript(response){
             $(".response_button").append("Prihlásenie");
             $(".response_text").append( "<p>Registrácia prebehla úspešne,<br> potvrdzovací email bol zaslaný do Vašej emailovej schránky. Využívajte aplikáciu na 15 dní zadarmo<p>");
             $(".response_button").click(function() {
-                  location.href='../app.html';
+                  location.href='login.html';
             });
                     break;
                 case "english":
             $(".response_button").append("Log In");
             $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox. Now you are able to use app for free, next 15 days.<p>");
             $(".response_button").click(function() {
-                  location.href='../app.html';
+                  location.href='login.html';
             });
                     break;
                 case "czech":
             $(".response_button").append("Přihlášení");
             $(".response_text").append( "<p>Registrace proběhla úspěšně,<br> potvrzovací email byl zaslán do Vaší emailové schránky. Využívejte aplikaci na 15 dní zdarma.<p>");
             $(".response_button").click(function() {
-                  location.href='../app.html';
+                  location.href='login.html';
             });   
                     break;
                 default:
             $(".response_button").append("Log In");
             $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox. Now you are able to use app for free, next 15 days.<p>");
             $(".response_button").click(function() {
-                  location.href='../app.html';
+                  location.href='login.html';
             }); 
                     break;
             }
@@ -264,28 +252,28 @@ function responseScript(response){
                 case "slovak":
             $(".response_text").append( "<p>Zadaný email sa už používa. Skúste to ešte raz.</p>");
             $(".response_button").click(function() {
-                  location.href='../registration.html';
+                  location.href='registration.html';
             });
             $(".response_button").append("Späť");
                     break; 
                 case "english":
             $(".response_text").append( "<p>Entered email is already being used. Please try again.</p>");
             $(".response_button").click(function() {
-                  location.href='../registration.html';
+                  location.href='registration.html';
             });
             $(".response_button").append("Back");
                     break;
                 case "czech":
             $(".response_text").append( "<p>Zadaný email se již používá. Zkuste to ještě jednou.</p>");
             $(".response_button").click(function() {
-                  location.href='../registration.html';
+                  location.href='registration.html';
             });
             $(".response_button").append("Zpět");
                     break;
                 default:
-            $(".response_text").append( "<p>Zadaný email sa už používa. Skúste to ešte ra  z.</p>");
+            $(".response_text").append( "<p>Zadaný email sa už používa. Skúste to ešte raz.</p>");
             $(".response_button").click(function() {
-                  location.href='../registration.html';
+                  location.href='registration.html';
             });
             $(".response_button").append("Späť");
                     break;
@@ -293,3 +281,10 @@ function responseScript(response){
 				break;
 	}
 }
+//Terms en or sk/cz
+//function termsLanguage(){
+    //switch(Cookies.get('language')){
+      //  case slovak:
+        //    windo
+    //}
+//}

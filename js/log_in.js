@@ -21,16 +21,16 @@ $(document).ready(function(){
     $(".header").click(function(){
         switch(Cookies.get('language')){
             case "slovak":
-                window.location = "../manager.html";
+                window.location = "../index.html";
                 break;
             case "english":
-                window.location = "../manager.en.html";
+                window.location = "../index_en.html";
                 break;
             case "czech":
-                window.location = "../manager.cz.html";
+                window.location = "../index_cz.html";
                 break;
 			default:
-                window.location = "../manager.html";
+                window.location = "../index.html";
                 break;
         }
     });
@@ -39,16 +39,16 @@ $(document).ready(function(){
     $("#registrate").click(function(){
         switch(Cookies.get('language')){
             case "slovak":
-                window.location = "../registrate.html";
+                window.location = "../registration.html";
                 break;
             case "english":
-                window.location = "../registrate.en.html";
+                window.location = "../registration.html";
                 break;
             case "czech":
-                window.location = "../registrate.cz.html";
+                window.location = "../registration.html";
                 break;
 			default:
-                window.location = "../registrate.html";
+                window.location = "../registration.html";
                 break;
         }
     });
@@ -57,6 +57,7 @@ $(document).ready(function(){
     if (Cookies.get('name') === undefined) {
         $("#log_inForm").addClass("paddingtop");
         $(".venue_name").text(language["text1"]);
+        $(".login_venue_img").css('display', 'none');
     }
     else{
         var name = Cookies.get('name');
@@ -66,7 +67,7 @@ $(document).ready(function(){
             $(".login_venue_img").append(element);
         }
         else{
-            $(".login_venue_img").hide();
+            $(".login_venue_img").css('display', 'none');
             $(".venue_name").css('margin-top', '32%');
         }
         

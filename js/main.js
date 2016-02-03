@@ -58,14 +58,17 @@ var slovak = {
     propagationText:"Propagovať koncerty jednoducho na facebook",
     propagationTextButton:"PROPAGOVAŤ",
     //market.html
+    marketTitle:"Predaj vstupeniek",
     lidate:"DÁTUM",
     litime:"ČAS",
     lieventName:"NÁZOV PODUJATIA",
     lientry:"CENA",
     lisold:"PREDANÉ",
+    begin:"ZAČAŤ",
     soldText:"Do tohto momentu ste predali lístky spolu za",
     formTitle:"VYPLŇTE FORMULÁR A PREDÁVAJTE LÍSTKY",
-    placeOrderSubmit: "SPUSŤIŤ PREDAJ LÍSTKOV",
+    placeOrderSubmit: "VYTVORIŤ ID PREDÁVAJÚCEHO",
+    createID: "Pre spustenie predaja vstupeniek je nutné najprv vytvoriť ID predávajúceho",
     icdph:"IČ DPH",
     vatid:"IČO",
     placeOrderCompanyName:"NÁZOV SPOLOČNOSTI",
@@ -124,14 +127,17 @@ var english = {
     propagationText:"Promote concerts on facebook",
     propagationTextButton:"PROMOTE",
     //market.html
+    marketTitle:"Ticket market",
     lidate:"DATE",
     litime:"TIME",
     lieventName:"EVENT NAME",
     lientry:"ENTRY PRICE",
     lisold:"SOLD",
+    begin:"BEGIN",
     soldText:"Until know, you have earned",
     formTitle:"Start selling your tickets",
-    placeOrderSubmit:"LAUNCH",
+    placeOrderSubmit:"CREATE MERCHANT ID",
+    createID: "To start selling tickets is necessary to creat ID of merchant",
     icdph:"VAT NUMBER",
     vatid:"VAT NUMBER",
     placeOrderCompanyName:"COMPANY NAME",
@@ -190,14 +196,17 @@ var czech = {
     propagationText:"Propagovat koncerty jednoduše na facebook",
     propagationTextButton:"PROPAGOVAT",
     //market.html
+    marketTitle:"Prodej vstupenek.",
     lidate:"DATUM",
     litime:"ČAS",
     lieventName:"NÁZEV AKCE",
     lientry:"CENA",
     lisold:"PRODÁNO",
+    begin:"ZAČÍT",
     soldText:"Do tohoto momentu jste prodali lístky spolu za",
     formTitle:"VYPLŇTE FORMULÁŘ A PRODÁVEJTE LÍSTKY",
-    placeOrderSubmit: "ZAČÍT PRODEJ VSTUPENEK",
+    placeOrderSubmit: "VYTVOŘIT ID PRODÁVAJÍCÍHO",
+    createID: "Pro spuštění prodeje vstupenek je nutné nejprve vytvořit ID prodávajícího",
     icdph:"IČ DPH",
     vatid:"IČO",
     placeOrderCompanyName:"NÁZEV SPOLEČNOSTI",
@@ -268,7 +277,12 @@ $(document).ready(function() {
             // Load cookie Elements
             $('#idVenue').val(idVenue);
             $('#apiKey').val(apiKey);
-            $('#venue_logo').append('<img class="logo" src="' + urlPhoto + '">');
+            if(urlPhoto != null){
+            $('.venue_logo').html('<img class="logo" src="' + urlPhoto + '">');
+            }
+            else{
+            $('.venue_logo').html('<img class="logo" src="img/default_avatar.png">');
+            }
         }
     
     //Mode cookie reader
@@ -332,10 +346,10 @@ $(document).ready(function() {
                    event.stopPropagation(); 
                    loadConcertByCity(monthNumber);
                 });
-                loadAllConcert(01);
+                loadAllConcert(02);
                 $("#backButton").on('click', function(){
                    selectLoad = all;
-                   loadAllConcert(01); 
+                   loadAllConcert(02); 
                 });
             });
             $("#contentPanel").remove(".spinner");
@@ -349,6 +363,12 @@ $(document).ready(function() {
             initCalendar();
             renderEdit();
             $(".heading_venueName").append(window.language["calendarTitle"]);
+            if(urlPhoto != null){
+            $(".heading_venuePhoto").attr('src', ''+urlPhoto+'');
+            }
+            else{
+                $(".heading_venuePhoto").attr('src', 'img/default_avatar.png');
+            }
             $("#contentPanel").remove(".spinner"); 
         });
         setLanguage();
@@ -363,6 +383,12 @@ $(document).ready(function() {
             $("#propagationElements").perfectScrollbar();
             loadConcertForManagerPropagation();
             setLanguage();
+            if(urlPhoto != null){
+            $(".heading_venuePhoto").attr('src', ''+urlPhoto+'');
+            }
+            else{
+                $(".heading_venuePhoto").attr('src', 'img/default_avatar.png');
+            }
             $("#contentPanel").remove(".spinner");
           });
     });
@@ -376,12 +402,17 @@ $(document).ready(function() {
             $(".ticketsResultList").perfectScrollbar();
             setLanguage();
             verifyMerchant();
+            if(urlPhoto != null){
+            $(".heading_venuePhoto").attr('src', ''+urlPhoto+'');
+            }
+            else{
+                $(".heading_venuePhoto").attr('src', 'img/default_avatar.png');
+            }
             //Form handler
             $("#placeOrder").submit(function(event){
                 event.preventDefault();
                 createNewMerchant();
             });
-            loadConcertForManager();
         });
     });
     
@@ -519,6 +550,7 @@ function setLanguage(){
     $(".propagationText").text(language["propagationText"]);
     $("#propagationButton").text(language["propagationTextButton"]);
     //market.html
+    $(".heading_venueName3").html(language["marketTitle"]);
     $(".lidate").text(language["lidate"]);
     $(".litime").text(language["litime"]);
     $(".lieventName").text(language["lieventName"]);
@@ -552,7 +584,7 @@ function loadAllConcert(month){
     selectLoad = all;
     clearStatistics();
     $("#monthSelectorList").children(".selectedMonth").removeClass();
-	$("#monthSelectorList").find("li:nth-child(" + month + ")").addClass("selectedMonth");
+	$("#monthSelectorList").find("li:nth-child("+ (month - 1) +")").addClass("selectedMonth");
 	$.ajax({ 'url' : 'https://api.concertian.com/agents/events/month/' + month,
 		  'method' : 'GET',
           beforeSend: function (request)
@@ -585,7 +617,7 @@ function loadConcertByCity(monthNumber){
     selectLoad = byCity;
     clearStatistics();
     $("#monthSelectorList").children(".selectedMonth").removeClass();
-	$("#monthSelectorList").find("li:nth-child(" + monthNumber + ")").addClass("selectedMonth");
+	$("#monthSelectorList").find("li:nth-child(" + (monthNumber-1) + ")").addClass("selectedMonth");
     	$.ajax({ 'url' : 'https://api.concertian.com/agents/events/city/month/'+ monthNumber,
 		  'method' : 'POST',
 		  'data' : { 
@@ -665,7 +697,7 @@ function loadConcertForManager(){
                     '<span class="time">'+value.time+'</span>'+
                     '<span class="concertName">'+value.name+'</span>'+
                     '<span class="entryPrice">'+value.entry+'</span>'+
-                    '<span class="sold">'+(value.tickets == null ? '<span class="beginSellingButton">Začať</span>' : value.tickets.sold)+'</span>'+
+                    '<span class="sold">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
             '</span>';
                  $(".ticketsResultList").append(element);
 		  };
@@ -675,18 +707,33 @@ function loadConcertForManager(){
 			$(".spinner").remove();
 		  },
 	});
+    //Ticekts sold sum 
+    function sumSoldTickets(){
+        sum = 0;
+        for(var ticket in json.tickets)
+        {
+           sum += json.tickets[ticket];
+        }
+        $(".soldNumber").append(sum);
+    }
+    // Handler for strat ticket sell button
+    $(".beginSellingButton").on('click', function(){
+        console.log("1");
+        var price = results[$(this).find(".length").text()].entry;
+        console.log(price);
+        $("input[name=priceofTicket]").val(price);
+        $("#sellTickets").submit();
+    })
 }
 //Clear container statistics.html
 function clearStatistics(){
     var monthName = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         $("#monthSelectorList").empty();
-
         var date = new Date();
         var month = date.getMonth() + 1;
         //Handler for month click
         switch(selectLoad){
             case all:
-                console.log("1");
         for(var i = month; i <= monthName.length; i++){
             $("#monthSelectorList").append('<li><a onclick="loadAllConcert(' + (i < 10 ? '0' + i : i) + ')" >' + monthName[i-1] + '</a></li>');
         }
@@ -878,9 +925,12 @@ function verifyMerchant(){
 		  'success' : function (json){
 			  if(json.success != false){
                   appendTicketForm();
+                  loadConcertForManager();
               }
               else{
-            
+                $(".ticketLegend").css('opacity', '0.2');
+                $(".ticketSoldOverview").css('opacity', '0.2');
+                $(".ticketsResultList").append('<span class="createMerchantId">'+language.createID+'</span>');
               }
 		  },
 		  'error': function(error){
@@ -919,6 +969,9 @@ function createNewMerchant(){
 
 //Ticket form
 function appendTicketForm(){
+    $(".ticketLegend").css('opacity', '1');
+    $(".ticketSoldOverview").css('opacity', '1');
+    $(".ticketsResultList").empty();
       $(".ticketForm").empty();
       var element = 
 '<span class="formTitle">'+language["formTitle"]+'</span>'+
@@ -992,6 +1045,7 @@ function appendTicketForm(){
     });
     })
 }
+
 // addElements
 function addElements(json){
 	$(".spinner").remove();
@@ -1060,7 +1114,7 @@ function addElements(json){
 		page = 0;
 		selectClubId = results[$(this).find(".eventPhototext").text()].venueId; 
         $("input[name=venueID]").val(selectClubId);
-        var monthNumber = 01;
+        var monthNumber = 02;
 		loadConcertForClub(monthNumber);
 	});
 	
