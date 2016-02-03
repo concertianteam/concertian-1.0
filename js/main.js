@@ -688,8 +688,8 @@ function loadConcertForManager(){
 		  'success' : function (json){
               var length = results.length;
             for(var i = 0; i < json.events.length; i++){
-                results[length + i] = value;
                 var value = json.events[i];
+                results[length + i] = value;
                 var arr = value.stringDate.split('-');
 			    var element = 
             '<span class="ticketResult">'+
@@ -701,6 +701,16 @@ function loadConcertForManager(){
             '</span>';
                  $(".ticketsResultList").append(element);
 		  };
+
+          // Handler for strat ticket sell button
+          $(".beginSellingButton").on('click', function(){
+              var price = results[$(this).find(".length").text()].entry;
+              console.log(price);
+              $("input[name=priceofTicket]").val(price);
+              $("#sellTickets").submit();
+              
+              $("#eventSelect").prop('selectedIndex', $(this).find(".length").text());
+          });
           },
 		  'error': function(error){
 			console.log('Error. ' + error);
@@ -716,14 +726,6 @@ function loadConcertForManager(){
         }
         $(".soldNumber").append(sum);
     }
-    // Handler for strat ticket sell button
-    $(".beginSellingButton").on('click', function(){
-        console.log("1");
-        var price = results[$(this).find(".length").text()].entry;
-        console.log(price);
-        $("input[name=priceofTicket]").val(price);
-        $("#sellTickets").submit();
-    })
 }
 //Clear container statistics.html
 function clearStatistics(){
@@ -1001,16 +1003,14 @@ function appendTicketForm(){
                   contentType : "application/x-www-form-urlencoded",
                   'success' : function (json){
                       //append select
-    var length = results.length;
-
+                	  
+    results = [];
+                	  
     for(var i = 0; i < json.events.length; i++){
-    results[length + i] = value;
-    var value = json.events[i];
-    var element = 
-    '<option value="'+value.id+'">'+value.eventName+'</option>';
-    $("#eventSelect").append(element);
+	    var value = json.events[i];
+	    var element = '<option value="'+value.id+'">'+value.eventName+'</option>';
+	    $("#eventSelect").append(element);
     }
-
                     },
                     'error': function(error){
                         console.log('Error. ' + error);
@@ -1043,7 +1043,7 @@ function appendTicketForm(){
 	  		console.log('Error. ' + error);
 	  	}
     });
-    })
+    });
 }
 
 // addElements
