@@ -9,7 +9,13 @@ $result = Braintree_Transaction::sale([
   'amount' => $_GET['price'], //set ammount of transaction, maybe by GET paramter of brainTree FORM
   'paymentMethodNonce' => $nonceFromTheClient //value of $_POST from brainTree server
 ]);
-echo($result); //TODO: make HTML for transaction success, now only dump for see something
+
+if($result){
+    echo '{}'; //return some JSON after success payment
+}
+else{
+    echo ''; // return empty string, ajax go to error, because wait json
+}
 ?>
 
 
