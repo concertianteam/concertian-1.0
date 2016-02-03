@@ -2,7 +2,6 @@ $(document).ready(function() {
     //ScrolBar
     $(".outer").perfectScrollbar();    
     $("#citySelect").perfectScrollbar({
-        suppressScrollY : true,
     });    
     
     //Setting language
@@ -235,7 +234,6 @@ $(document).ready(function() {
   	return t;
 	}
 	(document, "script", "twitter-wjs"));
-    console.log(selectLoad);
     
 });
                   
@@ -290,8 +288,11 @@ var slovak = {
     quantityLegend:"Množstvo",
     priceLegend:"Jednotková cena",
     submitForm:"KÚPIŤ VSTUPENKU",
-    submitPayment:"Zaplatiť '+price+'€",
+    submitPayment:"Zaplatiť",
     noResult:"Žiadne výsledky hľadania",
+    checkemail: "Vstupenku nájdete vo svojej emailovej schránke",
+    checkemailWrong: "Došlo k chybe, skúste to ešte raz. Ďakujeme.",
+    checkboxWarning: "Zabudli ste potvrdiť svoj súhlas s obchodnými podmienkami. Ďakujeme.",
 };
 var english = {
     byclub:"CLUB",
@@ -307,8 +308,11 @@ var english = {
     quantityLegend:"Units",
     priceLegend:"Unit price",
     submitForm:"BUY TICKETS",
-    submitPayment:"PAY '+price+'€",
+    submitPayment:"PAY",
     noResult:"No resulsts",
+    checkemail: "Ticket should be in your mailbox in short time",
+    checkemailWrong: "An mistake occurred, please try it again",
+    checkboxWarning: "You have forgotten to agree with terms and services for this service. Thank you.",
 };
 var czech = {
     byclub:"KLUB",
@@ -324,15 +328,18 @@ var czech = {
     quantityLegend:"Množství",
     priceLegend:"Jednotková cena",
     submitForm:"KOUPIT VSTUPENKU",
-    submitPayment:"Zaplatit '+price+'€",
+    submitPayment:"Zaplatit",
     noResult:"Žádné výsledky hledání",
+    checkemail: "Vstupenku najdete ve své emailové schránce",
+    checkemailWrong: "Došlo k chybě, zkuste to ještě jednou. Děkujeme.",
+    checkboxWarning: "Zapomněli jste potvrdit svůj souhlas s obchodními podmínkami. Děkujeme.",
 };
 
 // SET TEXT BUILDER
 function setLanguage(){
     $(".byClub").text(language["byclub"]);
     $(".byCity").text(language["bycity"]);
-    $("#search_input").attr("placeholder", language["searchplaceholder2"]);
+    $("#search_input").attr("placeholder", language["searchplaceholder1"]);
 }
 //Fill citySelect element
 function setSelector(citySource){
@@ -369,7 +376,8 @@ function removeAllMarkers(){
 // The resource does not exists
 function noResults(){
     $(".outer").html('<span id="response"></span>');
-    $("#response").text(language["noResult"]);
+    $("#response").append('<span class="noResults"></span>');
+    $("#response").append(language["noResult"]);
 }
 
 // Load all concert by URL
@@ -433,12 +441,10 @@ function loadConcertByClub(selectedClubId){
 
 // Add a like to event
 function addLike(eventID){
-    console.log("1");
     $.ajax({ 'url' : 'https://api.concertian.com/users/events/'+eventID+'',
 		  'method' : 'GET',
 		  contentType : "application/x-www-form-urlencoded",
 		  'success' : function (json){
-			 console.log("counted");
 		},
 		'error': function(error){
 			console.log('Error. ' + error);
@@ -451,7 +457,9 @@ function addLike(eventID){
 function buyTickets(eventID, price, origin){
     var elementTicketForm =
         '<span id="close">'+
-                    '<span class="closebutton"></span>'+
+            '<span class="closebutton">'+
+                '<span class="closebuttonIcon"></span>'+
+            '</span>'+
         '</span>'+
     '<span class="outer">'+
         '<span class="ticketForm">'+
@@ -470,7 +478,7 @@ function buyTickets(eventID, price, origin){
                 '</label>'+
                 '<input type="hidden" id="eventID" name="eventID" value="'+ eventID+'">'+
                 '<input type="hidden" name="price" value="'+price+'">'+
-                '<input type="checkbox" name="vehicle" value="Bike"><span class="checkboxText" required>'+language.checkboxText+'</span>'+
+                '<input type="checkbox" class="checkbox" name="vehicle" value="Bike"><span class="checkboxText" required>'+language.checkboxText+'</span>'+
                 '<span class="summary">'+
                     '<ul>'+
                         '<li>'+language.quantityLegend+'</li>'+
@@ -485,13 +493,11 @@ function buyTickets(eventID, price, origin){
         '</span>'+
     '</span>';
     $("#popup").append(elementTicketForm);
-    $(".closebutton").on('click', function(){
-        $("#popup").empty();
-        $("#popup").hide();
-    });
     $("#popup").fadeIn(100);
+    $(".outer").perfectScrollbar();
     $("#buyTicketForm").submit(function(event){
         event.preventDefault();
+        if($('.checkbox').prop('checked') == true){
         var dt = new Date();
         var month = dt.getMonth()+1;
         var day = dt.getDate();
@@ -512,10 +518,9 @@ function buyTickets(eventID, price, origin){
         
         
         if(formData.name != "" && formData.lastname != "" && formData.email != "" && formData.eventID != "" && formData.ticketPrice != "" && formData.time != ""){
-            console.log("Right");
             
-            $(".outer").empty();
-            $(".outer").append(
+            $("#popup .outer").empty();
+            $("#popup .outer").append(
                 '<form id="checkout">'+
                     '<span id="payment-form"></span>'+
                     '<input type="hidden" name="price" id="price" val="'+ price +'">'+
@@ -542,23 +547,11 @@ function buyTickets(eventID, price, origin){
                                     payment_method_nonce: nonce
                                 },
                                 success: function(data) {
-                                    console.log(data);
-                                    //alert("zaplatene");
-                                    /* $.ajax({ 'url' : 'https://api.concertian.com/tickets/buy',
-                                     'method' : 'POST',
-                                     'data' : formData,
-                                     contentType : "application/x-www-form-urlencoded",
-                                     'success' : function (json){
-                                     },
-                                     'error': function(error){
-                                     console.log('Error. ' + error);
-                                     $(".spinner").remove();
-                                     }
-                                     });*/
+                                    generateTicket(formData);
                                 },
                                 error: function(data){
                                     console.log(data);
-                                    //alert("nezaplatil si");
+                                    errorMessage();
                                 }
                             });
                         }
@@ -571,9 +564,14 @@ function buyTickets(eventID, price, origin){
             });
         });
         }
-        else{
-            console.log("Wrong");
-        }
+    }
+    else{
+        window.alert(language.checkboxWarning);
+    }
+    });
+    $(".closebutton").on('click', function(){
+        $("#popup").empty();
+        $("#popup").hide();
     });
 }
 
@@ -746,4 +744,27 @@ function addElements(json){
   			   }
 	    });
 	}
+}
+function generateTicket(formData){
+    $("#popup .outer").empty();
+    var element = '<span class="checkemail">'+language.checkemail+'</span>'+
+                  '<span class="checkemailIcon"></span>';
+    $("#popup .outer").append(element);
+        /* $.ajax({ 'url' : 'https://api.concertian.com/tickets/buy',
+         'method' : 'POST',
+         'data' : formData,
+         contentType : "application/x-www-form-urlencoded",
+         'success' : function (json){
+         },
+         'error': function(error){
+         console.log('Error. ' + error);
+         $(".spinner").remove();
+         }
+         });*/
+}
+function errorMessage(){
+    $("#popup .outer").empty();
+        var element = '<span class="checkemail" style="color: #546078;">'+language.checkemailWrong+'</span>'+
+                  '<span class="checkemailIconWrong"></span>';
+    $("#popup .outer").append(element);
 }

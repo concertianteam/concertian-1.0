@@ -219,7 +219,7 @@ section{
     height: -o-calc(100% - 20px);
     /* Standard */
     height: calc(100% - 20px);
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 #close{
     display: block;
@@ -234,8 +234,16 @@ section{
     height: 20px;
     border-radius: 30px;
     margin-top: -25px;
-    background: #ffc95c;
+    background-color: #ffc95c;
     cursor: pointer;
+}
+.closebuttonIcon{
+    display: block;
+    background: url('../img/user_sprite.png') no-repeat -605px -17px;
+	width: 12px;
+	height: 12px;
+    margin-left: 2px;
+    margin-top: 2px;
 }
 /* ------------ Form inputs --------------- */
 #checkout,
@@ -491,7 +499,15 @@ div#columnSearch :-ms-input-placeholder {
     height: auto;
     text-align: center;
     font-size: 1em;
-    margin-top: 40%;
+    margin-top: 20%;
+}
+.noResults{
+    display: block;
+    background: url('../img/user_sprite.png') no-repeat -627px 0;
+	width: 42px;
+	height: 50px;
+    margin-bottom: 4%;
+    margin-left: 48%;
 }
 .resultElement{
     display: block;
@@ -684,6 +700,30 @@ div#columnSearch :-ms-input-placeholder {
     float: left;
     background: #ccc;
 }
+/* ------- After successful payment --------- */
+.checkemail{
+    display: block;
+    width: 90%;
+    font-size: 1.5em;
+    color: #ffbb33;
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+.checkemailIcon{
+    display: block;
+    background: url('../img/user_sprite.png') -516px -6px;
+    width: 83px;
+    height: 37px;
+    margin-left: 35%;
+}
+.checkemailIconWrong{
+    display: block;
+    background: url('../img/user_sprite.png') no-repeat -627px 0;
+	width: 42px;
+	height: 50px;
+    margin-left: 40%;
+}
 /* -------------- Loader ------------- */
 .spinner {
   margin: 100px auto;
@@ -756,9 +796,10 @@ div#columnSearch :-ms-input-placeholder {
         width: 100%;
         max-height: 60px !important;
         display: block;
-        overflow-x: scroll;
         padding-left:  0 !important;
         padding-right:  0 !important;
+        overflow-y: hidden;
+        overflow-x: hidden;
     }
     #citySelectList li{
         width: 150px !important;
