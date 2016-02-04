@@ -26,11 +26,11 @@ function initCalendar(language) {
         $("#createEventEmail").text(window.language["createEventEmail"]);
         $("#createEventPhone").text(window.language["createEventPhone"]);
         $("#status").text(window.language["status"]);
-        $("#status_1").text(window.language["status_1"]);
-        $("#status_2").text(window.language["status_2"]);
+        $("#status1").text(window.language["status_1"]);
+        $("#status2").text(window.language["status_2"]);
         $("#visible").text(window.language["visible"]);
-        $("#visible_1").text(window.language["visible_1"]);
-        $("#visible_2").text(window.language["visible_2"]);
+        $("#visible1").text(window.language["visible_1"]);
+        $("#visible0").text(window.language["visible_2"]);
     //propagation.html
         $(".eventformInputs").perfectScrollbar();
         $("#date").datepicker($.datepicker.regional[ window.language["calendarLang"]]);

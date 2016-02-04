@@ -1036,6 +1036,11 @@ input[name="submit"]{
     margin-right: 0.5%;
     padding: 0;
 }
+.inline{
+    display: inline-block;
+    float: left;
+    width: 50%;
+}
 #myCalendar{
     display: inline-block;
     width: 70%;
@@ -1178,13 +1183,18 @@ span .fieldName{
     background-image: none;
     color: #283036;
 }
-#checkbox label,
+#checkbox input{
+    display: block;
+    width: 100%;
+    text-align: left;
+    border-bottom: 10px;
+}
 #checkbox label{
-    display: inline-block !important;
-    width: 48% !important;
-    float: left !mportant;
-    text-align: center;
+    display: block;
+    width: 100%;
+    text-align: left;
     border-bottom: none;
+    margin-top: 10px;
 }
 /* --------- Propagation ----------- */
 .propagationList{
@@ -1481,6 +1491,9 @@ li.eventAudience{
     background: #ffbb33;
     color: #fff;
     cursor: pointer;
+}
+.length{
+    font-size: 0;
 }
 .ticketSoldOverview{
     display: block;

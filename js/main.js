@@ -65,6 +65,8 @@ var slovak = {
     lientry:"CENA",
     lisold:"PREDANÉ",
     begin:"ZAČAŤ",
+    update:"UPRAVIŤ POČET",
+    Selling:"SPUSTIŤ PREDAJ",
     soldText:"Do tohto momentu ste predali lístky spolu za",
     formTitle:"VYPLŇTE FORMULÁR A PREDÁVAJTE LÍSTKY",
     placeOrderSubmit: "VYTVORIŤ ID PREDÁVAJÚCEHO",
@@ -134,6 +136,8 @@ var english = {
     lientry:"ENTRY PRICE",
     lisold:"SOLD",
     begin:"BEGIN",
+    update:"UPDATE QUANTITY",
+    startSelling:"START SELLING",
     soldText:"Until know, you have earned",
     formTitle:"Start selling your tickets",
     placeOrderSubmit:"CREATE MERCHANT ID",
@@ -203,6 +207,8 @@ var czech = {
     lientry:"CENA",
     lisold:"PRODÁNO",
     begin:"ZAČÍT",
+    update:"UPRAVIT POČET",
+    startSelling:"SPUSTIT PRODEJ",
     soldText:"Do tohoto momentu jste prodali lístky spolu za",
     formTitle:"VYPLŇTE FORMULÁŘ A PRODÁVEJTE LÍSTKY",
     placeOrderSubmit: "VYTVOŘIT ID PRODÁVAJÍCÍHO",
@@ -698,16 +704,28 @@ function loadConcertForManager(){
                     '<span class="concertName">'+value.name+'</span>'+
                     '<span class="entryPrice">'+value.entry+'</span>'+
                     '<span class="sold">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
-            '</span>';
+                    '</span>';
                  $(".ticketsResultList").append(element);
 		  };
+            //Ticekts sold sum 
+            console.log(json);
+            sum = 0;
+            for(var ticket in json.tickets)
+            {
+               sum += json.tickets[ticket].earned;
+            }
+            $(".soldNumber").append(sum + '€');
 
           // Handler for strat ticket sell button
           $(".beginSellingButton").on('click', function(){
+              $("#placeOrderSubmit").css('opacity', 1);
+              $("#updateorderSubmit").css('opacity', 0.5);
               var price = results[$(this).find(".length").text()].entry;
               console.log(price);
               $("input[name=priceofTicket]").val(price);
-              $("#sellTickets").submit();
+              $("#placeOrderSubmit").on('click', function(){
+                    submitsellTickets();
+              });
               
               $("#eventSelect").prop('selectedIndex', $(this).find(".length").text());
           });
@@ -717,15 +735,6 @@ function loadConcertForManager(){
 			$(".spinner").remove();
 		  },
 	});
-    //Ticekts sold sum 
-    function sumSoldTickets(){
-        sum = 0;
-        for(var ticket in json.tickets)
-        {
-           sum += json.tickets[ticket];
-        }
-        $(".soldNumber").append(sum);
-    }
 }
 //Clear container statistics.html
 function clearStatistics(){
@@ -987,11 +996,17 @@ function appendTicketForm(){
 '</label>'+
 '<label class="custom_input_label" for="company">'+
     '<span class="fieldName" id="placeOrderUnitprice">'+language["placeOrderUnitprice"]+'</span>'+
-    '<input type="text" id="priceofTicket" name="priceofTicket" class="margin_bottom" required/>'+
+    '<input type="text" id="priceofTicket" name="priceofTicket" class="margin_bottom" />'+
 '</label>'+
-'<input type="submit" id="placeOrderSubmit" value="SPUSŤIŤ PREDAJ LÍSTKOV">'+
+'<input type="submit" id="placeOrderSubmit" value="'+language.startSelling+'">'+
+'<input type="submit" id="updateorderSubmit" value="'+language.update+'">'+
 '</form>';
       $(".ticketForm").append(element);
+      $("#placeOrderSubmit").css('opacity', 0.5);
+      $("#updateorderSubmit").css('opacity', 1);
+      $("#updateorderSubmit").on('click', function(){
+         submitUpdatesellTickets(); 
+      });
           //Load select with data
           $.ajax({ 'url' : 'https://api.concertian.com/users/events/venue',
                   'method' : 'POST',
@@ -1017,7 +1032,9 @@ function appendTicketForm(){
                         $(".spinner").remove();
                     }
             });
-    // Handler for ticket form
+}
+// Handler for ticket form
+function submitsellTickets(){
     $("#sellTickets").submit(function(event){
         event.preventDefault();
         var apiKey = Cookies.get('apiKey');
@@ -1043,9 +1060,36 @@ function appendTicketForm(){
 	  		console.log('Error. ' + error);
 	  	}
     });
-    });
+    });   
 }
-
+// Handler for ticket form
+function submitUpdatesellTickets(){
+    $("#sellTickets").submit(function(event){
+        event.preventDefault();
+        var apiKey = Cookies.get('apiKey');
+        console.log(apiKey);
+        var formData = {
+    'idEvent'          : $('select[name=eventSelect]').val(),
+    'availableTickets' : $('input[name=numberofTickets]').val(),
+        }
+        $.ajax({ 'url' : 'https://api.concertian.com/tickets/',
+		  'method' : 'PUT',
+		  'data' : formData,
+	  	  beforeSend: function (request)
+                {
+                    request.setRequestHeader("Authorization", apiKey);
+                    request.withCredentials = true;
+                },
+		  contentType : "application/x-www-form-urlencoded",
+		  'success' : function (json){
+			  $("#marketPlace").trigger( "click" );
+	  	},
+	  	'error': function(error){
+	  		console.log('Error. ' + error);
+	  	}
+    });
+    });   
+}
 // addElements
 function addElements(json){
 	$(".spinner").remove();
