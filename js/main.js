@@ -1,8 +1,9 @@
 $(document).ready(function() {
     //ScrolBar
     $(".outer").perfectScrollbar();    
-    $("#citySelect").perfectScrollbar({
+    $("#citySelect ul").perfectScrollbar({
     });    
+    $("#termsContainer").perfectScrollbar();
     
     //Setting language
     if(Cookies.get('language') == null){
@@ -250,7 +251,7 @@ var citySK = [
     "Bratislava",
     "Nitra",
     "Banská Bystrica",
-    "Martyn",
+    "Martin",
     "Žilina",
     "Košice",
     "Prešov"
@@ -275,6 +276,8 @@ var cityCZ = [
 ];
 var language;
 var slovak = {
+    managerHeading:"Propagácia koncertov, predaj vstupeniek, výber správneho termínu a správa koncertného programu systémom concertian FOR MANAGERS",
+    managerButton:"Viac tu",   
     byclub:"KLUB",
     bycity:"MESTO",
     searchplaceholder1:"Kde hľadáme?",
@@ -293,8 +296,11 @@ var slovak = {
     checkemail: "Vstupenku nájdete vo svojej emailovej schránke",
     checkemailWrong: "Došlo k chybe, skúste to ešte raz. Ďakujeme.",
     checkboxWarning: "Zabudli ste potvrdiť svoj súhlas s obchodnými podmienkami. Ďakujeme.",
+    termsheading:"Obchodné podmienky concertian",
 };
 var english = {
+    managerHeading:"Promote your events, sell online tickets, always choose the best term and manage your venue program with concertian FOR MANAGERS",
+    managerButton:"Discover more",
     byclub:"CLUB",
     bycity:"CITY",
     searchplaceholder1:"Insert city",
@@ -313,8 +319,11 @@ var english = {
     checkemail: "Ticket should be in your mailbox in short time",
     checkemailWrong: "An mistake occurred, please try it again",
     checkboxWarning: "You have forgotten to agree with terms and services for this service. Thank you.",
+    termsheading:"Terms and services concertian",
 };
 var czech = {
+    managerHeading:"Propagace koncertů, prodej vstupenek, výběr správného termínu a správa koncertního programu systémem concertian FOR MANAGERS",
+    managerButton:"Více zde",
     byclub:"KLUB",
     bycity:"MĚSTO",
     searchplaceholder1:"Kde hledáme?",
@@ -333,6 +342,7 @@ var czech = {
     checkemail: "Vstupenku najdete ve své emailové schránce",
     checkemailWrong: "Došlo k chybě, zkuste to ještě jednou. Děkujeme.",
     checkboxWarning: "Zapomněli jste potvrdit svůj souhlas s obchodními podmínkami. Děkujeme.",
+    termsheading:"Obchodní podmínky concertian",
 };
 
 // SET TEXT BUILDER
@@ -340,6 +350,7 @@ function setLanguage(){
     $(".byClub").text(language["byclub"]);
     $(".byCity").text(language["bycity"]);
     $("#search_input").attr("placeholder", language["searchplaceholder1"]);
+    $(".termsHeading").text(language["termsheading"]);
 }
 //Fill citySelect element
 function setSelector(citySource){
@@ -495,6 +506,21 @@ function buyTickets(eventID, price, origin){
     $("#popup").append(elementTicketForm);
     $("#popup").fadeIn(100);
     $(".outer").perfectScrollbar();
+    //Handle terms and services
+    $(".checkboxText a").on('click', function(){
+        switch(Cookies.get('language')){
+            case "slovak":
+                window.open('terms.html', '_blank');
+                break;
+            case "english":
+                window.open('terms_en.html', '_blank');
+                break;
+            case "czech":
+                window.open('terms.html', '_blank');
+                break;
+        }
+    });
+    //Buy ticket submit
     $("#buyTicketForm").submit(function(event){
         event.preventDefault();
         if($('.checkbox').prop('checked') == true){
@@ -507,10 +533,10 @@ function buyTickets(eventID, price, origin){
     ((''+day).length<2 ? '0' : '') + day;
         var formData = {
             'name'    : $('input[name=firstName]').val(),
-            'lastname': $('input[name=lastName]').val(),
+            'lastName': $('input[name=lastName]').val(),
             'email'   : $('input[name=email]').val(),
-            'eventID' : $('#eventID').val(),
-            'ticketPrice': price,
+            'idEvent' : $('#eventID').val(),
+            'price': price,
             'time'    : time,
             'date'    : date,
         };
@@ -550,7 +576,7 @@ function buyTickets(eventID, price, origin){
                                     generateTicket(formData);
                                 },
                                 error: function(data){
-                                    console.log(data);
+                                    console.log("error",data);
                                     errorMessage();
                                 }
                             });
@@ -577,6 +603,14 @@ function buyTickets(eventID, price, origin){
 
 function addElements(json){
     $(".spinner").remove();
+    $(".outer").append(
+        '<span class="resultElement">'+
+                '<span class="managerIcon"></span>'+
+                '<span class="managerHeading">'+language.managerHeading+'</span>'+
+                '<a href="https://manager.concertian.com"><span class="managerButton">'+language.managerButton+'</span></a>'+ 
+        '</span>'+
+        '<span class="spacer"></span>'
+                    );
     page++;
     var minus = 0;
     var address = [];
@@ -607,7 +641,7 @@ function addElements(json){
                     '<span class="lenght">'+ (length + i) +'</span>'+
                     '<input type="hidden" id="venueId" val="'+ value.venueId +'">'+
                     '<span class="venueNamePicture">'+
-                        '<img class="venueNamePictureImg" src="'+ value.urlPhoto +'">'+
+                        '<img class="venueNamePictureImg" src="'+( value.urlPhoto == null ? 'img/default.jpg' : value.urlPhoto) +'">'+
                     '</span>'+
                     '<span class="venueNameText"><span id="by">'+language.by+'</span>'+" "+'<strong>'+ value.venueName +'</strong>'+" "+'<span id="in">'+language.in+'</span>'+" "+'<strong>'+ value.city +'</strong></span>'+
                 '</span>'+
@@ -691,7 +725,9 @@ function addElements(json){
         var eventID = value.id;
         var price = value.entry;
         var origin = value.state;
-        buyTickets(eventID, price, origin);
+        if(price != ""){
+            buyTickets(eventID, price, origin);
+        }
     });
     
     // Share concert on facebook    
@@ -746,11 +782,12 @@ function addElements(json){
 	}
 }
 function generateTicket(formData){
+    console.log("success",formData);
     $("#popup .outer").empty();
     var element = '<span class="checkemail">'+language.checkemail+'</span>'+
                   '<span class="checkemailIcon"></span>';
     $("#popup .outer").append(element);
-        /* $.ajax({ 'url' : 'https://api.concertian.com/tickets/buy',
+         $.ajax({ 'url' : 'https://api.concertian.com/tickets/buy',
          'method' : 'POST',
          'data' : formData,
          contentType : "application/x-www-form-urlencoded",
@@ -760,7 +797,7 @@ function generateTicket(formData){
          console.log('Error. ' + error);
          $(".spinner").remove();
          }
-         });*/
+         });
 }
 function errorMessage(){
     $("#popup .outer").empty();

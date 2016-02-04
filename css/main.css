@@ -152,7 +152,21 @@ header{
     box-sizing: border-box;
     padding: 0 20px;
 }
+.termsHeading{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    padding-top: 10px;
+    text-align: center;
+    color: #fff;
+    font-size: 1.8em;
+    text-transform: uppercase;
+}
 #citySelect ul{
+    position: relative;
     display: block;
     list-style: none;
     margin: 0;
@@ -162,6 +176,7 @@ header{
     width: 100%;
     height: 60px;
     white-space:nowrap;
+    overflow: hidden;
 }
 #citySelect ul li{
     display: inline-block;
@@ -192,6 +207,26 @@ section{
     margin: 0;
     padding: 0;
 }
+/* --------- terms and services ---------- */
+#termsContainer{
+    position: relative;
+    display: block;
+    width: 90%;
+    height: 95%;
+    margin-left: 5%;
+    overflow: hidden;
+    font-size: 1.2em;
+}
+#termsContainer a{
+    color: #546078;
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+.link{
+    font-size: 1em !important;
+    text-transform: none !important;
+}
+/* ---------------- */
 #popup{
     position: absolute;
     display: none;
@@ -327,6 +362,7 @@ section{
 }
 .checkboxText a{
     color: #ffbb33;
+    cursor: pointer;
 }
 .summary{
     display: block;
@@ -515,6 +551,35 @@ div#columnSearch :-ms-input-placeholder {
     height: 100px;
     margin: 0.5% 0;
 }
+/* ----------- For manager ---------- */
+.managerHeading{
+    display: block;
+    width: 90%;
+    margin-left: 5%;
+    border-left: 5px solid #FF7070;
+    height: 60px;
+    text-align: left;
+    box-sizing: border-box;
+    padding: 2px 12px;
+    font-size: 1.1em;
+    overflow: hidden;
+}
+.managerButton{
+    display: block;
+    height: 30px;
+    width: 30%;
+    margin-left: 35%;
+    text-transform: uppercase;
+    text-align: center;
+    color: #FF7070;
+    border: 2px solid #FF7070;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-top: 3px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+/* ---------*/
 .spacer{
     display: block;
     width: 100%;
@@ -801,6 +866,19 @@ div#columnSearch :-ms-input-placeholder {
         overflow-y: hidden;
         overflow-x: hidden;
     }
+    #citySelect ul{
+    position: relative;
+    display: block;
+    list-style: none;
+    margin: 0;
+    box-sizing: border-box;
+    padding-top: 15px;
+    text-align: center;
+    width: 100%;
+    height: 60px;
+    white-space:nowrap;
+    overflow: hidden;
+    }
     #citySelectList li{
         width: 150px !important;
         display: inline-block !important;
@@ -837,6 +915,9 @@ div#columnSearch :-ms-input-placeholder {
      .searchbar{
         height: 80px;
     }
+    .managerHeading{
+        font-size: 0.8em;
+    }
     #listofConcerts{
         /* Firefox */
         height: -moz-calc(100% - 98px);
@@ -860,6 +941,11 @@ div#columnSearch :-ms-input-placeholder {
     /* ------ RESULT ELEMENT ------- */
     .resultElement{
         height: 200px;
+    }
+    .managerHeading{
+        margin-top: 5%;
+        font-size: 1em;
+        height: 100px;
     }
     .photoElement{
         height: 100px;
@@ -897,6 +983,30 @@ div#columnSearch :-ms-input-placeholder {
     .resultElement{
         height: 300px;
     }
+    #citySelect{
+        display: none;
+    }
+    header{
+        height: 80px;
+    }
+    section{
+        /* Firefox */
+    height: -moz-calc(100% - 80px);
+    /* WebKit */
+    height: -webkit-calc(100% - 80px);
+    /* Opera */
+    height: -o-calc(100% - 80px);
+    /* Standard */
+    height: calc(100% - 80px);
+    }
+    .managerHeading{
+        margin-top: 10%;
+        height: 150px;
+        font-size: 1em;
+    }
+    .managerButton{
+        margin-bottom: -100px;
+    }
     .whenElement{
         display: inline-block;
         height: 100px;
@@ -921,6 +1031,9 @@ div#columnSearch :-ms-input-placeholder {
         color: #fff;
     }
     #popup{
+        position: absolute;
+        top: 2.5%;
+        height: 95%;
         left: 1%;
         width: 98%;
     }
