@@ -692,9 +692,12 @@ function loadConcertForManager(){
                 },
 		  'contentType' : "application/x-www-form-urlencoded",
 		  'success' : function (json){
-              var length = results.length;
+            
+			var length = results.length;
+            sum = 0;
             for(var i = 0; i < json.events.length; i++){
                 var value = json.events[i];
+                sum += value.tickets.earned;
                 results[length + i] = value;
                 var arr = value.stringDate.split('-');
 			    var element = 
@@ -708,12 +711,6 @@ function loadConcertForManager(){
                  $(".ticketsResultList").append(element);
 		  };
             //Ticekts sold sum 
-            console.log(json);
-            sum = 0;
-            for(var ticket in json.tickets)
-            {
-               sum += json.tickets[ticket].earned;
-            }
             $(".soldNumber").append(sum + '€');
 
           // Handler for strat ticket sell button
@@ -1327,8 +1324,8 @@ function addPropagationElements(json){
     var length = results.length;
     
     for(var i = 0; i < json.events.length; i++){
+    	var value = json.events[i];
         results[length + i] = value;
-        var value = json.events[i];
         var arr = value.stringDate.split('-');
         var element = 
             '<span class="propagationElement">'+
