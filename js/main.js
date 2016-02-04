@@ -357,14 +357,16 @@ function setSelector(citySource){
     $("#citySelectList").empty();
     $.each(citySource, function(key, city){
         $("#citySelectList").append('<li>' + city + '</li>');
-            // Load by city
-            $("#citySelectList li").on('click', function(){
-                city = $(this).text();
-                selectLoad = byCity;
-                emptyContainerAddSpinner();
-                removeAllMarkers();
-                loadConcertByCity(city);
-            });
+    });
+    
+ // Load by city
+    $("#citySelectList li").on('click', function(){
+    	$('.outer').scrollTop(0);
+        city = $(this).text();
+        selectLoad = byCity;
+        emptyContainerAddSpinner();
+        removeAllMarkers();
+        loadConcertByCity(city);
     });
 }
 // Empty container before load
