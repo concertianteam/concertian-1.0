@@ -256,6 +256,20 @@ section{
     height: calc(100% - 20px);
     overflow-y: hidden;
 }
+#seat-map{
+    position: relative;
+    display: block;
+    width: 100%;
+     /* Firefox */
+    height: -moz-calc(100% - 20px);
+    /* WebKit */
+    height: -webkit-calc(100% - 20px);
+    /* Opera */
+    height: -o-calc(100% - 20px);
+    /* Standard */
+    height: calc(100% - 20px);
+    overflow-y: hidden;
+}
 #close{
     display: block;
     width: 100%;

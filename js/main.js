@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	// 
     //ScrolBar
     $(".outer").perfectScrollbar();    
     $("#citySelect ul").perfectScrollbar({
@@ -467,7 +468,8 @@ function addLike(eventID){
 }
 
 // Buy tickets form
-function buyTickets(eventID, price, origin){
+function buyTickets(eventID, price, origin, orderSeat){
+	if(orderSeat != 1){
     var elementTicketForm =
         '<span id="close">'+
             '<span class="closebutton">'+
@@ -597,6 +599,55 @@ function buyTickets(eventID, price, origin){
         window.alert(language.checkboxWarning);
     }
     });
+	}
+	else{
+		console.log("Hello wolrd!");
+		var elementOrderSeat = '<span id="seat-map"></span>';
+		$("#popup").append(elementOrderSeat);
+		$("#popup").fadeIn(100);
+		var sc = $('#seat-map').seatCharts({
+        map: [
+            'aaaaaaaaaaaa',
+            'aaaaaaaaaaaa',
+            'bbbbbbbbbb__',
+            'bbbbbbbbbb__',
+            'bbbbbbbbbbbb',
+            'cccccccccccc'
+        ],
+        seats: {
+            a: {
+                price   : 99.99,
+                classes : 'front-seat' //your custom CSS class
+            }
+
+        },
+        click: function () {
+            if (this.status() == 'available') {
+                //do some stuff, i.e. add to the cart
+                return 'selected';
+            } else if (this.status() == 'selected') {
+                //seat has been vacated
+                return 'available';
+            } else if (this.status() == 'unavailable') {
+                //seat has been already booked
+                return 'unavailable';
+            } else {
+                return this.style();
+            }
+        }
+    });
+
+    //Make all available 'c' seats unavailable
+    sc.find('c.available').status('unavailable');
+
+    /*
+    Get seats with ids 2_6, 1_7 (more on ids later on),
+    put them in a jQuery set and change some css
+    */
+    sc.get(['2_6', '1_7']).node().css({
+        color: '#ffcfcf'
+    });
+	}
     $(".closebutton").on('click', function(){
         $("#popup").empty();
         $("#popup").hide();
@@ -727,8 +778,9 @@ function addElements(json){
         var eventID = value.id;
         var price = value.entry;
         var origin = value.state;
+		var orderSeat = 1;
         if(price != ""){
-            buyTickets(eventID, price, origin);
+            buyTickets(eventID, price, origin, orderSeat);
         }
     });
     
