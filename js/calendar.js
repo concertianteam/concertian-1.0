@@ -42,7 +42,32 @@ function initCalendar(language) {
         //default select
         $("#status_1").attr('checked', 'checked');
         $("#visible_1").attr('checked', 'checked');
-
+        // Radio handler
+        $("#status1").on('click', function(){
+           $(this).addClass("clicked");
+           $("#status2").removeClass("clicked");
+           $("#status_1").attr('checked', 'checked');
+           $("#status_2").attr('checked', false);
+        });
+        $("#status2").on('click', function(){
+           $(this).addClass("clicked");
+           $("#status1").removeClass("clicked");
+           $("#status_2").attr('checked', 'checked');
+           $("#status_1").attr('checked', false);
+        });
+        $("#visible1").on('click', function(){
+           $(this).addClass("clicked");
+           $("#visible0").removeClass("clicked");
+           $("#visible_1").attr('checked', 'checked');
+           $("#visible_0").attr('checked', false);
+        });
+        $("#visible0").on('click', function(){
+           $(this).addClass("clicked");
+           $("#visible1").removeClass("clicked");
+           $("#visible_0").attr('checked', 'checked');
+           $("#visible_1").attr('checked', false);
+        });
+        
         $('#deleteEvent').on('click', function(){
             $.ajax({
                 url: 'https://api.concertian.com/agents/events/' + $("#idEvent").val(),
@@ -71,6 +96,9 @@ function initCalendar(language) {
             });
             if(continueSave){
                 var eventId = $("#idEvent").val();
+                if($("#entry").val() == ""){
+                    $("#entry").val(0);
+                }
                 $.ajax({
                     url: 'https://api.concertian.com/agents/events' + (eventId ? '/' + eventId : ''),
                     method: eventId ? 'PUT' : 'POST',
@@ -94,12 +122,12 @@ function initCalendar(language) {
                     },
                     contentType: "application/x-www-form-urlencoded",
                     success: function (json) {
-                        alert('ulozene');
+                        alert('Podujatie bolo vytvorené.');
                         $("#mycalendar").trigger( "click" );
                     },
                     error: function (error) {
                         console.log(data);
-                        alert('chyba');
+                        alert('Nastala chyba. Skúste to ešte raz. Ďakujeme.');
                     }
                 });
             }
@@ -128,7 +156,7 @@ function renderCalendar(json){
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
-        defaultDate: '2016-01-12',
+        defaultDate: new Date(),
         eventLimit: true,
         events: eventsArr,
         eventClick: function(event) {
@@ -159,8 +187,10 @@ function renderEdit(eventId){
                 $("#note").val(data.note);
                 $("#performerEmail").val(data.performerEmail);
                 $("#performerPhoneNumber").val(data.performerPhoneNumber);
-                $("#status_" + data.status).attr('checked', 'checked');
+                $("#status_" + data.status).attr('checked', 'checked'); 
+                $("#status" + data.status).addClass("clicked");
                 $("#visible_" + data.visible).attr('checked', 'checked');
+                $("#visible" + data.status).addClass("clicked");
                 $("#deleteEvent").show();
             },
             contentType: "application/x-www-form-urlencoded"

@@ -1,10 +1,10 @@
 <?php
 include('../brainTreePhp/lib/Braintree.php');
 $nonceFromTheClient = $_POST['payment_method_nonce'];
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('zn8d4c74dbnp5ntw');
-Braintree_Configuration::publicKey('ttwrprnsj83thjjz');
-Braintree_Configuration::privateKey('a818cb5f3164585f31f4f03066f308c8');
+Braintree_Configuration::environment('production');
+Braintree_Configuration::merchantId('hfxvx6r3f8q9t29h');
+Braintree_Configuration::publicKey('b5vnvncpffqjyy7s');
+Braintree_Configuration::privateKey('f1a60679f1338ed27a3626b375229f2b');
 
 $customer = Braintree_Customer::create(array(
     "firstName" => $_POST["first_name"],

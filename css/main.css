@@ -1151,10 +1151,25 @@ span .fieldName{
 }
 .group p{
     display: inline-block;
-    width: 50% !important;
+    width: 49% !important;
     float: left;
     box-sizing: border-box;
-    padding: 0 10px;
+    padding: 0 0px;
+}
+#checkbox input{
+    visibility: hidden !important;
+}
+#checkbox label:hover { 
+    border-bottom: 2px solid #ffcd29;
+}
+.clicked{
+    border-bottom: 2px solid #ffcd29 !important;
+}
+#dateHalf{
+    float: left !important;
+}
+#timeHalf{
+    float: right !important;
 }
 #eventEditForm label{
     display: block;
@@ -1183,18 +1198,19 @@ span .fieldName{
     background-image: none;
     color: #283036;
 }
-#checkbox input{
-    display: block;
-    width: 100%;
-    text-align: left;
-    border-bottom: 10px;
-}
 #checkbox label{
     display: block;
     width: 100%;
     text-align: left;
-    border-bottom: none;
+    border-bottom: 10px;
+    cursor: pointer;
+}
+#checkbox label{
+    display: block;
+    width: 100%;
     margin-top: 10px;
+    border-bottom: 2px solid transparent;
+    text-align: center !important;
 }
 /* --------- Propagation ----------- */
 .propagationList{
@@ -1423,7 +1439,13 @@ li.eventAudience{
 .lientry{
     width: 10%;
 }
+.liavailable{
+    width: 10%;
+}
 .lisold{
+    width: 10%;
+}
+.lireservation{
     width: 10%;
 }
 .ticketsResultList{
@@ -1483,6 +1505,10 @@ li.eventAudience{
     width: 10%;
     text-align: center;
 }
+.ticketResult .ticketsavailable{
+    width: 10%;
+    text-align: center;
+}
 .ticketResult .beginSellingButton{
     display: block;
     font-size: 0.7em !important;
@@ -1491,6 +1517,12 @@ li.eventAudience{
     background: #ffbb33;
     color: #fff;
     cursor: pointer;
+}
+.ticketResult .reservation{
+    display: inline-block;
+    width: 10%;
+    height: 20px;
+    background: #ffbb33;
 }
 .length{
     font-size: 0;
@@ -1829,6 +1861,20 @@ li.eventAudience{
 .hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
   -webkit-transform: scale(1.05);
   transform: scale(1.05);
+}
+/* -------------- Reservation css stylesheet ------------ */
+#reservationPopup{
+    display: block;
+    position: absolute;
+    z-index: 10;
+    width: 500px;
+    height: 60%;
+    background: #ffbb33;
+    top: 20%;
+    left: 32%;
+    box-sizing: border-box;
+    padding: 2% 2%;
+    border-radius: 4px;
 }
 /* -------------- Upload css stylesheet ------------ */
 #popup{

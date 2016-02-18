@@ -61,7 +61,7 @@ div.loginBox{
 div.loginBox .header{
     position: relative;
     margin-left: 15px;
-    background: url('../img/sprite.png') no-repeat -239px 0;
+    background: url('../img/sprite.png') no-repeat -188px -2px;
 	width: 292px;
 	height: 35px;
 }
@@ -204,9 +204,9 @@ div#bottom_bar .send_invitation input[type="email"]:focus{
 }
 div#bottom_bar .send_invitation input[type="submit"]{
     display: inline-block;
-    background: url('../img/sprite.png')  no-repeat -109px -2px;
-	width: 22px;
-	height: 13px;
+    background: url('../img/sprite.png')  no-repeat -637px -5px;
+	width: 23px;
+	height: 17px;
     border:none;
 }
 div#bottom_bar ::-webkit-input-placeholder {
@@ -285,9 +285,9 @@ header{
 }
 #welcome_icon{
     display: block;
-    background: url('../img/sprite.png') -534px -2px;
-	width: 26px;
-	height: 24px;
+    background: url('../img/sprite.png') no-repeat -488px -3px;
+	width: 25px;
+	height: 23px;
     margin-left: 17px;
 }
 #statistics_icon{
@@ -307,6 +307,13 @@ header{
 #propagation_icon{
     display: block;
     background: url('../img/sprite.png') no-repeat -56px -2px;
+	width: 25px;
+	height: 23px;
+    margin-left: 17px;
+}
+#market_icon{
+    display: block;
+    background: url('../img/sprite.png') no-repeat -583px -2px;
 	width: 25px;
 	height: 23px;
     margin-left: 17px;
@@ -647,6 +654,7 @@ form#search{
     margin-top: 10px;
     box-sizing: border-box;
     padding-right: 15px;
+    color: #C3CBD9;
 }
 input[name="cityName"]{
     display: inline-block;
@@ -656,8 +664,7 @@ input[name="cityName"]{
     outline: none;
     text-align: center;
     font-size: 1em;
-    background: #253B55;
-    color: #C3CBD9;
+    background: transparent;
 }
 input[name="submit"]{
     display: inline-block;
@@ -671,6 +678,7 @@ input[name="submit"]{
     cursor: pointer;
 }
 #resultsList{
+    position: relative;
     display: block;
     width: 100%;
     height: -moz-calc(100% - 50px);
@@ -683,7 +691,7 @@ input[name="submit"]{
     box-sizing: border-box;
     padding-top: 0px; 
     padding-right: 5px;
-    overflow-y: scroll;
+    overflow: hidden;
 }
 .resultElement{
     display: block;
@@ -694,7 +702,7 @@ input[name="submit"]{
 .noDataResult{
 	text-align: center;
 	display: block;
-	padding-top: 35px;	
+	padding-top: 35px;
 }
 .firstPart{
     display: inline-block;
@@ -730,7 +738,7 @@ input[name="submit"]{
 }
 .eventPhototext{
     font-size: 0 !important;
-    visibility: hidden;
+    cursor: pointer;
 }
 .eventPhoto{
     display: block;
@@ -779,7 +787,7 @@ input[name="submit"]{
     display: block;
     width: 90%;
     height: 1px;
-    background: #f5f5f5;
+    background: #C3CBD9;
     margin: 5% 5%;
 } 
 #program_part{
@@ -810,7 +818,7 @@ input[name="submit"]{
     height: -o-calc(100% - 50px);
     /* Standard */
     height: calc(100% - 50px);
-    background: #253B55;
+    background: #F3F4F7;
 }
 #graph{
 	height: 100%;
@@ -856,6 +864,7 @@ input[name="submit"]{
 }
 .timeLineLine{
 	position: absolute;
+    z-index: 2;
 	top: 13px;
 	left: 50px;
 	width: 100%;
@@ -867,7 +876,7 @@ input[name="submit"]{
     width: -o-calc(100% - 50px);
     /* Standard */
     width: calc(100% - 50px);
-	height: 1px;
+	height: 2px;
 	background-color: #dadfe7;
 }
 .timeLineVertic{
@@ -877,15 +886,18 @@ input[name="submit"]{
 	display: block;
 }
 .timeLineLineVertic{
+    display: none;
 	position: absolute;
+    z-index: 1;
 	top: 0px;
 	left: 18px;
 	height: 100%;
-	width: 1px;
-	background-color: #dadfe7;
+	width: 2px;
+	background-color: #f5f5f5;
 }
 .venuePointChart{
     position: absolute;
+    z-index: 3;
     width: 15px;
     height: 15px;
     margin-left: -15px;
@@ -915,12 +927,12 @@ input[name="submit"]{
 /* --------- custom program table --------- */
 #custom_program_menu{
 	position: absolute;
-	z-index: 2;
+	z-index: 6;
 	display: none;
 	width: 200px;
 	height: auto;
-	background: #253B55;
-	border: 1px solid #f5f5f5;
+	background: #fff;
+	border: 1px solid #253B55;
 	border-radius: 4px;
 	overflow-y: scroll;
 	max-height: 400px;
@@ -1023,6 +1035,13 @@ input[name="submit"]{
     height: calc(100% - 50x);
     background: #253B55;
     margin-right: 0.5%;
+    padding: 0;
+    color: #C3CBD9;
+}
+.inline{
+    display: inline-block;
+    float: left;
+    width: 50%;
 }
 #myCalendar{
     display: inline-block;
@@ -1038,6 +1057,162 @@ input[name="submit"]{
     background: #253B55;
     box-sizing: border-box;
     padding: 1% 1%;
+}
+/*---------- Calendar formula ------- */
+#eventEditForm{
+    display: block;
+    height: 98%;
+    width: 100%;
+    box-sizing: border-box;
+}
+.actionButtons{
+    display: block;
+    width: 100%;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+#saveEvent,
+#cancelEvent{
+    display: inline-block;
+    width: 50%;
+    float: left;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: #253B55;
+    box-sizing: border-box; 
+    padding-left: 20%;
+    cursor: pointer;
+}
+#deleteEvent{
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    box-sizing: border-box;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    color: #253B55;
+}
+.deleteEventicon{
+    display: inline-block;
+    vertical-align: middle;
+    background: url('../img/sprite.png') no-repeat -764px -2px;
+	width: 19px;
+	height: 25px;
+}
+.deleteEventiconText{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.4em !important;
+    color: #ffbb33;
+}
+.saveEventicon{
+    display: block;
+    background: url('../img/sprite.png') no-repeat -516px -3px;
+	width: 24px;
+	height: 24px;
+}
+.cancelEventicon{
+    display: block;
+    background: url('../img/sprite.png') no-repeat -741px -3px;
+	width: 20px;
+	height: 22px;
+}
+.eventformInputs{
+    position: relative;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 15px;
+    height: -moz-calc(100% - 80px);
+    /* WebKit */
+    height: -webkit-calc(100% - 80px);
+    /* Opera */
+    height: -o-calc(100% - 80px);
+    /* Standard */
+    height: calc(100% - 80px);
+    overflow: hidden;
+}
+#eventEditForm p{
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+span .fieldName{
+    width: 100%;
+    left: 0;
+}
+.group{
+    display: block;
+    width: 100%;
+}
+.group p{
+    display: inline-block;
+    width: 49% !important;
+    float: left;
+    box-sizing: border-box;
+    padding: 0 0px;
+}
+#checkbox input{
+    visibility: hidden !important;
+}
+#checkbox label:hover { 
+    border-bottom: 2px solid #ffcd29;
+}
+.clicked{
+    border-bottom: 2px solid #ffcd29 !important;
+}
+#dateHalf{
+    float: left !important;
+}
+#timeHalf{
+    float: right !important;
+}
+#eventEditForm label{
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #DEE2E5;
+    padding: 8px 0px;
+    margin-top: -1px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0px, 0px, 0px);
+    transition: background-color 131ms linear 0s;
+}
+#eventEditForm input,
+#eventEditForm textarea{
+    display: block;
+    font-weight: 100;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 16px 0px 0px;
+    padding: 0px 14px;
+    width: 100%;
+    outline: 0px none;
+    border: medium none;
+    background-color: transparent;
+    background-image: none;
+    color: #C3CBD9;
+}
+#checkbox label{
+    display: block;
+    width: 100%;
+    text-align: left;
+    border-bottom: 10px;
+    cursor: pointer;
+}
+#checkbox label{
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    border-bottom: 2px solid transparent;
+    text-align: center !important;
 }
 /* --------- Propagation ----------- */
 .propagationList{
@@ -1057,7 +1232,8 @@ input[name="submit"]{
 .propagationList ul{
     list-style: none;
     margin: 0;
-    padding: 0;
+    box-sizing: border-box;
+    padding-left: 120px;
     height: 30px;
     text-align: center;
     box-sizing: border-box;
@@ -1067,6 +1243,7 @@ input[name="submit"]{
     display: inline-block;
     width: 120px;
     font-size: 0.8em;
+    overflow: hidden !important;
 }
 #detail{
     width: 200px !important;
@@ -1078,6 +1255,7 @@ input[name="submit"]{
     width: 20px;
 }
 #propagationElements{
+    position: relative;
     display: block;
     width: 100%;
     height: -moz-calc(100% - 30px);
@@ -1087,7 +1265,7 @@ input[name="submit"]{
     height: -o-calc(100% - 30px);
     /* Standard */
     height: calc(100% - 30x);
-    overflow-y: scroll;
+    overflow: hidden;
 }
 .propagationElement{
     display: block;
@@ -1127,11 +1305,12 @@ li.propagationeventPhoto{
 }
 .upload_icon{
     display: block;
-    background: url('../img/sprite.png') -216px -2px;
-	width: 20px;
-	height: 20px;
-    margin-left: 14px;
+    background: url('../img/sprite.png') -715px -3px;
+	width: 23px;
+	height: 23px;
+    margin-left: 13px;
     margin-top: 13px;
+    font-size: 0 !important;
 }
 li.eventDetail{
     width: 200px !important;
@@ -1143,15 +1322,6 @@ li.eventName{
 }
 li.eventAudience{
     color: #ffbb33;
-}
-.eventDelete{
-    display: block;
-    background: url('../img/sprite.png') no-repeat -166px -2px;
-	width: 20px;
-	height: 25px;
-    margin-left: 40%;
-    margin-top: 33px;
-    cursor: pointer;
 }
 #eventShareButton{
     display: none;
@@ -1215,6 +1385,264 @@ li.eventAudience{
     .eventphoto{
         display: none !important;
     }
+}
+/* -------------- Ticket Market ------------*/
+.eventList{
+    display: inline-block;
+    float: left;
+    /* Firefox */
+    width: -moz-calc(100% - 405px);
+    /* WebKit */
+    width: -webkit-calc(100% - 405px);
+    /* Opera */
+    width: -o-calc(100% - 405px);
+    /* Standard */
+    width: calc(100% - 405px);
+    /* Firefox */
+    height: -moz-calc(100% - 55px);
+    /* WebKit */
+    height: -webkit-calc(100% - 55px);
+    /* Opera */
+    height: -o-calc(100% - 55px);
+    /* Standard */
+    height: calc(100% - 55px);
+    background: #253B55;
+    border-radius: 4px;
+}
+.ticketLegend{
+    display: block;
+    width: 100%;
+    height: 50px;
+}
+.ticketLegend ul{
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.ticketLegend ul li{
+    display: inline-block;
+    font-size: 0.9em;
+    height: 50px;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 10px;
+}
+.lidate{
+    width: 10%;
+}
+.litime{
+    width: 10%;
+}
+.lieventName{
+    width: 40%;
+}
+.lientry{
+    width: 10%;
+}
+.liavailable{
+    width: 10%;
+}
+.lisold{
+    width: 10%;
+}
+.lireservation{
+    width: 10%;
+}
+.ticketsResultList{
+    position: relative;
+    display: block;
+    width: 100%;
+   /* Firefox */
+    height: -moz-calc(100% - 200px);
+    /* WebKit */
+    height: -webkit-calc(100% - 200px);
+    /* Opera */
+    height: -o-calc(100% - 200px);
+    /* Standard */
+    height: calc(100% - 200px);
+    box-sizing: border-box;
+    padding: 1% 2%;
+    overflow: hidden;
+}
+.createMerchantId{
+    display: block;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 20%;
+    text-align: center;
+    font-size: 1.2em;
+}
+.ticketResult{
+    display: block;
+    width: 100%;
+    height: 100px;
+    margin: 10px 0px;
+    padding: 0;
+    text-align: center;
+}
+.ticketResult span{
+    display: inline-block;
+}
+.ticketResult .date{
+    width: 10%;
+    text-align: center;
+}
+.ticketResult .time{
+    width: 10%;
+    text-align: center;
+}
+.ticketResult .concertName{
+    width: 40%;
+    text-align: center;
+    margin: 0 1.5%;
+    font-weight: 100;
+}
+.ticketResult .entryPrice{
+    width: 10%;
+    text-align: center;
+}
+.ticketResult .sold{
+    width: 10%;
+    text-align: center;
+}
+.ticketResult .ticketsavailable{
+    width: 10%;
+    text-align: center;
+}
+.ticketResult .beginSellingButton{
+    display: block;
+    font-size: 0.7em !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background: #ffbb33;
+    color: #fff;
+    cursor: pointer;
+}
+.ticketResult .reservation{
+    display: block;
+    width: 10%;
+    background: #ffbb33;
+}
+.length{
+    font-size: 0;
+}
+.ticketSoldOverview{
+    display: block;
+    width: 100%;
+    margin-bottom: 30px;
+    height: 120px;
+    border-top: 1px solid #ccc;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+.soldText{
+    display: block;
+    font-size: 1.8em;
+    font-weight: 100;
+}
+.soldNumber{
+    display: block;
+    font-size: 2.4em;
+}
+.ticketForm{
+    display: inline-block;
+    float: right ;
+    width: 400px;
+    /* Firefox */
+    height: -moz-calc(100% - 55px);
+    /* WebKit */
+    height: -webkit-calc(100% - 55px);
+    /* Opera */
+    height: -o-calc(100% - 55px);
+    /* Standard */
+    height: calc(100% - 55px);
+    background: #253B55;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 1% 2%;
+}
+.formTitle{
+    display: block;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    font-size: 1em;
+    box-sizing: border-box;
+    padding-top: 10px;
+}
+#placeOrder{
+    position: relative;
+    display: block;
+    /* Firefox */
+    height: -moz-calc(100% - 50px);
+    /* WebKit */
+    height: -webkit-calc(100% - 50px);
+    /* Opera */
+    height: -o-calc(100% - 50px);
+    /* Standard */
+    height: calc(100% - 50px);
+    overflow: hidden;
+}
+.custom_input_label{
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #DEE2E5;
+    padding: 8px 0px;
+    margin-top: -1px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0px, 0px, 0px);
+    transition: background-color 131ms linear 0s;
+}
+.fieldName{
+    font-size: 1em;
+    position: relative;
+    left: 14px;
+    top: 14px;
+    display: block;
+    opacity: 1;
+    transform: translate3d(0px, 0px, 0px);
+    transition: transform 0s ease 0s, opacity 0s ease 0s;
+    font-weight: 100;
+}
+#sellTickets input,
+#sellTickets select,
+#sellTickets textarea,
+#placeOrder input,
+#placeOrder select,
+#placeOrder textarea{
+    display: block;
+    font-weight: 100;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 16px 0px 0px;
+    padding: 0px 14px;
+    width: 100%;
+    outline: 0px none;
+    border: medium none;
+    background-color: transparent;
+    background-image: none;
+    color: #C3CBD9;
+}
+#placeOrder input[type="submit"],
+#sellTickets input[type="submit"]{
+    width: 100%;
+    height: 45px;
+    border: none;
+    border-radius: 4px;
+    background: #ffbb33;
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: 100;
+	cursor: pointer;
+}
+#placeOrder input[type="submit"]:hover,
+#sellTickets input[type="submit"]:hover{
+    background: #ffc95c;
 }
 /* -------------- Manage account ----------- */
 .paymentBox{
@@ -1282,7 +1710,7 @@ li.eventAudience{
 .payment_box{
     display: block;
     width: 100%;
-    background: #fff;
+    background: #253B55;
     border-radius: 4px;
     box-sizing: border-box;
     padding: 20px 20px;
@@ -1323,7 +1751,7 @@ li.eventAudience{
     transition: background-color 131ms linear 0s;
 }
 .fieldName{
-    color: #C3CBD9;
+    color: #6E787F;
     font-size: 1em;
     position: relative;
     left: 14px;
@@ -1434,4 +1862,117 @@ li.eventAudience{
 .hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
   -webkit-transform: scale(1.05);
   transform: scale(1.05);
+}
+/* -------------- Upload css stylesheet ------------ */
+#popup{
+    display: block;
+    position: absolute;
+    z-index: 10;
+    width: 500px;
+    height: 60%;
+    background: #1F3147;
+    top: 20%;
+    left: 32%;
+    box-sizing: border-box;
+    padding: 2% 2%;
+    border-radius: 4px;
+}
+#closeButton{
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 30px;
+    z-index: 100;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    cursor: pointer;
+};
+#uploadOuter{
+    display: block;
+    width: 100%;
+    /* Firefox */
+    height: -moz-calc(100% - 10px);
+    /* WebKit */
+    height: -webkit-calc(100% - 10px);
+    /* Opera */
+    height: -o-calc(100% - 10px);
+    /* Standard */
+    height: calc(100% - 10x);
+    text-align: center;
+}
+.uploadHeader{
+    display: block;
+    width: 100%;
+    height: 30px;
+    color: #fff;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    font-weight: 100;
+}
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  background: #ffc95c;
+  color: #fff;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+#progress{
+    display: block;
+    width: 100%;
+    height: 30px;
+}
+#files{
+    display: block;
+    position: relative;
+    text-align: center !important;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+#files span{
+    color: #fff;
+}
+.btn-primary{
+    display: block;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    background: #ffc95c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.3em;
+    margin-left: 38%;
+    margin-top: 2%;
+}
+.progress-bar-success {
+    background-color: #5CB85C;
+}
+.progress-bar {
+    float: left;
+    width: 0px;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: #FFF;
+    text-align: center;
+    background-color: #ffc95c;
+    box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.15) inset;
+    transition: width 0.6s ease 0s;
 }
