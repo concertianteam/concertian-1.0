@@ -95,7 +95,7 @@ $(document).ready(function() {
             }
 	});
     
-    	// AUTOCOMPLETE
+    // AUTOCOMPLETE
 	function getFields(results){
     	return results;
 	}
@@ -285,6 +285,7 @@ var slovak = {
     searchplaceholder2:"Aký klub hľadáme?",
     by:"u",
     in:"v",
+	free:"zadarmo",
     name:"Meno",
     lastname:"Priezvisko",
     contactemail:"Email",
@@ -308,6 +309,7 @@ var english = {
     searchplaceholder2:"Insert club name",
     by:"by",
     in:"in",
+	free:"free",
     name:"Name",
     lastname:"Surname",
     contactemail:"Email",
@@ -331,6 +333,7 @@ var czech = {
     searchplaceholder2:"Jaký klub hledáme?",
     by:"u",
     in:"v",
+	free:"zdarma",
     name:"Jméno",
     lastname:"Příjmení",
     contactemail:"Email",
@@ -469,7 +472,6 @@ function addLike(eventID){
 
 // Buy tickets form
 function buyTickets(eventID, price, origin, orderSeat){
-	if(orderSeat != 1){
     var elementTicketForm =
         '<span id="close">'+
             '<span class="closebutton">'+
@@ -599,55 +601,6 @@ function buyTickets(eventID, price, origin, orderSeat){
         window.alert(language.checkboxWarning);
     }
     });
-	}
-	else{
-		console.log("Hello wolrd!");
-		var elementOrderSeat = '<span id="seat-map"></span>';
-		$("#popup").append(elementOrderSeat);
-		$("#popup").fadeIn(100);
-		var sc = $('#seat-map').seatCharts({
-        map: [
-            'aaaaaaaaaaaa',
-            'aaaaaaaaaaaa',
-            'bbbbbbbbbb__',
-            'bbbbbbbbbb__',
-            'bbbbbbbbbbbb',
-            'cccccccccccc'
-        ],
-        seats: {
-            a: {
-                price   : 99.99,
-                classes : 'front-seat' //your custom CSS class
-            }
-
-        },
-        click: function () {
-            if (this.status() == 'available') {
-                //do some stuff, i.e. add to the cart
-                return 'selected';
-            } else if (this.status() == 'selected') {
-                //seat has been vacated
-                return 'available';
-            } else if (this.status() == 'unavailable') {
-                //seat has been already booked
-                return 'unavailable';
-            } else {
-                return this.style();
-            }
-        }
-    });
-
-    //Make all available 'c' seats unavailable
-    sc.find('c.available').status('unavailable');
-
-    /*
-    Get seats with ids 2_6, 1_7 (more on ids later on),
-    put them in a jQuery set and change some css
-    */
-    sc.get(['2_6', '1_7']).node().css({
-        color: '#ffcfcf'
-    });
-	}
     $(".closebutton").on('click', function(){
         $("#popup").empty();
         $("#popup").hide();
@@ -699,8 +652,9 @@ function addElements(json){
                     '<span class="venueNameText"><span id="by">'+language.by+'</span>'+" "+'<strong>'+ value.venueName +'</strong>'+" "+'<span id="in">'+language.in+'</span>'+" "+'<strong>'+ value.city +'</strong></span>'+
                 '</span>'+
             '</span>'+
-            '<span class="detailElement'+(value.detail == "" ? 'hide' : '')+'">'+ value.detail +'<span class="lenght">'+ (length + i) +'</span></span>'+
-            '<span id="allDetails"></span>'+
+            '<span id="infButton">'+
+				'<span class="infButtonIcon"></span>'+
+			'</span>'+
             '<span class="buttonsElement">'+
                 '<ul>'+
                     '<li>'+
@@ -709,7 +663,7 @@ function addElements(json){
                         '</span>'+
                     '</li>'+
                     '<li>'+
-                        '<span class="price">' + (value.entry == 0 ? 'free' : value.entry) + '</span>'+
+                        '<span class="price">' + (value.entry == 0 ? language["free"] : value.entry) + '</span>'+
             '<span class="price_tag '+(value.entry == 0 ? 'hide' : '')+'">'+ (value.state === 'Czech Republic' ? 'czk':'eur') + '</span>'+
                     '</li>'+
                 '</ul>'+
