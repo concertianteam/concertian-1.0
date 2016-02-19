@@ -571,7 +571,7 @@ function setLanguage(){
     $(".lieventName").text(language["lieventName"]);
     $(".lientry").text(language["lientry"]);
     $(".lisold").text(language["lisold"]);
-    //$(".lireservation").text(language["lireservation"]);
+    $(".lireservation").text(language["lireservation"]);
     $(".liavailable").text(language["availableText"]);
     $(".soldText").text(language["soldText"]);
     $("#placeOrderSubmit").attr("placeholder", language["placeOrderSubmit"]);
@@ -723,10 +723,10 @@ function loadConcertForManager(){
                     '<input type="hidden" id="idEvent" name="idEvent" value="'+ value.idEvent +'">'+
                     '<span class="ticketsavailable">'+(value.tickets == null ? '0' : quantity)+'</span>'+
                     '<span class="sold" data-event="'+value.idEvent+'">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
+					'<span class="reservation"></span>'+
 			'</span>'+
-			'<span id="eom'+value.idEvent+'" class="email_overview_menu"></span>'/*+
-			'<span class="reservation"></span>'+
-			'</span>'*/;
+			'<span id="eom'+value.idEvent+'" class="email_overview_menu"></span>'+
+			'</span>';
 					$(".ticketsResultList").append(element);
 			}
 				$(".ticketResult").each(function(){
@@ -1449,10 +1449,26 @@ var mapValue = ["a"];
 var entry = "";
 var sc;
 // Create reservations
-/*
 function createReservation(){
     $.getScript( "js/jquery.seat-charts.js", function(){
         $("#contentPanel").append('<span id="reservationPopup"></span>');
+        sc = $('#reservationPopup').seatCharts({
+			map: mapValue,
+			seats: {
+				a: {
+					price   : entry,
+					classes : 'front-seat' //your custom CSS class
+				}
+			}, 
+		});
+		//Handlers
+		$("#addrow").on('click', function(){
+			mapValue.push("a");
+			 console.log(mapValue);
+			 
+			 $.getScript( "js/jquery.seat-charts.js", function(){
+        $("#contentPanel").empty();
+				 $("#contentPanel").append('<span id="reservationPopup"></span>');
         sc = $('#reservationPopup').seatCharts({
         map: mapValue
         ,
@@ -1463,20 +1479,9 @@ function createReservation(){
             }
         }, 
     });
+	});
+			 console.log($(this).children().text());
+	 });
 		
-		//Handlers
-		 $("#addrow").on('click', function(){
-			mapValue.push("a");
-			 console.log(mapValue);
-			 
-			 $('#reservationPopup').seatCharts({
-        map: mapValue
-        ,
-    });
-			 		 
-
-			console.log($(this).children().text());
-		 });
-});
+	});
 }
-*/

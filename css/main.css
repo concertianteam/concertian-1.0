@@ -1444,6 +1444,7 @@ li.eventAudience{
     text-align: center;
     box-sizing: border-box;
     padding-top: 10px;
+	float: left;
 }
 .lidate{
     width: 10%;
@@ -1452,7 +1453,7 @@ li.eventAudience{
     width: 10%;
 }
 .lieventName{
-    width: 40%;
+    width: 35%;
 }
 .lientry{
     width: 10%;
@@ -1464,7 +1465,7 @@ li.eventAudience{
     width: 10%;
 }
 .lireservation{
-    width: 10%;
+    width: 15%;
 }
 .ticketsResultList{
     position: relative;
@@ -1500,6 +1501,7 @@ li.eventAudience{
 }
 .ticketResult span{
     display: inline-block;
+	float: left;
 }
 .ticketResult .date{
     width: 10%;
@@ -1510,9 +1512,9 @@ li.eventAudience{
     text-align: center;
 }
 .ticketResult .concertName{
-    width: 40%;
+    width: 35%;
     text-align: center;
-    margin: 0 1.5%;
+    margin: 0;
     font-weight: 100;
 }
 .ticketResult .entryPrice{
@@ -1539,7 +1541,7 @@ li.eventAudience{
 }
 .ticketResult .reservation{
     display: inline-block;
-    width: 10%;
+    width: 15%;
     height: 20px;
     background: #ffbb33;
 }
