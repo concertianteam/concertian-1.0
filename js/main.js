@@ -68,6 +68,7 @@ var slovak = {
     begin:"ZAČAŤ",
     update:"UPRAVIŤ POČET",
     startSelling:"SPUSTIŤ PREDAJ",
+	notSoldany:"Nula predaných",
     soldText:"Do tohto momentu ste predali lístky spolu za",
     availableText:"POČET",
     formTitle:"VYPLŇTE FORMULÁR A PREDÁVAJTE LÍSTKY",
@@ -141,6 +142,7 @@ var english = {
     begin:"BEGIN",
     update:"UPDATE QUANTITY",
     startSelling:"START SELLING",
+	notSoldany:"Any sold",
     soldText:"Until know, you have earned",
     availableText:"QUANTITY",
     formTitle:"Start selling your tickets",
@@ -214,6 +216,7 @@ var czech = {
     begin:"ZAČÍT",
     update:"UPRAVIT POČET",
     startSelling:"SPUSTIT PRODEJ",
+	notSoldany:"Nula prodaných",
     soldText:"Do tohoto momentu jste prodali lístky spolu za",
     availableText:"POČET",
     formTitle:"VYPLŇTE FORMULÁŘ A PRODÁVEJTE LÍSTKY",
@@ -568,7 +571,7 @@ function setLanguage(){
     $(".lieventName").text(language["lieventName"]);
     $(".lientry").text(language["lientry"]);
     $(".lisold").text(language["lisold"]);
-    $(".lireservation").text(language["lireservation"]);
+    //$(".lireservation").text(language["lireservation"]);
     $(".liavailable").text(language["availableText"]);
     $(".soldText").text(language["soldText"]);
     $("#placeOrderSubmit").attr("placeholder", language["placeOrderSubmit"]);
@@ -719,23 +722,34 @@ function loadConcertForManager(){
                     '<span class="entryPrice">'+value.entry+'</span>'+
                     '<input type="hidden" id="idEvent" name="idEvent" value="'+ value.idEvent +'">'+
                     '<span class="ticketsavailable">'+(value.tickets == null ? '0' : quantity)+'</span>'+
-                    '<span class="sold">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
-                    '<span class="reservation"></span>'+
-                    '</span>';
-                 $(".ticketsResultList").append(element);
-		  };
-            //Ticekts sold sum 
-            $(".soldNumber").empty();
-            $(".soldNumber").append(sum + '€');
+                    '<span class="sold" data-event="'+value.idEvent+'">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
+			'</span>'+
+			'<span id="eom'+value.idEvent+'" class="email_overview_menu"></span>'/*+
+			'<span class="reservation"></span>'+
+			'</span>'*/;
+					$(".ticketsResultList").append(element);
+			}
+				$(".ticketResult").each(function(){
+					var idEvent = $(this).find("#idEvent").val();
+					boughtTickets(idEvent);
+				});
+		  
+		  //Sold tickets email customer overview
+			$(".sold").click(function() {
+			  $("#eom"+$(this).data("event")).slideToggle();
+        		return false;
+			});
+			  
+          //Ticekts sold sum 
+		  $(".soldNumber").empty();
+		  $(".soldNumber").append(sum + '€');
 
           // Handler for strat ticket sell button
           $(".beginSellingButton").on('click', function(){
               $("#placeOrderTicketSubmit").show();
               $("#updateorderSubmit").hide();
               var price = results[$(this).find(".length").text()].entry;
-              console.log(price);
               var idEvent = results[$(this).find(".length").text()].idEvent;
-              console.log(idEvent);
               $("input[name=priceofTicket]").val(price);
               $("#eventSelect option").each(function(){
                 if($(this).val()==idEvent){
@@ -1085,7 +1099,6 @@ function submitUpdatesellTickets(){
     $("#sellTickets").submit(function(event){
         event.preventDefault();
         var apiKey = Cookies.get('apiKey');
-        console.log(apiKey);
         var formData = {
     'idEvent'          : $('select[name=eventSelect]').val(),
     'availableTickets' : $('input[name=numberofTickets]').val(),
@@ -1107,6 +1120,35 @@ function submitUpdatesellTickets(){
 	  	}
     });
     });   
+}
+// Show bought tickets
+function boughtTickets(idEvent){
+$.ajax({ 
+	  'url' : 'https://api.concertian.com/tickets/bought/'+idEvent+'',
+	  'method' : 'GET',
+	  'beforeSend': function (request)
+			{
+				request.setRequestHeader("Authorization", apiKey);
+				request.withCredentials = true;
+			},
+	  'contentType' : "application/x-www-form-urlencoded",
+	  'success' : function (json){
+		  if(json.success != true){
+			$("#eom"+idEvent).append('<span class="resultEmail">'+language["notSoldany"]+'</span>');
+		  }
+		  else{
+			for(var i = 0; i < json.emails.length; i++){
+				var value = json.emails[i];
+				var element = '<span class="resultEmail">'+ value.email+'</span>';
+				$("#eom"+idEvent).append(element);
+			}
+		  }
+	  },
+	  'error': function(error){
+		console.log('Error. ' + error);
+		$(".spinner").remove();
+	  },
+	});
 }
 // addElements
 function addElements(json){
@@ -1402,57 +1444,39 @@ function addPropagationElements(json){
         $("#eventAudience").hide();
     });
 }
+
+var mapValue = ["a"];
+var entry = "";
+var sc;
 // Create reservations
+/*
 function createReservation(){
     $.getScript( "js/jquery.seat-charts.js", function(){
         $("#contentPanel").append('<span id="reservationPopup"></span>');
-         var sc = $('#reservationPopup').seatCharts({
-        map: [
-            'aaaaaaaaaaaaaa',
-            'aaaaaaaaaaaaaaaaaaaa',
-            'bbbbbbbbbb____',
-            'bbbbbbbbbb__bb',
-            'bbbbbbbbbbbb__',
-            'cccccccccccccc'
-        ],
+        sc = $('#reservationPopup').seatCharts({
+        map: mapValue
+        ,
         seats: {
             a: {
-                price   : 99.99,
+                price   : entry,
                 classes : 'front-seat' //your custom CSS class
             }
-            b: {
-                price   : 12.99,
-                classes : 'front-seat' //your custom CSS class
-            }
-
-        },
-        click: function () {
-            if (this.status() == 'available') {
-                //do some stuff, i.e. add to the cart
-                return 'selected';
-            } else if (this.status() == 'selected') {
-                //seat has been vacated
-                return 'available';
-            } else if (this.status() == 'unavailable') {
-                //seat has been already booked
-                return 'unavailable';
-            } else {
-                return this.style();
-            }
-        }
+        }, 
     });
-
-    //Make all available 'c' seats unavailable
-    sc.find('c.available').status('unavailable');
-
-    /*
-    Get seats with ids 2_6, 1_7 (more on ids later on),
-    put them in a jQuery set and change some css
-    */
-    sc.get(['2_6', '1_7']).node().css({
-        color: '#ffbb33'
+		
+		//Handlers
+		 $("#addrow").on('click', function(){
+			mapValue.push("a");
+			 console.log(mapValue);
+			 
+			 $('#reservationPopup').seatCharts({
+        map: mapValue
+        ,
     });
+			 		 
 
-    console.log('Seat 1_2 costs ' + sc.get('1_2').data().price + ' and is currently ' + sc.status('1_2'));
-    });
+			console.log($(this).children().text());
+		 });
+});
 }
+*/

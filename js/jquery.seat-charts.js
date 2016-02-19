@@ -359,6 +359,7 @@
 			var $row = $('<div></div>').addClass('seatCharts-row');
 				
 			if (settings.naming.left) {
+				$row.append('<div id="addrow">+<span id="row">'+settings.naming.rows[row]+'</div>');
 				$row.append(
 					$('<div></div>')
 						.addClass('seatCharts-cell seatCharts-space')
