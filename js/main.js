@@ -1,5 +1,117 @@
+var page = 0;
+var all = 0;
+var byCity = 1;
+var byClub = 2;
+var markers = [];
+var results = [];
+var mouseX,mouseY,windowWidth,windowHeight;
+var popupLeft,popupTop;
+var citySource;
+var citySK = [
+    "Bratislava",
+    "Nitra",
+    "Banská Bystrica",
+    "Martin",
+    "Žilina",
+    "Košice",
+    "Prešov"
+];
+var cityEN = [
+    "Bratislava",
+    "Praha",
+    "Brno",
+    "Košice",
+    "Prešov",
+    "Ostrava",
+    "Plzeň",
+];
+var cityCZ = [
+    "Praha",
+    "Brno",
+    "Ostrava",
+    "Plzeň",
+    "Liberec",
+    "Olomouc",
+    "Ústí nad Labem"
+];
+var language;
+var slovak = {
+    managerHeading:"Propagácia koncertov, predaj vstupeniek, výber správneho termínu a správa koncertného programu systémom concertian FOR MANAGERS",
+    managerButton:"Viac tu",   
+    byclub:"KLUB",
+    bycity:"MESTO",
+    searchplaceholder1:"Kde hľadáme?",
+    searchplaceholder2:"Aký klub hľadáme?",
+    by:"u",
+    in:"v",
+	free:"zadarmo",
+    name:"Meno",
+    lastname:"Priezvisko",
+    contactemail:"Email",
+    checkboxText:"Súhlasím s <a>obchodnými podmienkami</a> platnými pre kúpu vstupenky concertian",
+    quantityLegend:"Množstvo",
+    priceLegend:"Jednotková cena",
+    submitForm:"KÚPIŤ VSTUPENKU",
+    responsebox: "ešte nezahájil predaj vstupeniek",
+    submitPayment:"Zaplatiť",
+    noResult:"Žiadne výsledky hľadania",
+    checkemail: "Vstupenku nájdete vo svojej emailovej schránke",
+    checkemailWrong: "Došlo k chybe, skúste to ešte raz. Ďakujeme.",
+    checkboxWarning: "Zabudli ste potvrdiť svoj súhlas s obchodnými podmienkami. Ďakujeme.",
+    termsheading:"Obchodné podmienky concertian",
+};
+var english = {
+    managerHeading:"Promote your events, sell online tickets, always choose the best term and manage your venue program with concertian FOR MANAGERS",
+    managerButton:"Discover more",
+    byclub:"CLUB",
+    bycity:"CITY",
+    searchplaceholder1:"Insert city",
+    searchplaceholder2:"Insert club name",
+    by:"by",
+    in:"in",
+	free:"free",
+    name:"Name",
+    lastname:"Surname",
+    contactemail:"Email",
+    checkboxText:"I agree with <a>terms and conditions</a> applying to this service",
+    quantityLegend:"Units",
+    priceLegend:"Unit price",
+    submitForm:"BUY TICKETS",
+    submitPayment:"PAY",
+    responsebox: "has not yet launched selling",
+    noResult:"No resulsts",
+    checkemail: "Ticket should be in your mailbox in short time",
+    checkemailWrong: "An mistake occurred, please try it again",
+    checkboxWarning: "You have forgotten to agree with terms and services for this service. Thank you.",
+    termsheading:"Terms and services concertian",
+};
+var czech = {
+    managerHeading:"Propagace koncertů, prodej vstupenek, výběr správného termínu a správa koncertního programu systémem concertian FOR MANAGERS",
+    managerButton:"Více zde",
+    byclub:"KLUB",
+    bycity:"MĚSTO",
+    searchplaceholder1:"Kde hledáme?",
+    searchplaceholder2:"Jaký klub hledáme?",
+    by:"u",
+    in:"v",
+	free:"zdarma",
+    name:"Jméno",
+    lastname:"Příjmení",
+    contactemail:"Email",
+    checkboxText:"Souhlasím s <a>obchodními podmínkami</a> platnými pro nákup vstupenky concertian",
+    quantityLegend:"Množství",
+    priceLegend:"Jednotková cena",
+    submitForm:"KOUPIT VSTUPENKU",
+    submitPayment:"Zaplatit",
+    responsebox: "ještě nespustil prodej vstupenek",
+    noResult:"Žádné výsledky hledání",
+    checkemail: "Vstupenku najdete ve své emailové schránce",
+    checkemailWrong: "Došlo k chybě, zkuste to ještě jednou. Děkujeme.",
+    checkboxWarning: "Zapomněli jste potvrdit svůj souhlas s obchodními podmínkami. Děkujeme.",
+    termsheading:"Obchodní podmínky concertian",
+};
+
 $(document).ready(function() {
-	// 
     //ScrolBar
     $(".outer").perfectScrollbar();    
     $("#citySelect ul").perfectScrollbar({
@@ -84,18 +196,26 @@ $(document).ready(function() {
             removeAllMarkers();
             if(!$("#search_input").val()){
                 loadAllConcert();
+                console.log("3");
             }else{
-                if(selectLoad == byCity){
-                    var city = $("#search_input").val();
-                    loadConcertByCity(city);
-                }else if(selectLoad == byClub){
-                    var selectedClubId = $("#clubId").val();
-                    loadConcertByClub(selectedClubId);
+                switch(selectLoad){
+                    case byCity:
+                        var city = $("#search_input").val();
+                        loadConcertByCity(city);
+                        break;
+                    case byClub:
+                        var selectedClubId = $("#clubId").val();
+                        loadConcertByClub(selectedClubId);
+                        break;
+                    default:
+                        var city = $("#search_input").val();
+                        loadConcertByCity(city);
+                        break;
                 }
             }
 	});
     
-    // AUTOCOMPLETE
+    	// AUTOCOMPLETE
 	function getFields(results){
     	return results;
 	}
@@ -237,117 +357,7 @@ $(document).ready(function() {
 	}
 	(document, "script", "twitter-wjs"));
     
-});
-                  
-var page = 0;
-var all = 0;
-var byCity = 1;
-var byClub = 2;
-var markers = [];
-var results = [];
-var mouseX,mouseY,windowWidth,windowHeight;
-var popupLeft,popupTop;
-var citySource;
-var citySK = [
-    "Bratislava",
-    "Nitra",
-    "Banská Bystrica",
-    "Martin",
-    "Žilina",
-    "Košice",
-    "Prešov"
-];
-var cityEN = [
-    "Bratislava",
-    "Praha",
-    "Brno",
-    "Košice",
-    "Prešov",
-    "Ostrava",
-    "Plzeň",
-];
-var cityCZ = [
-    "Praha",
-    "Brno",
-    "Ostrava",
-    "Plzeň",
-    "Liberec",
-    "Olomouc",
-    "Ústí nad Labem"
-];
-var language;
-var slovak = {
-    managerHeading:"Propagácia koncertov, predaj vstupeniek, výber správneho termínu a správa koncertného programu systémom concertian FOR MANAGERS",
-    managerButton:"Viac tu",   
-    byclub:"KLUB",
-    bycity:"MESTO",
-    searchplaceholder1:"Kde hľadáme?",
-    searchplaceholder2:"Aký klub hľadáme?",
-    by:"u",
-    in:"v",
-	free:"zadarmo",
-    name:"Meno",
-    lastname:"Priezvisko",
-    contactemail:"Email",
-    checkboxText:"Súhlasím s <a>obchodnými podmienkami</a> platnými pre kúpu vstupenky concertian",
-    quantityLegend:"Množstvo",
-    priceLegend:"Jednotková cena",
-    submitForm:"KÚPIŤ VSTUPENKU",
-    submitPayment:"Zaplatiť",
-    noResult:"Žiadne výsledky hľadania",
-    checkemail: "Vstupenku nájdete vo svojej emailovej schránke",
-    checkemailWrong: "Došlo k chybe, skúste to ešte raz. Ďakujeme.",
-    checkboxWarning: "Zabudli ste potvrdiť svoj súhlas s obchodnými podmienkami. Ďakujeme.",
-    termsheading:"Obchodné podmienky concertian",
-};
-var english = {
-    managerHeading:"Promote your events, sell online tickets, always choose the best term and manage your venue program with concertian FOR MANAGERS",
-    managerButton:"Discover more",
-    byclub:"CLUB",
-    bycity:"CITY",
-    searchplaceholder1:"Insert city",
-    searchplaceholder2:"Insert club name",
-    by:"by",
-    in:"in",
-	free:"free",
-    name:"Name",
-    lastname:"Surname",
-    contactemail:"Email",
-    checkboxText:"I agree with <a>terms and conditions</a> applying to this service",
-    quantityLegend:"Units",
-    priceLegend:"Unit price",
-    submitForm:"BUY TICKETS",
-    submitPayment:"PAY",
-    noResult:"No resulsts",
-    checkemail: "Ticket should be in your mailbox in short time",
-    checkemailWrong: "An mistake occurred, please try it again",
-    checkboxWarning: "You have forgotten to agree with terms and services for this service. Thank you.",
-    termsheading:"Terms and services concertian",
-};
-var czech = {
-    managerHeading:"Propagace koncertů, prodej vstupenek, výběr správného termínu a správa koncertního programu systémem concertian FOR MANAGERS",
-    managerButton:"Více zde",
-    byclub:"KLUB",
-    bycity:"MĚSTO",
-    searchplaceholder1:"Kde hledáme?",
-    searchplaceholder2:"Jaký klub hledáme?",
-    by:"u",
-    in:"v",
-	free:"zdarma",
-    name:"Jméno",
-    lastname:"Příjmení",
-    contactemail:"Email",
-    checkboxText:"Souhlasím s <a>obchodními podmínkami</a> platnými pro nákup vstupenky concertian",
-    quantityLegend:"Množství",
-    priceLegend:"Jednotková cena",
-    submitForm:"KOUPIT VSTUPENKU",
-    submitPayment:"Zaplatit",
-    noResult:"Žádné výsledky hledání",
-    checkemail: "Vstupenku najdete ve své emailové schránce",
-    checkemailWrong: "Došlo k chybě, zkuste to ještě jednou. Děkujeme.",
-    checkboxWarning: "Zapomněli jste potvrdit svůj souhlas s obchodními podmínkami. Děkujeme.",
-    termsheading:"Obchodní podmínky concertian",
-};
+});                
 
 // SET TEXT BUILDER
 function setLanguage(){
@@ -361,16 +371,14 @@ function setSelector(citySource){
     $("#citySelectList").empty();
     $.each(citySource, function(key, city){
         $("#citySelectList").append('<li>' + city + '</li>');
-    });
-    
- // Load by city
-    $("#citySelectList li").on('click', function(){
-    	$('.outer').scrollTop(0);
-        city = $(this).text();
-        selectLoad = byCity;
-        emptyContainerAddSpinner();
-        removeAllMarkers();
-        loadConcertByCity(city);
+            // Load by city
+            $("#citySelectList li").on('click', function(){
+                city = $(this).text();
+                selectLoad = byCity;
+                emptyContainerAddSpinner();
+                removeAllMarkers();
+                loadConcertByCity(city);
+            });
     });
 }
 // Empty container before load
@@ -469,9 +477,8 @@ function addLike(eventID){
 		}
 	});
 }
-
 // Buy tickets form
-function buyTickets(eventID, price, origin, orderSeat){
+function buyTickets(eventID, price, origin, tickets, venuename){
     var elementTicketForm =
         '<span id="close">'+
             '<span class="closebutton">'+
@@ -511,7 +518,8 @@ function buyTickets(eventID, price, origin, orderSeat){
     '</span>';
     $("#popup").append(elementTicketForm);
     $("#popup").fadeIn(100);
-    $(".outer").perfectScrollbar();
+    $("#popup .outer").perfectScrollbar();
+    if(tickets != null){
     //Handle terms and services
     $(".checkboxText a").on('click', function(){
         switch(Cookies.get('language')){
@@ -601,6 +609,25 @@ function buyTickets(eventID, price, origin, orderSeat){
         window.alert(language.checkboxWarning);
     }
     });
+    }
+    else{
+        askbuyTickets(venuename);
+    }
+    //Close handler
+    $(".closebutton").on('click', function(){
+        $("#popup").empty();
+        $("#popup").hide();
+    });
+}
+// Not able to buy tickets
+function askbuyTickets(venuename){
+     var elementresponse =
+         '<span class="responseBox">'+
+            '<span class="responseBoxIcon"></span>'+
+            '<span class="responseBoxtext">'+venuename+' '+ language.responsebox+'</span>'+
+         '</span>';
+    $("#popup .outer").css('opacity', '0.2');
+    $("#popup").append(elementresponse);
     $(".closebutton").on('click', function(){
         $("#popup").empty();
         $("#popup").hide();
@@ -630,7 +657,7 @@ function addElements(json){
         results[length + i] = value;
         
         var element = 
-                    '<span class="resultElement">'+
+                '<span class="resultElement">'+
             '<span class="photoElement">'+
                 '<span id="share">'+
                             '<span class="lenght">'+ (length + i) +'</span>'+
@@ -652,10 +679,10 @@ function addElements(json){
                     '<span class="venueNameText"><span id="by">'+language.by+'</span>'+" "+'<strong>'+ value.venueName +'</strong>'+" "+'<span id="in">'+language.in+'</span>'+" "+'<strong>'+ value.city +'</strong></span>'+
                 '</span>'+
             '</span>'+
-            '<span id="infButton">'+
+            '<span class="infButton">'+
 				'<span class="infButtonIcon"></span>'+
 			'</span>'+
-            '<span class="buttonsElement">'+
+			'<span class="buttonsElement">'+
                 '<ul>'+
                     '<li>'+
                         '<span id="tickets">'+
@@ -727,14 +754,20 @@ function addElements(json){
     });
     
     //By tickets handler
-    $(".buttonsElement").on("click", function(){
+    $(".buttonsElement").on("click", function(event){
+        if($("#popup .outer").length > 0){
+            $("#close").trigger('click');
+        }
+        else{
         var value = results[$(this).find(".lenght").text()];
         var eventID = value.id;
         var price = value.entry;
         var origin = value.state;
-		var orderSeat = 1;
+        var venuename = value.venueName;
+        var tickets = value.tickets;
         if(price != ""){
-            buyTickets(eventID, price, origin, orderSeat);
+           buyTickets(eventID, price, origin, tickets, venuename);
+        }
         }
     });
     
