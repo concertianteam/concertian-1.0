@@ -284,7 +284,7 @@ $(document).ready(function() {
     };
     
       	// Scroll effect
-	$("#listofConcerts .outer").scroll(function(){
+	$(".outer").scroll(function(){
 			clearTimeout($.data(this, 'scrollTimer'));
 		    $.data(this, 'scrollTimer', setTimeout(function() {
 	        	if($("#spinnerActivator").is_on_screen()){
@@ -384,9 +384,10 @@ function setLanguage(){
 function setSelector(citySource){
     $("#citySelectList").empty();
     $.each(citySource, function(key, city){
-        $("#citySelectList").append('<li>' + city + '</li>');
+		
+        $("#citySelectList").append('<li id="city'+key+'">' + city + '</li>');
             // Load by city
-            $("#citySelectList li").on('click', function(){
+            $("#citySelectList #city"+key).on('click', function(){
                 city = $(this).text();
                 selectLoad = byCity;
                 emptyContainerAddSpinner();
@@ -398,8 +399,8 @@ function setSelector(citySource){
 // Empty container before load
 function emptyContainerAddSpinner(){
         page = 0;
-		$("#listofConcerts .outer").empty();
-		$("#listofConcerts .outer").append(
+		$(".outer").empty();
+		$(".outer").append(
 								  '<div class="spinner">' +
 									  '<div class="dot1"></div>'+
 									  '<div class="dot2"></div>'+
@@ -415,8 +416,8 @@ function removeAllMarkers(){
 // The resource does not exists
 function noResults(){
     $(".outer").html('<span id="response"></span>');
-    $("#listofConcerts #response").append('<span class="noResults"></span>');
-    $("#listofConcerts #response").append(language["noResult"]);
+    $("#response").append('<span class="noResults"></span>');
+    $("#response").append(language["noResult"]);
 }
 
 // Load all concert by URL
@@ -427,7 +428,7 @@ function loadAllConcert(){
 		  'data' : { 'results' : "20",
 			 		 'page' : page
 		 		   },
-	  	  e : "application/x-www-form-urlencoded",
+	  	  contentType : "application/x-www-form-urlencoded",
 		  'success' : function (json){
                             addElements(json);
 	  	            },
