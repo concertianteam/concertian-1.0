@@ -45,6 +45,7 @@ var slovak = {
     by:"u",
     in:"v",
 	free:"zadarmo",
+	nodata:"Žiadne informácie",
     name:"Meno",
     lastname:"Priezvisko",
     contactemail:"Email",
@@ -69,6 +70,7 @@ var english = {
     searchplaceholder2:"Insert club name",
     by:"by",
     in:"in",
+	nodata:"No more data",
 	free:"free",
     name:"Name",
     lastname:"Surname",
@@ -95,6 +97,7 @@ var czech = {
     by:"u",
     in:"v",
 	free:"zdarma",
+	nodata:"Žádné informace",
     name:"Jméno",
     lastname:"Příjmení",
     contactemail:"Email",
@@ -118,6 +121,17 @@ $(document).ready(function() {
     });    
     $("#termsContainer").perfectScrollbar();
     
+	// Closing popup
+	$(document).on('click', function(){
+		$('#popup').fadeOut(200);
+		$('#popup').empty();
+	});
+	
+	//Stop propagation
+	$("#popup").on('click', function(event){
+		event.stopImmediatePropagation();
+	});
+	
     //Setting language
     if(Cookies.get('language') == null){
 		language = slovak;
@@ -270,7 +284,7 @@ $(document).ready(function() {
     };
     
       	// Scroll effect
-	$(".outer").scroll(function(){
+	$("#listofConcerts .outer").scroll(function(){
 			clearTimeout($.data(this, 'scrollTimer'));
 		    $.data(this, 'scrollTimer', setTimeout(function() {
 	        	if($("#spinnerActivator").is_on_screen()){
@@ -384,8 +398,8 @@ function setSelector(citySource){
 // Empty container before load
 function emptyContainerAddSpinner(){
         page = 0;
-		$(".outer").empty();
-		$(".outer").append(
+		$("#listofConcerts .outer").empty();
+		$("#listofConcerts .outer").append(
 								  '<div class="spinner">' +
 									  '<div class="dot1"></div>'+
 									  '<div class="dot2"></div>'+
@@ -401,8 +415,8 @@ function removeAllMarkers(){
 // The resource does not exists
 function noResults(){
     $(".outer").html('<span id="response"></span>');
-    $("#response").append('<span class="noResults"></span>');
-    $("#response").append(language["noResult"]);
+    $("#listofConcerts #response").append('<span class="noResults"></span>');
+    $("#listofConcerts #response").append(language["noResult"]);
 }
 
 // Load all concert by URL
@@ -413,7 +427,7 @@ function loadAllConcert(){
 		  'data' : { 'results' : "20",
 			 		 'page' : page
 		 		   },
-	  	  contentType : "application/x-www-form-urlencoded",
+	  	  e : "application/x-www-form-urlencoded",
 		  'success' : function (json){
                             addElements(json);
 	  	            },
@@ -480,12 +494,7 @@ function addLike(eventID){
 // Buy tickets form
 function buyTickets(eventID, price, origin, tickets, venuename){
     var elementTicketForm =
-        '<span id="close">'+
-            '<span class="closebutton">'+
-                '<span class="closebuttonIcon"></span>'+
-            '</span>'+
-        '</span>'+
-    '<span class="outer">'+
+    '<span class="outer buy">'+
         '<span class="ticketForm">'+
             '<form id="buyTicketForm">'+
                  '<label for="firstName">'+
@@ -501,14 +510,14 @@ function buyTickets(eventID, price, origin, tickets, venuename){
                 '<input type="text" id="email" name="email" value="" required>'+
                 '</label>'+
                 '<input type="hidden" id="eventID" name="eventID" value="'+ eventID+'">'+
-                '<input type="hidden" name="price" value="'+price+'">'+
-                '<input type="checkbox" class="checkbox" name="vehicle" value="Bike"><span class="checkboxText" required>'+language.checkboxText+'</span>'+
+                '<input type="hidden" name=" n    price" value="'+price+'">'+
+                '<input type="checkbox" class="checkbox" name="vehicle" value="Bike" required><span class="checkboxText"><a>'+language.checkboxText+'</a></span>'+
                 '<span class="summary">'+
                     '<ul>'+
                         '<li>'+language.quantityLegend+'</li>'+
                         '<li>'+language.priceLegend+'</li>'+
                     '</ul>'+
-                    '<span class="Ticketprice">'+(price == 0 ? 'free' : price)+'</span>'+
+                    '<span class="Ticketprice">'+(price == 0 ? language["free"] : price)+'</span>'+
                     '<span class="TicketpriceTag '+(price == 0 ? 'hide' : '')+'">'+ (origin === 'Czech Republic' ? 'czk':'eur') + '</span>'+
                     '<span class="Ticketquantity">1</span>'+
                 '</span>'+
@@ -517,6 +526,7 @@ function buyTickets(eventID, price, origin, tickets, venuename){
         '</span>'+
     '</span>';
     $("#popup").append(elementTicketForm);
+	$("#popup").removeClass("edgetoedge black");
     $("#popup").fadeIn(100);
     $("#popup .outer").perfectScrollbar();
     if(tickets != null){
@@ -559,12 +569,12 @@ function buyTickets(eventID, price, origin, tickets, venuename){
         
         if(formData.name != "" && formData.lastname != "" && formData.email != "" && formData.eventID != "" && formData.ticketPrice != "" && formData.time != ""){
             
-            $("#popup .outer").empty();
-            $("#popup .outer").append(
+            $("#popup .outer .buy").empty();
+            $("#popup .outer .buy").append(
                 '<form id="checkout">'+
                     '<span id="payment-form"></span>'+
                     '<input type="hidden" name="price" id="price" val="'+ price +'">'+
-                    '<input type="submit" id="submit" value="'+language.submitPayment+' '+price+'€">'+
+                    '<input type="submit" id="submit" value="'+language.submitForm+' '+price+'€">'+
                 '</form>');
             $.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
         
@@ -613,11 +623,6 @@ function buyTickets(eventID, price, origin, tickets, venuename){
     else{
         askbuyTickets(venuename);
     }
-    //Close handler
-    $(".closebutton").on('click', function(){
-        $("#popup").empty();
-        $("#popup").hide();
-    });
 }
 // Not able to buy tickets
 function askbuyTickets(venuename){
@@ -626,17 +631,13 @@ function askbuyTickets(venuename){
             '<span class="responseBoxIcon"></span>'+
             '<span class="responseBoxtext">'+venuename+' '+ language.responsebox+'</span>'+
          '</span>';
-    $("#popup .outer").css('opacity', '0.2');
+    $("#popup .outer .buy").css('opacity', '0.2');
     $("#popup").append(elementresponse);
-    $(".closebutton").on('click', function(){
-        $("#popup").empty();
-        $("#popup").hide();
-    });
 }
 
 function addElements(json){
     $(".spinner").remove();
-    $(".outer").append(
+    $("#listofConcerts .outer").append(
         '<span class="resultElement">'+
                 '<span class="managerIcon"></span>'+
                 '<span class="managerHeading">'+language.managerHeading+'</span>'+
@@ -652,7 +653,8 @@ function addElements(json){
     for(var i = 0; i < json.events.length; i++){
 		var value = json.events[i];
         var arr = value.stringDate.split('-');
-        
+		var time = value.time.split(':');
+		
         address[i] = encodeURIComponent(value.address + " " + value.city);
         results[length + i] = value;
         
@@ -666,7 +668,7 @@ function addElements(json){
             '</span>'+
             '<span class="whenElement">'+
                 '<span class="date">'+arr[2]+'<br>'+arr[1]+'<strong></span>'+
-                '<span class="time">'+ value.time +'</span>'+
+                '<span class="time">'+time[0]+':'+time[1]+'</span>'+
             '</span>'+
             '<span class="whatElement">'+
                 '<span class="eventName">'+ value.eventName +'</span>'+
@@ -680,7 +682,9 @@ function addElements(json){
                 '</span>'+
             '</span>'+
             '<span class="infButton">'+
-				'<span class="infButtonIcon"></span>'+
+				'<span class="infButtonIcon">'+
+				   '<span class="lenght">'+ (length + i) +'</span>'+
+				'</span>'+
 			'</span>'+
 			'<span class="buttonsElement">'+
                 '<ul>'+
@@ -698,50 +702,13 @@ function addElements(json){
         '</span>'+
         '<span class="spacer"></span>';
             
-    $(".outer").append(element);
+    $("#listofConcerts .outer").append(element);
         
         if(json.events.length % 20 == 0 && i == json.events.length - 5){
-			$(".outer").append('<span id="spinnerActivator"></span>');
+			$("#listofConcerts .outer").append('<span id="spinnerActivator"></span>');
 			minus = 2;
 		}
-}
-    // Hover show details for event
-    	$(".detailElement").on('mouseenter', function(){
-		$("#allDetails").empty();
-		var value = results[$(this).find(".lenght").text()];
-			var element = 
-			'<span class="allDetailsText">'+ value.detail +'</span>';
-			$("#allDetails").append(element);
-		$("#allDetails").show();
-		 var popupWidth  = $('#allDetails').outerWidth();
-		 var popupHeight =  $('#allDetails').outerHeight();
-
-		if(mouseX+popupWidth > windowWidth)
-         popupLeft = mouseX-popupWidth;
-		  else
-		   popupLeft = mouseX;
-
-			if(mouseY+popupHeight > windowHeight)
-		     popupTop = mouseY-popupHeight;
-				else
-			     popupTop = mouseY; 
-
-			if( popupLeft < $(window).scrollLeft()){
-			 popupLeft = $(window).scrollLeft();
-			}
-			if( popupTop < $(window).scrollTop()){
-			 popupTop = $(window).scrollTop();
-			}
-			if(popupLeft < 0 || popupLeft === undefined)
-			 popupLeft = 0;
-		    if(popupTop < 0 || popupTop === undefined)
-			 popupTop = 0;
-
-	$('#allDetails').offset({top:popupTop,left:popupLeft});
-	});
-	$(".detailElement").on('mouseleave', function(){
-		$("#allDetails").hide(200);
-	});
+}		
     
     //Load concerts for club handler
     $(".venueName").on("click", function(){
@@ -752,11 +719,40 @@ function addElements(json){
         var selectedClubId = value.venueId;
         loadConcertByClub(selectedClubId);
     });
+	
+	//Detail handler
+	$(".infButton").on('click', function(event){
+		event.stopImmediatePropagation();
+	
+		$("#popup").addClass("edgetoedge black");
+		var value = results[$(this).find(".lenght").text()];
+			console.log(value);
+		var elementDetail = 
+			'<span class="outer .detail">'+
+				'<span class="header">'+
+					'<img class="img" src="'+value.imgUrl+'">'+
+				'</span>'+
+				'<span class="detailCore">'+
+					'<span class="maindetailCore">'+value.eventName+'</span>'+
+					'<span class="subdetailCore">'+(value.detail == "" ? language["nodata"] : value.detail)+'</span>'+
+				'</span>'+
+				'<span class="youtube '+(value.detail == 0 ? "center" : "")+'">'+
+					'<iframe width="100%" height="auto" class="'+(value.detail == 0 ? "youtubeIcon" : "")+'" style="display: block; width: 100%; height: auto; margin: 0; padding: 0; border: none;" src=""></iframe>'+
+				'</span>'+
+				'<span class="buyTicketButton">'+(value.entry == "" ? language["free"] : language["submitPayment"] + " " +value.entry + "€")+'</span>'+
+			'</span>';
+		$("#popup").append(elementDetail);
+		$("#popup").fadeIn(100);
+		$("#popup .outer").perfectScrollbar();
+		$("#popup .outer").scrollTop( $( "#popup .outer" ).prop(100) );
+		$("#popup .outer").perfectScrollbar('update');
+	});
     
     //By tickets handler
     $(".buttonsElement").on("click", function(event){
-        if($("#popup .outer").length > 0){
-            $("#close").trigger('click');
+			event.stopPropagation();
+        if($("#popup .outer .buy").length > 0){
+            $(document).trigger('click');
         }
         else{
         var value = results[$(this).find(".lenght").text()];
