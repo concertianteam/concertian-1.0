@@ -49,7 +49,8 @@ var slovak = {
     name:"Meno",
     lastname:"Priezvisko",
     contactemail:"Email",
-    checkboxText:"Súhlasím s <a>obchodnými podmienkami</a> platnými pre kúpu vstupenky concertian",
+    checkboxText:"Súhlasím s <strong>obchodnými podmienkami</strong> platnými pre kúpu vstupenky concertian",
+	langLink:"terms.html",
     quantityLegend:"Množstvo",
     priceLegend:"Jednotková cena",
     submitForm:"KÚPIŤ VSTUPENKU",
@@ -75,7 +76,8 @@ var english = {
     name:"Name",
     lastname:"Surname",
     contactemail:"Email",
-    checkboxText:"I agree with <a>terms and conditions</a> applying to this service",
+    checkboxText:"I agree with <strong>terms and conditions</strong> applying to this service",
+	langLink:"terms_en.html",
     quantityLegend:"Units",
     priceLegend:"Unit price",
     submitForm:"BUY TICKETS",
@@ -101,7 +103,8 @@ var czech = {
     name:"Jméno",
     lastname:"Příjmení",
     contactemail:"Email",
-    checkboxText:"Souhlasím s <a>obchodními podmínkami</a> platnými pro nákup vstupenky concertian",
+    checkboxText:"Souhlasím s <strong>obchodními podmínkami</strong> platnými pro nákup vstupenky concertian",
+	langLink:"terms.html",
     quantityLegend:"Množství",
     priceLegend:"Jednotková cena",
     submitForm:"KOUPIT VSTUPENKU",
@@ -512,7 +515,7 @@ function buyTickets(eventID, price, origin, tickets, venuename){
                 '</label>'+
                 '<input type="hidden" id="eventID" name="eventID" value="'+ eventID+'">'+
                 '<input type="hidden" name=" n    price" value="'+price+'">'+
-                '<input type="checkbox" class="checkbox" name="vehicle" value="Bike" required><span class="checkboxText"><a>'+language.checkboxText+'</a></span>'+
+                '<input type="checkbox" class="checkbox" name="vehicle" value="Bike" required><span class="checkboxText"><a href="'+language.langLink+'" target="_blank">'+language.checkboxText+'</a></span>'+
                 '<span class="summary">'+
                     '<ul>'+
                         '<li>'+language.quantityLegend+'</li>'+
@@ -531,20 +534,7 @@ function buyTickets(eventID, price, origin, tickets, venuename){
     $("#popup").fadeIn(100);
     $("#popup .outer").perfectScrollbar();
     if(tickets != null){
-    //Handle terms and services
-    $(".checkboxText a").on('click', function(){
-        switch(Cookies.get('language')){
-            case "slovak":
-                window.open('terms.html', '_blank');
-                break;
-            case "english":
-                window.open('terms_en.html', '_blank');
-                break;
-            case "czech":
-                window.open('terms.html', '_blank');
-                break;
-        }
-    });
+
     //Buy ticket submit
     $("#buyTicketForm").submit(function(event){
         event.preventDefault();
@@ -722,6 +712,7 @@ function addElements(json){
 	//Detail handler
 	$(".infButton").on('click', function(event){
 		event.stopImmediatePropagation();
+		
 		if($("#popup").length > 0){
            $("#popup").hide();
             $("#popup").empty();
@@ -729,6 +720,7 @@ function addElements(json){
 	
 		$("#popup").addClass("edgetoedge black");
 		var value = results[$(this).find(".lenght").text()];
+		console.log(value.entry);
 		var elementDetail = 
 			'<span class="outer .detail">'+
 				'<span class="header">'+
@@ -748,6 +740,19 @@ function addElements(json){
 		$("#popup .outer").perfectScrollbar();
 		$("#popup .outer").scrollTop( $( "#popup .outer" ).prop(100) );
 		$("#popup .outer").perfectScrollbar('update');
+		
+		//Buy ticket via popup
+		$(".buyTicketButton").on('click', function(){
+			if(value.entry != ""){
+				$("#popup").empty();
+				var eventID = value.id;
+				var price = value.entry;
+				var origin = value.state;
+				var venuename = value.venueName;
+				var tickets = value.tickets;
+           		buyTickets(eventID, price, origin, tickets, venuename);
+        	}
+		});
 	});
     
     //By tickets handler
@@ -822,10 +827,10 @@ function addElements(json){
 	}
 }
 function generateTicket(formData){
-    $("#popup .outer").empty();
+    $("#popup").empty();
     var element = '<span class="checkemail">'+language.checkemail+'</span>'+
                   '<span class="checkemailIcon"></span>';
-    $("#popup .outer").append(element);
+    $("#popup").append(element);
          $.ajax({ 'url' : 'https://api.concertian.com/tickets/buy',
          'method' : 'POST',
          'data' : formData,
@@ -839,8 +844,8 @@ function generateTicket(formData){
          });
 }
 function errorMessage(){
-    $("#popup .outer").empty();
+    $("#popup").empty();
         var element = '<span class="checkemail" style="color: #546078;">'+language.checkemailWrong+'</span>'+
                   '<span class="checkemailIconWrong"></span>';
-    $("#popup .outer").append(element);
+    $("#popup").append(element);
 }
