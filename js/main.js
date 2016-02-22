@@ -565,13 +565,11 @@ function buyTickets(eventID, price, origin, tickets, venuename){
             'time'    : time,
             'date'    : date,
         };
-        console.log(formData);
-        
         
         if(formData.name != "" && formData.lastname != "" && formData.email != "" && formData.eventID != "" && formData.ticketPrice != "" && formData.time != ""){
             
-            $("#popup .outer .buy").empty();
-            $("#popup .outer .buy").append(
+            $("#popup").empty();
+            $("#popup").append(
                 '<form id="checkout">'+
                     '<span id="payment-form"></span>'+
                     '<input type="hidden" name="price" id="price" val="'+ price +'">'+
@@ -632,7 +630,7 @@ function askbuyTickets(venuename){
             '<span class="responseBoxIcon"></span>'+
             '<span class="responseBoxtext">'+venuename+' '+ language.responsebox+'</span>'+
          '</span>';
-    $("#popup .outer .buy").css('opacity', '0.2');
+    $("#popup .outer").css('opacity', '0.2');
     $("#popup").append(elementresponse);
 }
 
@@ -665,7 +663,7 @@ function addElements(json){
                 '<span id="share">'+
                             '<span class="lenght">'+ (length + i) +'</span>'+
                 '</span>'+
-                '<img class="photoElementImg" src="'+ value.imgUrl +'">'+
+                '<img class="photoElementImg" src="'+( value.imgUrl == "" ? 'img/default.jpg' : value.imgUrl) +'">'+
             '</span>'+
             '<span class="whenElement">'+
                 '<span class="date">'+arr[2]+'<br>'+arr[1]+'<strong></span>'+
@@ -683,7 +681,7 @@ function addElements(json){
                 '</span>'+
             '</span>'+
             '<span class="infButton">'+
-				'<span class="infButtonIcon">'+
+				'<span class="detailButtonIcon">'+
 				   '<span class="lenght">'+ (length + i) +'</span>'+
 				'</span>'+
 			'</span>'+
@@ -724,21 +722,24 @@ function addElements(json){
 	//Detail handler
 	$(".infButton").on('click', function(event){
 		event.stopImmediatePropagation();
+		if($("#popup").length > 0){
+           $("#popup").hide();
+            $("#popup").empty();
+        }
 	
 		$("#popup").addClass("edgetoedge black");
 		var value = results[$(this).find(".lenght").text()];
-			console.log(value);
 		var elementDetail = 
 			'<span class="outer .detail">'+
 				'<span class="header">'+
-					'<img class="img" src="'+value.imgUrl+'">'+
+					'<img class="img" src="'+( value.imgUrl == "" ? 'img/default.jpg' : value.imgUrl) +'">'+
 				'</span>'+
 				'<span class="detailCore">'+
 					'<span class="maindetailCore">'+value.eventName+'</span>'+
 					'<span class="subdetailCore">'+(value.detail == "" ? language["nodata"] : value.detail)+'</span>'+
 				'</span>'+
-				'<span class="youtube '+(value.detail == 0 ? "center" : "")+'">'+
-					'<iframe width="100%" height="auto" class="'+(value.detail == 0 ? "youtubeIcon" : "")+'" style="display: block; width: 100%; height: auto; margin: 0; padding: 0; border: none;" src=""></iframe>'+
+				'<span class="youtube '+(value.youtubeVideo == null ? "center" : "")+'">'+
+					'<iframe width="100%" height="auto" class="'+(value.youtubeVideo == null ? "youtubeIcon" : "")+'" style="display: block; width: 100%; height: auto; margin: 0; padding: 0; border: none;" src="'+(value.youtubeVideo == null ? "" : value.youtubeVideo)+'"></iframe>'+
 				'</span>'+
 				'<span class="buyTicketButton">'+(value.entry == "" ? language["free"] : language["submitPayment"] + " " +value.entry + "€")+'</span>'+
 			'</span>';
@@ -753,7 +754,8 @@ function addElements(json){
     $(".buttonsElement").on("click", function(event){
 			event.stopPropagation();
         if($("#popup .outer .buy").length > 0){
-            $(document).trigger('click');
+           $("#popup").hide();
+           $("#popup").empty();
         }
         else{
         var value = results[$(this).find(".lenght").text()];
@@ -820,7 +822,6 @@ function addElements(json){
 	}
 }
 function generateTicket(formData){
-    console.log("success",formData);
     $("#popup .outer").empty();
     var element = '<span class="checkemail">'+language.checkemail+'</span>'+
                   '<span class="checkemailIcon"></span>';

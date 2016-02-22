@@ -671,6 +671,15 @@ div#columnSearch :-ms-input-placeholder {
     overflow-y: hidden;
     overflow-x: hidden;
     text-overflow: ellipsis; 
+	cursor: pointer;
+}
+.detailButtonIcon{
+	display: block;
+	background: url('../img/user_sprite.png') no-repeat -743px -15px;
+	width: 19px;
+	height: 19px;
+	margin-top: 36px;
+	margin-left: 33%;
 }
 /* -------- Detail Popup ----------- */
 .edgetoedge{
@@ -728,14 +737,13 @@ div#columnSearch :-ms-input-placeholder {
 .center{
 	box-sizing: border-box;
 	padding-left: 47%;
+	margin-bottom: 20% !important;
 }
 .youtubeIcon{
 	display: block;
 	background: url('../img/user_sprite.png') no-repeat -696px -5px;
-	width: 33px;
-	height: 39px;
-	box-sizing: border-box;
-	padding-left: 40%;
+	width: 33px !important;
+	height: 39px !important;
 }
 .youtube iframe{
 	display: block;
