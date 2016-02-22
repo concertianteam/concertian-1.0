@@ -1968,17 +1968,44 @@ li.eventAudience{
 	vertical-align: middle;
 	font-size: 0.9em;
 	color: #333333;
+	margin-left: -20px;
+	text-align: center;
 }
 .seats{
 	display: inline-block;
 	z-index: 30;
-	width: 95%;
+	width: 85%;
 	vertical-align: middle;
 	height: 20px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 	box-sizing: border-box;
+}
+.rowHandler{
+	display: inline-block;
+	vertical-align: middle;
+	width: 10%;
+	height: 19px;
+	text-align: center;
+	box-sizing: border-box;
+}
+.rowHandlerIconMark{
+	display: inline-block;
+	background: url('../img/sprite.png') no-repeat -865px -5px;
+	width: 19px;
+	height: 19px;
+	float: left;
+	cursor: pointer;
+	margin-top: -2px;
+}
+.rowHandlerIconUnmark{
+	display: inline-block;
+	background: url('../img/sprite.png') no-repeat -892px -5px;
+	width: 19px;
+	height: 19px;
+	cursor: pointer;
+	margin-top: -2px;
 }
 .seats li{
 	display: inline-block;
@@ -1988,7 +2015,7 @@ li.eventAudience{
 .seat{
 	width: 19px;
 	height: 19px;
-	background: #CCCCCC;
+	background: #546078;
 	cursor: pointer;
 }
 .seatActive{

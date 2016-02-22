@@ -1498,12 +1498,16 @@ function createReservation(){
 		 	'<span id="reservationSaveButton">'+language["save"]+'</span>'
 	 );
 	$(".outer").perfectScrollbar();
-	for(var i = 0; i<15; i++){
+	for(var i = 0; i<12; i++){
 		$("#rows").append('<li class="row">'+
 							'<span class="rowNumber">'+i+'</span>'+
 							'<ul class="seats"></ul>'+
+						  	'<span class="rowHandler">'+
+						  		'<span class="rowHandlerIconMark"></span>'+
+						  		'<span class="rowHandlerIconUnmark"></span>'+
+						  	'</span>'+
 						  '</li>');
-		for(var j = 0; j<15; j++){
+		for(var j = 0; j<12; j++){
 			$("#rows").find(".row").eq(i).find(".seats").append('<li class="seat"></li>');
 		}
 	}
