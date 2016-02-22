@@ -21,6 +21,7 @@ function initCalendar(language) {
         $("#createEventDate").text(window.language["createEventDate"]);
         $("#createEventTime").text(window.language["createEventTime"]);
         $("#createEventDetails").text(window.language["createEventDetails"]);
+       	$("#youtubeLink").text(window.language["youtubeLink"]);
         $("#createEventEntry").text(window.language["createEventEntry"]);
         $("#createEventNotes").text(window.language["createEventNotes"]);
         $("#createEventEmail").text(window.language["createEventEmail"]);
@@ -38,7 +39,6 @@ function initCalendar(language) {
         $("#time").timepicker();
         $('#time').timepicker({ 'timeFormat': 'H:i:s' });
 
-        $("#deleteEvent").hide();
         //default select
         $("#status_1").attr('checked', 'checked');
         $("#visible_1").attr('checked', 'checked');
@@ -108,6 +108,7 @@ function initCalendar(language) {
                         date: $("#date").val(),
                         time: $("#time").val(),
                         detail: $("#detail").val(),
+                        youtubeVideo: $("#youtube").val(),
                         entry: $("#entry").val(),
                         imgUrl: $("#imgUrl").val(),
                         note: $("#note").val(),
@@ -182,6 +183,7 @@ function renderEdit(eventId){
                 $("#date").val(data.date);
                 $("#time").val(data.time);
                 $("#detail").val(data.detail);
+                $("#youtube").val(data.youtubeVideo);
                 $("#entry").val(data.entry);
                 $("#imgUrl").val(data.imgUrl);
                 $("#note").val(data.note);
@@ -191,7 +193,6 @@ function renderEdit(eventId){
                 $("#status" + data.status).addClass("clicked");
                 $("#visible_" + data.visible).attr('checked', 'checked');
                 $("#visible" + data.status).addClass("clicked");
-                $("#deleteEvent").show();
             },
             contentType: "application/x-www-form-urlencoded"
         });

@@ -35,6 +35,7 @@ var slovak = {
     createEventDate:"Dátum",
     createEventTime:"Čas",
     createEventDetails:"Popis podujatia",
+    youtubeLink:"Odkaz na Youtube",
     createEventEntry:"Vstupné ( € )",
     createEventNotes:"Moje poznámky",
     createEventEmail:"Email",
@@ -81,6 +82,7 @@ var slovak = {
     placeOrderAccountNumber:"ČÍSLO ÚČTU",
     placeOrderNumber:"POČET LÍSTKOV",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
+	save:"Uložiť",
     //manageaccount.html
     text2:"Meno",
     text3:"Priezvisko",
@@ -109,6 +111,7 @@ var english = {
     createEventDate:"Date",
     createEventTime:"Time",
     createEventDetails:"Details",
+	youtubeLink:"Youtube",
     createEventEntry:"Entry price",
     createEventNotes:"Your notes",
     createEventEmail:"Email contact",
@@ -155,6 +158,7 @@ var english = {
     placeOrderAccountNumber:"ACCOUNT NUMBER",
     placeOrderNumber:"NUMBER OF TICKETS",
     placeOrderUnitprice:"UNIT PRICE",
+	save:"Save",
     //manageaccount.html
     text2:"Name",
     text3:"Surname",
@@ -183,6 +187,7 @@ var czech = {
     createEventDate:"Datum",
     createEventTime:"Čas",
     createEventDetails:"Podrobnosti",
+	youtubeLink:"Odkaz na Youtube",
     createEventEntry:"Vstupní",
     createEventNotes:"Vaše poznamky",
     createEventEmail:"Kontaktní email",
@@ -229,6 +234,7 @@ var czech = {
     placeOrderAccountNumber:"ČÍSLO ÚČTU",
     placeOrderNumber:"POČET VSTUPENEK",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
+	save:"Uložiť",
     //manageaccount.html
     text2:"Jméno",
     text3:"Příjmení",
@@ -354,6 +360,7 @@ $(document).ready(function() {
         $("#statistics").on('click', function(){
             $( "#contentPanel" ).load("statistics.html", null, function(){
                 $("#resultsList").perfectScrollbar();
+                $("#graph").perfectScrollbar();
                 //submit search form
                 $('#search').attr('action', 'javascript:void(0);');
                 $("#search").submit(function(event){
@@ -391,6 +398,7 @@ $(document).ready(function() {
             
     //Go to Propagation
     $("#propagation").on('click', function(){
+		//Popup close handler
         $("#contentPanel").empty();
         addspinner();
         $("#contentPanel").load("propagation.html", null, function(){
@@ -406,6 +414,10 @@ $(document).ready(function() {
             }
             $("#contentPanel").remove(".spinner");
           });
+		//Popup close handler
+		$(document).click( function(event){
+			$('#popup').fadeOut(200);
+		});
     });
         
     //Go to ticket market
@@ -714,16 +726,20 @@ function loadConcertForManager(){
             }
                 results[length + i] = value;
                 var arr = value.stringDate.split('-');
+                var time = value.time.split(':');
 			    var element = 
             '<span class="ticketResult">'+
                     '<span class="date">'+arr[2]+' '+arr[1]+'<br>'+arr[0]+'</span>'+
-                    '<span class="time">'+value.time+'</span>'+
+                    '<span class="time">'+time[0]+':'+time[1]+'</span>'+
                     '<span class="concertName">'+value.name+'</span>'+
                     '<span class="entryPrice">'+value.entry+'</span>'+
                     '<input type="hidden" id="idEvent" name="idEvent" value="'+ value.idEvent +'">'+
+					'<input type="hidden" id="seatMaprender" name="seatMaprender" value="'+ value.seatMap +'">'+
                     '<span class="ticketsavailable">'+(value.tickets == null ? '0' : quantity)+'</span>'+
                     '<span class="sold" data-event="'+value.idEvent+'">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
-					'<span class="reservation"></span>'+
+					'<span class="reservation">'+
+						 '<span class="reservationIcon"></span>'+
+					'</span>'+
 			'</span>'+
 			'<span id="eom'+value.idEvent+'" class="email_overview_menu"></span>'+
 			'</span>';
@@ -750,7 +766,9 @@ function loadConcertForManager(){
               $("#updateorderSubmit").hide();
               var price = results[$(this).find(".length").text()].entry;
               var idEvent = results[$(this).find(".length").text()].idEvent;
+			  var seatMap = results[$(this).find(".length").text()].seatMap;
               $("input[name=priceofTicket]").val(price);
+              $("input[name=seatMap]").val(seatMap);
               $("#eventSelect option").each(function(){
                 if($(this).val()==idEvent){
                     $(this).attr("selected","selected");    
@@ -761,7 +779,8 @@ function loadConcertForManager(){
               });
           });
           //Reservation handler
-              $(".reservation").one('click', function(){
+              $(".reservation").on('click', function(event){
+				  event.stopPropagation();
                  createReservation(); 
               });
           },
@@ -866,6 +885,7 @@ function uploadIMG(eventId){
         .prop('disabled', true)
         .text('Minútku')
         .on('click', function () {
+			
             var $this = $(this),
                 data = $this.data();
             $this
@@ -1029,6 +1049,7 @@ function appendTicketForm(){
     '<span class="fieldName" id="placeOrderNumber">'+language["placeOrderNumber"]+'</span>'+
     '<input type="text" id="numberofTickets" name="numberofTickets" class="margin_bottom" required />'+
 '</label>'+
+'<input type="hidden" id="seatMap" name="seatMap" val=""/>'+
 '<input type="hidden" id="priceofTicket" name="priceofTicket" class="margin_bottom" val=""/>'+
 '<input type="submit" id="placeOrderTicketSubmit" value="'+language.startSelling+'">'+
 '<input type="submit" id="updateorderSubmit" value="'+language.update+'">'+
@@ -1075,7 +1096,6 @@ function submitsellTickets(){
     'availableTickets' : $('input[name=numberofTickets]').val(),
     'price'            : $('input[name=priceofTicket]').val(),
         }
-        console.log(formData);
         $.ajax({ 'url' : 'https://api.concertian.com/tickets/',
 		  'method' : 'POST',
 		  'data' : formData,
@@ -1102,7 +1122,9 @@ function submitUpdatesellTickets(){
         var formData = {
     'idEvent'          : $('select[name=eventSelect]').val(),
     'availableTickets' : $('input[name=numberofTickets]').val(),
+	'seatMap'		   : "null"
         }
+		console.log(formData);
         $.ajax({ 'url' : 'https://api.concertian.com/tickets/',
 		  'method' : 'PUT',
 		  'data' : formData,
@@ -1159,7 +1181,7 @@ function addElements(json){
 	for(var i = 0; i < json.events.length; i++){
 		var value = json.events[i];
         var arr = value.stringDate.split('-');
-	
+		var time = value.time.split(':');	
         results[length + i] = value;
         
 		var element = 
@@ -1167,8 +1189,11 @@ function addElements(json){
                         '<input type="hidden" value="' + value.venueId  + '">'+
                         '<span class="firstPart">'+
                             '<span class="date">' + arr[2] + ' ' + arr[1] + "<br>" + arr[0] + '</span>'+
-                            '<span class="time">'+ value.time +'</span>'+
-                            '<span class="price">'+ value.entry +'</span>'+
+                            '<span class="time">'+ time[0] + ':' + time[1]+'</span>'+
+						'<span class="pricewrapper">'+
+                            '<span class="price">' + (value.entry == 0 ? 'free' : value.entry) + '</span>'+
+            '<span class="price_tag '+(value.entry == 0 ? 'hide' : '')+'">'+ (value.state === 'Czech Republic' ? 'czk':'eur') + '</span>'+
+						'</span>'+
                         '</span>'+
                         '<span class="secondPart">'+
                             '<span class="eventPhototext">'+
@@ -1411,17 +1436,27 @@ function addPropagationElements(json){
     }
     //Upload popup handler
     $(".uploadimgUrlButton").on('click', function(){
-        $("#popup").empty();
+		event.stopPropagation(event);
+		if($("#popup").length > 0){
+        	$("#popup").empty();
+			$("#popup").load("basic-plus.html", null, function() {
+				$("#files").perfectScrollbar();
+				uploadIMG(eventId);         
+				$("#popup").on('click', function(){
+					event.stopPropagation();
+				});
+			});
+		}
         var eventId = results[$(this).find(".upload_icon").text()].idEvent;
-        $("#contentPanel").append('<span id="popup"></span>');
+        $("#popup").show();
         $("#popup").load("basic-plus.html", null, function() {
             $("#files").perfectScrollbar();
-            uploadIMG(eventId);
-            $("#closeButton").on('click', function(){
-            $("#propagation").trigger( "click" );                 
+            uploadIMG(eventId);    
+			$("#popup").on('click', function(){
+					event.stopPropagation();
+			});
         });
-        });
-    });
+       });
     //Share Button Handler
     $("li#eventShareButton").on("click", function(){
         $(this).css("background", "#ffbb33");
@@ -1447,41 +1482,49 @@ function addPropagationElements(json){
 
 var mapValue = ["a"];
 var entry = "";
+var rowSelected = 0;
+var seatNumber = 0;
 var sc;
 // Create reservations
 function createReservation(){
-    $.getScript( "js/jquery.seat-charts.js", function(){
-        $("#contentPanel").append('<span id="reservationPopup"></span>');
-        sc = $('#reservationPopup').seatCharts({
-			map: mapValue,
-			seats: {
-				a: {
-					price   : entry,
-					classes : 'front-seat' //your custom CSS class
-				}
-			}, 
-		});
-		//Handlers
-		$("#addrow").on('click', function(){
-			mapValue.push("a");
-			 console.log(mapValue);
-			 
-			 $.getScript( "js/jquery.seat-charts.js", function(){
-        $("#contentPanel").empty();
-				 $("#contentPanel").append('<span id="reservationPopup"></span>');
-        sc = $('#reservationPopup').seatCharts({
-        map: mapValue
-        ,
-        seats: {
-            a: {
-                price   : entry,
-                classes : 'front-seat' //your custom CSS class
-            }
-        }, 
-    });
+	$("#reservationPopup").empty();
+	$("#reservationPopup").show();
+     $("#reservationPopup").append(
+		 	'<span class="outer">'+
+		 		'<span class="reservationCore">'+
+					'<ul id="rows"></ul>'+
+		 		'</span>'+
+		 	'</span>'+
+		 	'<span id="reservationSaveButton">'+language["save"]+'</span>'
+	 );
+	$(".outer").perfectScrollbar();
+	for(var i = 0; i<15; i++){
+		$("#rows").append('<li class="row">'+
+							'<span class="rowNumber">'+i+'</span>'+
+							'<ul class="seats"></ul>'+
+						  '</li>');
+		for(var j = 0; j<15; j++){
+			$("#rows").find(".row").eq(i).find(".seats").append('<li class="seat"></li>');
+		}
+	}
+	
+	$(".addRow").on('click', function(){
+		rowNumber++;
+		rowSelected = rowNumber;
+		$(".reservationCore #rows").append('<li class="row"><span class="rowNumber">'+rowNumber+'</span></li>');
 	});
-			 console.log($(this).children().text());
-	 });
-		
+	$(".addSeat").on('click', function(){
+		console.log(rowSelected);
+		$("#rows").children(rowSelected).find('#seats').append('<li class="seat"></li>');
+	});	
+	$(".seat").on('click', function(){
+		$(this).addClass("seatActive");
 	});
+	// Kill reservation Popup
+	$(document).click( function(event){
+			$('#reservationPopup').fadeOut(200);
+	});
+	$("#reservationPopup").on('click', function(event){
+		event.stopPropagation();
+	})
 }
