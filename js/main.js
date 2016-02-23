@@ -1,3 +1,9 @@
+var timeout = {};
+var rtime = {};
+var disabled = {};
+var setNormal = {};
+var delta = {};
+var limitWidth = {};
 var page = 0;
 var all = 0;
 var byCity = 1;
@@ -47,6 +53,9 @@ var slovak = {
     visible_1:"Áno",
     visible_2:"Nie",
     //propagation.html
+	startLoad:"Odoslať",
+	uploading:"Nahrávanie",
+	notUploaded:"Súbor nebol odoslaný",
     propagationTitle:"Propagácia koncertov",
     legendDate:"DÁTUM",
     legendTime:"ČAS",
@@ -123,6 +132,9 @@ var english = {
     visible_1:"Yes",
     visible_2:"No",
     //propagation.html
+	startLoad:"Upload",
+	uploading:"Uploading",
+	notUploaded:"Upload failed",
     propagationTitle:"Concerts propagation",
     legendDate:"DATE",
     legendTime:"TIME",
@@ -199,6 +211,9 @@ var czech = {
     visible_1:"Áno",
     visible_2:"Ne",
     //propagation.html
+	startLoad:"Odeslat",
+	uploading:"Nahrávání",
+	notUploaded:"Soubor nebyl odeslán",
     propagationTitle:"Propagace koncertů",
     legendDate:"DATUM",
     legendTime:"ČAS",
@@ -413,6 +428,14 @@ $(document).ready(function() {
                 $(".heading_venuePhoto").attr('src', 'img/default_avatar.png');
             }
             $("#contentPanel").remove(".spinner");
+			$.getScript("js/vendor/jquery.ui.widget.js");
+			$.getScript("//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js");
+			$.getScript("//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js");
+			$.getScript("js/jquery.iframe-transport.js");
+			$.getScript("js/jquery.fileupload.js");
+			$.getScript("js/jquery.fileupload-process.js");
+			$.getScript("js/jquery.fileupload-image.js");
+			$.getScript("js/jquery.fileupload-validate.js");
           });
 		//Popup close handler
 		$(document).click( function(event){
@@ -537,11 +560,13 @@ $(document).ready(function() {
 	  $.ajaxSetup({ cache: true });
 	  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
 		FB.init({
-		  appId: '468434010007064',
+		  appId: '1128811043811214',
 		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
 		});     
 		$('#loginbutton,#feedbutton').removeAttr('disabled');
-		FB.getLoginStatus(updateStatusCallback);
+		FB.getLoginStatus(function(){
+		   console.log('Status updated!!');
+		});
 	  });
 });
 
@@ -882,15 +907,15 @@ function uploadIMG(eventId){
                 '//jquery-file-upload.appspot.com/' : 'https://api.concertian.com/UploadHandler/',
     uploadButton = $('<button/>')
         .addClass('btn btn-primary')
-        .prop('disabled', true)
-        .text('Minútku')
+        .prop('disabled', false)
+        .text(language.startLoad)
         .on('click', function () {
 			
             var $this = $(this),
                 data = $this.data();
             $this
                 .off('click')
-                .text('Nahrávam')
+                .text(language.uploading)
                 .on('click', function () {
                     $this.remove();
                     data.abort();
@@ -941,7 +966,7 @@ function uploadIMG(eventId){
         }
         if (index + 1 === data.files.length) {
             data.context.find('button')
-                .text('Nahrať')
+                .text(language.startLoad)
                 .prop('disabled', !!data.files.error);
         }
     }).on('fileuploadprogressall', function (e, data) {
@@ -969,7 +994,7 @@ function uploadIMG(eventId){
         });
     }).on('fileuploadfail', function (e, data) {
         $.each(data.files, function (index) {
-            var error = $('<span class="text-danger"/>').text('Nenahrané');
+            var error = $('<span class="text-danger"/>').text(language.notUploaded);
             $(data.context.children()[index])
                 .append('<br>')
                 .append(error);
@@ -1439,24 +1464,17 @@ function addPropagationElements(json){
 		event.stopPropagation(event);
 		if($("#popup").length > 0){
         	$("#popup").empty();
-			$("#popup").load("basic-plus.html", null, function() {
-				$("#files").perfectScrollbar();
-				uploadIMG(eventId);         
-				$("#popup").on('click', function(){
-					event.stopPropagation();
-				});
-			});
 		}
         var eventId = results[$(this).find(".upload_icon").text()].idEvent;
         $("#popup").show();
         $("#popup").load("basic-plus.html", null, function() {
             $("#files").perfectScrollbar();
             uploadIMG(eventId);    
-			$("#popup").on('click', function(){
+			$("#popup").on('click', function(event){
 					event.stopPropagation();
 			});
         });
-       });
+   	});
     //Share Button Handler
     $("li#eventShareButton").on("click", function(){
         $(this).css("background", "#ffbb33");

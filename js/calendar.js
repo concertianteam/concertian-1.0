@@ -109,6 +109,7 @@ function initCalendar(language) {
                         time: $("#time").val(),
                         detail: $("#detail").val(),
                         youtubeVideo: $("#youtube").val(),
+						seatMap: "null",
                         entry: $("#entry").val(),
                         imgUrl: $("#imgUrl").val(),
                         note: $("#note").val(),

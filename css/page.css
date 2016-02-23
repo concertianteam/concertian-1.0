@@ -728,9 +728,11 @@ input{
     margin-left: 5%;
     height: 100%;
     border: 2px solid #fff;
+	background: #fff;
     border-radius: 10px;
     box-sizing: border-box;
     padding: 2%;
+	color: #333333;
 }
 .wrapper{
     display: block;

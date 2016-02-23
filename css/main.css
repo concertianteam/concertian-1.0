@@ -325,11 +325,30 @@ header{
 	height: 23px;
     margin-left: 18px;
 }
+#logoff_icon{
+    display: block;
+    background: url('../img/sprite.png')  no-repeat -108px -2px;
+	width: 24px;
+	height: 20px;
+	margin-left: 18px;
+}
 .color_mode{
     display: block;
     width: 60px;
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
+}
+@media screen and (max-height: 600px) {
+	.color_mode{
+		display: none !important;
+	}
+}
+.color_mode .concertianLogo{
+	display: block;
+	background: url('../img/sprite.png') no-repeat -925px -2px;
+	width: 45px;
+	height: 45px;
+	margin-left: 7px;
 }
 .color_mode ul{
     list-style: none;
@@ -373,16 +392,6 @@ header{
     text-align: center;
     box-sizing: border-box;
     padding-top: 15px;
-}
-#logoff{
-    display: block;
-    position: absolute;
-    bottom: 5%;
-    left: 18px;
-    background: url('../img/sprite.png')  no-repeat -108px -2px;
-	width: 24px;
-	height: 20px;
-    cursor: pointer;
 }
 @media screen and (max-height: 570px) {
     #logoff{
@@ -470,6 +479,12 @@ section{
     .rightBanner_text{
         font-size: 0.8em;
         padding: 5px 10px !important;
+    }
+	li.propagationeventPhoto{
+        display: none !important;
+    }
+    #eventphoto{
+        display: none !important;
     }
 }
 #topBanner{
@@ -1383,26 +1398,45 @@ li.eventAudience{
     li.eventDetail{
         display: none !important;
     }
+	.propagationList ul{
+		padding-left: 1%;
+	}
     #detail{
         display: none !important;
     }
     .propagationList ul li{
-        width: 80px !important;
+        width: 140px !important;
     }
     .propagationElement li{
-        width: 80px !important;
+        width: 140px !important;
     }
     #eventShareButton{
         margin-right: 15% !important;
     }
 }
-@media screen and (max-width: 620px) {
-    li.eventPhoto{
-        display: none !important;
-    }
-    .eventphoto{
-        display: none !important;
-    }
+@media screen and (max-width: 900px) {
+	li.eventEntry{
+		display: none !important;
+	}
+	#lientry{
+		display: none !important;
+	}
+	.eventList{
+		display: block !important;
+		width: 100% !important;
+		height: 40% !important;
+	}
+	.ticketsResultList{
+		height: 90% !important;
+	}
+	.ticketSoldOverview{
+		display: none !important;
+	}
+	.ticketForm{
+		display: block !important;
+		width: 100% !important;
+		height: 60% !important;
+	}
 }
 /* -------------- Ticket Market ------------*/
 .eventList{
@@ -2136,6 +2170,7 @@ li.eventAudience{
     margin-top: 2%;
 }
 .progress-bar-success {
+	display: block;
     background-color: #5CB85C;
 }
 .progress-bar {

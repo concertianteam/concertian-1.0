@@ -1962,6 +1962,7 @@ li.eventAudience{
     margin-top: 2%;
 }
 .progress-bar-success {
+	display: block;
     background-color: #5CB85C;
 }
 .progress-bar {
