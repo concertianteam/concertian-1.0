@@ -44,8 +44,9 @@ var slovak = {
     searchplaceholder2:"Aký klub hľadáme?",
     by:"u",
     in:"v",
-	free:"zadarmo",
+	free:"vstup<br>voľný",
 	nodata:"Žiadne informácie",
+	payheading:"Platba kartou",
     name:"Meno",
     lastname:"Priezvisko",
     contactemail:"Email",
@@ -55,6 +56,7 @@ var slovak = {
     priceLegend:"Jednotková cena",
     submitForm:"KÚPIŤ VSTUPENKU",
     responsebox: "ešte nezahájil predaj vstupeniek",
+    responsebox2: "vypredané",
     submitPayment:"Zaplatiť",
     noResult:"Žiadne výsledky hľadania",
     checkemail: "Vstupenku nájdete vo svojej emailovej schránke",
@@ -72,7 +74,8 @@ var english = {
     by:"by",
     in:"in",
 	nodata:"No more data",
-	free:"free",
+	free:"free<br>entry",
+	payheading:"Pay with card",
     name:"Name",
     lastname:"Surname",
     contactemail:"Email",
@@ -83,6 +86,7 @@ var english = {
     submitForm:"BUY TICKETS",
     submitPayment:"PAY",
     responsebox: "has not yet launched selling",
+	responsebox2: "sold out",
     noResult:"No resulsts",
     checkemail: "Ticket should be in your mailbox in short time",
     checkemailWrong: "An mistake occurred, please try it again",
@@ -98,8 +102,9 @@ var czech = {
     searchplaceholder2:"Jaký klub hledáme?",
     by:"u",
     in:"v",
-	free:"zdarma",
+	free:"volný<br>vstup",
 	nodata:"Žádné informace",
+	payheading:"Platba kartou",
     name:"Jméno",
     lastname:"Příjmení",
     contactemail:"Email",
@@ -110,6 +115,7 @@ var czech = {
     submitForm:"KOUPIT VSTUPENKU",
     submitPayment:"Zaplatit",
     responsebox: "ještě nespustil prodej vstupenek",
+	responsebox2: "vyprodáno",
     noResult:"Žádné výsledky hledání",
     checkemail: "Vstupenku najdete ve své emailové schránce",
     checkemailWrong: "Došlo k chybě, zkuste to ještě jednou. Děkujeme.",
@@ -354,7 +360,9 @@ $(document).ready(function() {
 		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
 		});     
 		$('#loginbutton,#feedbutton').removeAttr('disabled');
-		FB.getLoginStatus(updateStatusCallback);
+		FB.getLoginStatus(function(){
+		   console.log('Status updated!!');
+		});
 	  });
 	//* --------- Twitter asynchronus calling -------- *//
 	window.twttr = (function(d, s, id) {
@@ -443,7 +451,7 @@ function loadAllConcert(){
     });
 }
 
-// Load concert by City
+// Load concert by City*
 function loadConcertByCity(city){
 	$.ajax({ 'url' : 'https://api.concertian.com/users/events/city',
 		  'method' : 'POST',
@@ -496,9 +504,12 @@ function addLike(eventID){
 	});
 }
 // Buy tickets form
-function buyTickets(eventID, price, origin, tickets, venuename){
+function buyTickets(eventID, price, origin, tickets, venuename, soldout, eventName){
     var elementTicketForm =
-    '<span class="outer buy">'+
+	'<span class="closeButton">'+
+			'<span class="closeIcon"></span>'+
+	'</span>'+
+    '<span class="outer">'+
         '<span class="ticketForm">'+
             '<form id="buyTicketForm">'+
                  '<label for="firstName">'+
@@ -514,7 +525,7 @@ function buyTickets(eventID, price, origin, tickets, venuename){
                 '<input type="text" id="email" name="email" value="" required>'+
                 '</label>'+
                 '<input type="hidden" id="eventID" name="eventID" value="'+ eventID+'">'+
-                '<input type="hidden" name=" n    price" value="'+price+'">'+
+                '<input type="hidden" name="price" value="'+price+'">'+
                 '<input type="checkbox" class="checkbox" name="vehicle" value="Bike" required><span class="checkboxText"><a href="'+language.langLink+'" target="_blank">'+language.checkboxText+'</a></span>'+
                 '<span class="summary">'+
                     '<ul>'+
@@ -529,88 +540,101 @@ function buyTickets(eventID, price, origin, tickets, venuename){
             '</form>'+
         '</span>'+
     '</span>';
+	$("#popup").empty();
     $("#popup").append(elementTicketForm);
 	$("#popup").removeClass("edgetoedge black");
     $("#popup").fadeIn(100);
     $("#popup .outer").perfectScrollbar();
-    if(tickets != null){
+	
+	// Close handler
+	$('.closeButton').on('click', function(){
+		$("#popup").empty();
+		$("#popup").fadeOut(200);
+	});
+    
+	if(tickets != null){
+		if(soldout != 0){
+			//Buy ticket submit
+			$("#buyTicketForm").submit(function(event){
+				event.preventDefault();
+				if($('.checkbox').prop('checked') == true){
+				var dt = new Date();
+				var month = dt.getMonth()+1;
+				var day = dt.getDate();
+				var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+				var date = dt.getFullYear() + '-' +
+			((''+month).length<2 ? '0' : '') + month + '-' +
+			((''+day).length<2 ? '0' : '') + day;
+				var formData = {
+					'name'    : $('input[name=firstName]').val(),
+					'lastName': $('input[name=lastName]').val(),
+					'email'   : $('input[name=email]').val(),
+					'idEvent' : $('#eventID').val(),
+					'price': price,
+					'time'    : time,
+					'date'    : date,
+				};
 
-    //Buy ticket submit
-    $("#buyTicketForm").submit(function(event){
-        event.preventDefault();
-        if($('.checkbox').prop('checked') == true){
-        var dt = new Date();
-        var month = dt.getMonth()+1;
-        var day = dt.getDate();
-        var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-        var date = dt.getFullYear() + '-' +
-    ((''+month).length<2 ? '0' : '') + month + '-' +
-    ((''+day).length<2 ? '0' : '') + day;
-        var formData = {
-            'name'    : $('input[name=firstName]').val(),
-            'lastName': $('input[name=lastName]').val(),
-            'email'   : $('input[name=email]').val(),
-            'idEvent' : $('#eventID').val(),
-            'price': price,
-            'time'    : time,
-            'date'    : date,
-        };
-        
-        if(formData.name != "" && formData.lastname != "" && formData.email != "" && formData.eventID != "" && formData.ticketPrice != "" && formData.time != ""){
-            
-            $("#popup").empty();
-            $("#popup").append(
-                '<form id="checkout">'+
-                    '<span id="payment-form"></span>'+
-                    '<input type="hidden" name="price" id="price" val="'+ price +'">'+
-                    '<input type="submit" id="submit" value="'+language.submitForm+' '+price+'€">'+
-                '</form>');
-            $.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
-        
-        var clientToken;
+				if(formData.name != "" && formData.lastname != "" && formData.email != "" && formData.eventID != "" && formData.ticketPrice != "" && formData.time != ""){
 
-            $.ajax({
-                url: "php/generateClientToken.php",
+					$("#popup").empty();
+					$("#popup").append(
+						'<span class="cardPayHeader">'+language.payheading+'</span>'+
+						'<form id="checkout">'+
+							'<span id="payment-form"></span>'+
+							'<input type="hidden" name="price" id="price" val="'+ price +'">'+
+							'<input type="submit" id="submit" value="'+language.submitForm+' '+price+'€">'+
+						'</form>');
+					$.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
 
-                success: function (ret) {
-                    $('#payment-form').empty();
-                    clientToken = ret;
-                    braintree.setup(clientToken, 'dropin',{
-                        container: "payment-form",
-                        paymentMethodNonceReceived: function (event, nonce) {
-                            $.ajax({
-                                url: 'php/transactionCheckout.php?price='+price,
-                                dataType: 'json',
-                                method: 'POST',
-                                data:{
-                                    payment_method_nonce: nonce
-                                },
-                                success: function(data) {
-                                    generateTicket(formData);
-                                },
-                                error: function(data){
-                                    console.log("error",data);
-                                    errorMessage();
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-                
-        $('#checkout').submit(function(event){
-            event.preventDefault();
-            });
-        });
-        }
-    }
+				var clientToken;
+
+					$.ajax({
+						url: "php/generateClientToken.php",
+
+						success: function (ret) {
+							$('#payment-form').empty();
+							clientToken = ret;
+							braintree.setup(clientToken, 'dropin',{
+								container: "payment-form",
+								paymentMethodNonceReceived: function (event, nonce) {
+									$.ajax({
+										url: 'php/transactionCheckout.php?price='+price,
+										dataType: 'json',
+										method: 'POST',
+										data:{
+											payment_method_nonce: nonce
+										},
+										success: function(data) {
+											generateTicket(formData);
+										},
+										error: function(data){
+											console.log("error",data);
+											errorMessage();
+										}
+									});
+								}
+							});
+						}
+					});
+
+				$('#checkout').submit(function(event){
+					event.preventDefault();
+					});
+				});
+				}
+			}
+			else{
+				window.alert(language.checkboxWarning);
+			}
+			});
+		}
+		else{
+			soldoutTickets(eventName);
+		}
+	}
     else{
-        window.alert(language.checkboxWarning);
-    }
-    });
-    }
-    else{
-        askbuyTickets(venuename);
+		askbuyTickets(venuename);
     }
 }
 // Not able to buy tickets
@@ -619,6 +643,16 @@ function askbuyTickets(venuename){
          '<span class="responseBox">'+
             '<span class="responseBoxIcon"></span>'+
             '<span class="responseBoxtext">'+venuename+' '+ language.responsebox+'</span>'+
+         '</span>';
+    $("#popup .outer").css('opacity', '0.2');
+    $("#popup").append(elementresponse);
+}
+// Not able to buy tickets
+function soldoutTickets(eventName){
+     var elementresponse =
+         '<span class="responseBox">'+
+            '<span class="responseBoxIcon"></span>'+
+            '<span class="responseBoxtext">'+eventName+' '+ language.responsebox2+'</span>'+
          '</span>';
     $("#popup .outer").css('opacity', '0.2');
     $("#popup").append(elementresponse);
@@ -643,8 +677,8 @@ function addElements(json){
 		var value = json.events[i];
         var arr = value.stringDate.split('-');
 		var time = value.time.split(':');
-		
-        address[i] = encodeURIComponent(value.address + " " + value.city);
+
+		address[i] = encodeURIComponent(value.address + " " + value.city);
         results[length + i] = value;
         
         var element = 
@@ -683,7 +717,7 @@ function addElements(json){
                         '</span>'+
                     '</li>'+
                     '<li>'+
-                        '<span class="price">' + (value.entry == 0 ? language["free"] : value.entry) + '</span>'+
+                        '<span class="price ' + (value.entry == 0 ? "freeText" : '') +'">' + (value.entry == 0 ? language["free"] : value.entry) + '</span>'+
             '<span class="price_tag '+(value.entry == 0 ? 'hide' : '')+'">'+ (value.state === 'Czech Republic' ? 'czk':'eur') + '</span>'+
                     '</li>'+
                 '</ul>'+
@@ -718,11 +752,12 @@ function addElements(json){
             $("#popup").empty();
         }
 	
-		$("#popup").addClass("edgetoedge black");
 		var value = results[$(this).find(".lenght").text()];
-		console.log(value.entry);
 		var elementDetail = 
-			'<span class="outer .detail">'+
+			'<span class="outer">'+
+				'<span class="closeButton">'+
+					'<span class="closeIcon"></span>'+
+				'</span>'+
 				'<span class="header">'+
 					'<img class="img" src="'+( value.imgUrl == "" ? 'img/default.jpg' : value.imgUrl) +'">'+
 				'</span>'+
@@ -733,46 +768,65 @@ function addElements(json){
 				'<span class="youtube '+(value.youtubeVideo == null ? "center" : "")+'">'+
 					'<iframe width="100%" height="auto" class="'+(value.youtubeVideo == null ? "youtubeIcon" : "")+'" style="display: block; width: 100%; height: auto; margin: 0; padding: 0; border: none;" src="'+(value.youtubeVideo == null ? "" : value.youtubeVideo)+'"></iframe>'+
 				'</span>'+
-				'<span class="buyTicketButton">'+(value.entry == "" ? language["free"] : language["submitPayment"] + " " +value.entry + "€")+'</span>'+
+				'<span class="buyTicketButton ' + (value.entry == 0 ? "freeText" : '') +'">'+(value.entry == "" ? language["free"] : language["submitPayment"] + " " +value.entry + "€")+'</span>'+
 			'</span>';
 		$("#popup").append(elementDetail);
+		$("#popup").addClass("edgetoedge black");
 		$("#popup").fadeIn(100);
 		$("#popup .outer").perfectScrollbar();
-		$("#popup .outer").scrollTop( $( "#popup .outer" ).prop(100) );
-		$("#popup .outer").perfectScrollbar('update');
+		// Close handler
+		$('.closeButton').on('click', function(){
+			$("#popup").empty();
+			$("#popup").fadeOut(200);
+		});
 		
 		//Buy ticket via popup
 		$(".buyTicketButton").on('click', function(){
 			if(value.entry != ""){
-				$("#popup").empty();
+				var tickets = value.tickets;
+
+				if(tickets != null){
+					var available = value.tickets.available;
+					var sold = value.tickets.sold;
+				}
+
+				var eventName = value.eventName;
 				var eventID = value.id;
 				var price = value.entry;
 				var origin = value.state;
 				var venuename = value.venueName;
-				var tickets = value.tickets;
-           		buyTickets(eventID, price, origin, tickets, venuename);
-        	}
+				var soldout = available - sold;
+				if(price != ""){
+					buyTickets(eventID, price, origin, tickets, venuename, soldout, eventName);
+				}
+			}
 		});
 	});
     
     //By tickets handler
     $(".buttonsElement").on("click", function(event){
 			event.stopPropagation();
-        if($("#popup .outer .buy").length > 0){
+        if($("#popup").length > 0){
            $("#popup").hide();
            $("#popup").empty();
         }
-        else{
-        var value = results[$(this).find(".lenght").text()];
-        var eventID = value.id;
-        var price = value.entry;
-        var origin = value.state;
-        var venuename = value.venueName;
-        var tickets = value.tickets;
-        if(price != ""){
-           buyTickets(eventID, price, origin, tickets, venuename);
-        }
-        }
+		var value = results[$(this).find(".lenght").text()];
+		var tickets = value.tickets;
+
+		if(tickets != null){
+			var available = value.tickets.available;
+			var sold = value.tickets.sold;
+		}
+
+		var eventName = value.eventName;
+		var eventID = value.id;
+		var price = value.entry;
+		var origin = value.state;
+		var venuename = value.venueName;
+		var soldout = available - sold;
+		if(price != ""){
+			buyTickets(eventID, price, origin, tickets, venuename, soldout, eventName);
+		}
     });
     
     // Share concert on facebook    
