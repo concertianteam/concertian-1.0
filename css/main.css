@@ -4,7 +4,7 @@ body{
     height: 100%;
     padding: 0px;
     margin: 0px;
-    background-color: #f5f5f5;
+    background-color: #ADADAD;
     font-family: 'Open Sans', sans-serif;	
     font-weight: normal;
     color: #333333;
@@ -61,7 +61,7 @@ div.loginBox{
 div.loginBox .header{
     position: relative;
     margin-left: 15px;
-    background: url('../img/sprite.png') no-repeat -188px -2px;
+    background: url('../img/sprite.png') no-repeat -239px 0;
 	width: 292px;
 	height: 35px;
 }
@@ -204,9 +204,9 @@ div#bottom_bar .send_invitation input[type="email"]:focus{
 }
 div#bottom_bar .send_invitation input[type="submit"]{
     display: inline-block;
-    background: url('../img/sprite.png')  no-repeat -637px -5px;
-	width: 23px;
-	height: 17px;
+    background: url('../img/sprite.png') no-repeat -734px -16px;
+	width: 28px;
+	height: 22px;
     border:none;
 }
 div#bottom_bar ::-webkit-input-placeholder {
@@ -277,7 +277,7 @@ header{
     height: 60px;
     cursor: pointer;
     box-sizing: border-box;
-    padding-top: 17px;
+    padding-top: 9px;
     background-color: transparent;
 }
 #leftmenu li:hover{
@@ -285,52 +285,52 @@ header{
 }
 #welcome_icon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -488px -3px;
-	width: 25px;
-	height: 23px;
-    margin-left: 17px;
+    background: url('../img/sprite.png') no-repeat -95px -5px;
+	width: 35px;
+	height: 35px;
+    margin-left: 12px;
 }
 #statistics_icon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -2px -2px;
-	width: 25px;
-	height: 25px;
-    margin-left: 17px;
+    background: url('../img/sprite.png')  no-repeat -592px -3px;
+	width: 33px;
+	height: 38px;
+    margin-left: 12px;
 }
 #mycalendar_icon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -29px -2px;
-	width: 25px;
-	height: 25px;
-    margin-left: 17px;
+    background: url('../img/sprite.png') no-repeat -53px -3px;
+	width: 34px;
+	height: 38px;
+    margin-left: 12px;
 }
 #propagation_icon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -56px -2px;
-	width: 25px;
-	height: 23px;
-    margin-left: 17px;
+    background: url('../img/sprite.png') no-repeat -548px -3px;
+	width: 30px;
+	height: 38px;
+    margin-left: 12px;
 }
 #market_icon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -583px -2px;
-	width: 25px;
-	height: 23px;
-    margin-left: 17px;
+    background: url('../img/sprite.png') no-repeat -640px -3px;
+	width: 35px;
+	height: 38px;
+    margin-left: 12px;
 }
 #settings_icon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -83px -2px;
-	width: 23px;
-	height: 23px;
-    margin-left: 18px;
+    background: url('../img/sprite.png') no-repeat -4px -3px;
+	width: 40px;
+	height: 40px;
+    margin-left: 12px;
 }
 #logoff_icon{
     display: block;
-    background: url('../img/sprite.png')  no-repeat -108px -2px;
-	width: 24px;
-	height: 20px;
-	margin-left: 18px;
+    background: url('../img/sprite.png')  no-repeat -684px -3px;
+	width: 36px;
+	height: 38px;
+	margin-left: 12px;
 }
 .color_mode{
     display: block;
@@ -579,8 +579,8 @@ div #contentPanel{
     border-radius: 90px;
     background: #ffbb33;
     box-sizing: border-box;
-    padding-top: 28px;
-    padding-left: 10px;
+    padding-top: 21px;
+    padding-left: 11px;
     cursor: pointer;
     margin-left: 40%;
     margin-bottom: 2%;
@@ -638,12 +638,13 @@ div #contentPanel{
     /* Standard */
     height: calc(100% - 50x);
     background: #fff;
+	border-radius: 4px;
 }
 .searchBar{
     display: block;
     width: 100%;
     height: 40px;
-    border-bottom: 10px solid #f5f5f5;
+    border-bottom: 10px solid #ADADAD;
     text-align: center;
 }
 #backButton{
@@ -740,10 +741,12 @@ input[name="submit"]{
 .pricewrapper{
 	display: block;
 	box-sizing: border-box;
-	width: 100%;
+	width: 96%;
 	padding-bottom: 1px !important;
+	margin-left: 2% !important;
 	background: #ffcd29;
 	color: #fff;
+	border-radius: 4px;
 }
 .price{
     display: inline-block;
@@ -850,6 +853,7 @@ input[name="submit"]{
     /* Standard */
     height: calc(100% - 50px);
     background: #F3F4F7;
+	border-radius: 4px;
 }
 #graph{
 	height: 100%;
@@ -1084,6 +1088,7 @@ input[name="submit"]{
     height: calc(100% - 50x);
     background: #fff;
     margin-right: 0.5%;
+	border-radius: 4px;
     padding: 0;
 }
 .inline{
@@ -1104,6 +1109,7 @@ input[name="submit"]{
     height: calc(100% - 45x);
     background: #fff;
     box-sizing: border-box;
+	border-radius: 4px;
     padding: 1% 1%;
 }
 /*---------- Calendar formula ------- */
@@ -1125,7 +1131,7 @@ input[name="submit"]{
 #cancelEvent,
 #deleteEvent{
     display: inline-block;
-    width: 33%;
+    width: 33.3%;
     float: left;
     height: 40px;
     margin: 0;
@@ -1136,24 +1142,30 @@ input[name="submit"]{
     padding-left: 12%;
     cursor: pointer;
 }
+#saveEvent{
+	border-top-left-radius: 4px;
+}
+#deleteEvent{
+	border-top-right-radius: 4px;
+}
 .deleteEventicon{
     display: block;
-    background: url('../img/sprite.png')  no-repeat -769px -3px;
-	width: 19px;
-	height: 25px;
+    background: url('../img/sprite_page.png') no-repeat -484px -13px;
+	width: 24px;
+	height: 24px;
 	margin-bottom: 2px;
 }
 .saveEventicon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -516px -3px;
+    background: url('../img/sprite_page.png')  no-repeat -399px -13px;
 	width: 24px;
 	height: 24px;
 }
 .cancelEventicon{
     display: block;
-    background: url('../img/sprite.png') no-repeat -741px -3px;
-	width: 20px;
-	height: 22px;
+    background: url('../img/sprite_page.png')no-repeat -541px -13px;
+	width: 24px;
+	height: 24px;
 }
 .eventformInputs{
     position: relative;
@@ -1338,10 +1350,10 @@ li.propagationeventPhoto{
 }
 .upload_icon{
     display: block;
-    background: url('../img/sprite.png') -715px -3px;
-	width: 23px;
-	height: 23px;
-    margin-left: 13px;
+    background: url('../img/sprite.png') no-repeat -216px -2px;
+	width: 20px;
+	height: 20px;
+    margin-left: 15px;
     margin-top: 13px;
     font-size: 0 !important;
 }
@@ -1820,7 +1832,7 @@ li.eventAudience{
     transition: background-color 131ms linear 0s;
 }
 .fieldName{
-    color: #6E787F;
+    color: #333333;
     font-size: 1em;
     position: relative;
     left: 14px;

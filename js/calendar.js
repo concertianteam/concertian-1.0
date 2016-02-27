@@ -22,6 +22,7 @@ function initCalendar(language) {
         $("#createEventTime").text(window.language["createEventTime"]);
         $("#createEventDetails").text(window.language["createEventDetails"]);
        	$("#youtubeLink").text(window.language["youtubeLink"]);
+       	$("#facebooklink").text(window.language["facebooklink"]);
         $("#createEventEntry").text(window.language["createEventEntry"]);
         $("#createEventNotes").text(window.language["createEventNotes"]);
         $("#createEventEmail").text(window.language["createEventEmail"]);
