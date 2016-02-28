@@ -1520,6 +1520,7 @@ function createReservation(){
 		 	'</span>'+
 		 	'<span id="reservationSaveButton">'+language["save"]+'</span>'
 	 );
+	
 	$(".outer").perfectScrollbar();
 	for(var i = 0; i<12; i++){
 		var row = [];
@@ -1557,14 +1558,26 @@ function createReservation(){
 	});
 	
 	$(".seat").mouseenter(function(){
-	if(mousedown){
-		var seatID = $(this).attr("id").split(":");
-		state($(this), seatID);
-	}
+		if(mousedown){
+			var seatID = $(this).attr("id").split(":");
+			state($(this), seatID);
+		}
+	});
+	
+	$("#reservationSaveButton").on('click', function(){
+		var seatString = "";
+		for(var i = 0; i<12; i++){
+			seatString += '\'';
+			for(var j = 0; j<12; j++){
+				seatString += seatreservatiomMap[i][j];
+			}
+			seatString += '\',';
+		}
+		console.log(seatString);
 	});
 	
 	// Kill reservation Popup
-	$(document).click( function(event){
+	$(document).on('click', function(event){
 			$('#reservationPopup').fadeOut(200);
 	});
 	$("#reservationPopup").on('click', function(event){
@@ -1580,5 +1593,4 @@ function state(element, seatID){
 		element.addClass("active");
 		seatreservatiomMap[seatID[0]][seatID[1]] = "a";
 	}
-	console.log(seatreservatiomMap.toString());
 }
