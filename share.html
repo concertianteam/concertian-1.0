@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>concertian - local concert search engine</title>
+
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="js/perfect-scrollbar.jquery.min.js"></script>
+		<script type="text/javascript" src="js/share.js"></script>
+		<script type="text/javascript" src="js/js.cookie.js"></script>
+		
+		<meta name="author" content="QUAWER">
+        <meta name="robots" content="nofollow, noindex">
+        <meta property="fb:app_id" content="1128811043811214">
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@concertian" />
+		<meta name="twitter:title" content="I love searching for concerts via concertian" />
+		<meta name="twitter:image" content="https://www.concertian.com/images/concertian.google.play.logo.png" />
+		<meta name="twitter:description" content="Try it right now on concertian.com or via android app concertian" />
+		<meta property="og:url" content="https://concertian.com">
+		<meta property="og:title" content="I love searching for concerts via concertian" />
+		<meta property="og:image" content="https://www.concertian.com/images/concertian.google.play.logo.png" />
+		<meta property="og:description" content="Try it right now on concertian.com or via android app concertian" />
+	</head>
+	<body id="shareBody">
+		<header id="shareHeader">
+			<span class="titlerow">
+                <span id="logo">
+                    <span class="logo_picture"></span>
+                    <span class="logo_text"></span>
+                    <span class="language_selector">
+						<a id="language_menu">SK</a>
+                            <ul class="languagemenu">
+                                <li><a id="en">EN</a></li>
+                                <li><a id="sk">SK</a></li>
+                                <li><a id="cz">CZ</a></li>
+                            </ul>
+            		</span>
+                </span>
+                <span class="share_concertian">
+                    <ul>
+                        <li>
+                        <a onclick="FB.ui({method: 'share', href: 'https://concertian.com'}, function(response){});">
+                            <span class="facebook"></span>
+                        </a>
+                        </li>
+                        <li>
+                        <a href="https://twitter.com/intent/tweet?text=I+love+searching+for+concerts+with+concertian&url=https://concertian.com/&via=concertian">    
+                            <span class="twitter"></span>
+                        </a>
+                        </li>
+                        <li>
+                        <a action="share" href="https://plus.google.com/share?url=https://concertian.com"  onclick="javascript:window.open(this,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                            <span class="googleplus"></span>
+                        </a>
+                        </li>
+                    </ul>
+                </span>
+			</span>
+		</header>
+		<span id="shareBox">
+			<span class="shareBoxLeftImg">
+				<img src="img/share_arrow_2.png">
+			</span>
+			<span class="shareBoxEvent">
+			</span>
+			<span class="shareBoxRightImg">
+				<img src="img/share_arrow_1.png">
+			</span>
+		</span>
+		<span id="buyTickets"></span>
+		<a href="https://concertian.com"><span id="shareBoxMoreConcerts"></span></a>
+	</body>
+</html>

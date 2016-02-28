@@ -381,6 +381,8 @@ $(document).ready(function() {
   	return t;
 	}
 	(document, "script", "twitter-wjs"));
+	
+	
     
 });                
 
@@ -834,14 +836,21 @@ function addElements(json){
         $(this).addClass("share_clicked");
 		var value = results[$(this).find(".lenght").text()];
         var eventID = value.id;
+		var url = null;
+		var url = $(location).attr('href');
+		var shareUrl = null;
+		var shareUrl = url + 'share.html?' + eventID;
+		console.log(shareUrl);
         addLike(eventID);
 				FB.ui({
-				  method: 'feed',
+				  method: 'share',
 				  picture: value.urlPhoto,
+				  href: shareUrl,
 				  name: value.eventName,
 				  caption: value.venueName,
 				  description: value.date +" o "+value.time,
 				}, function(response){});
+		window.location.href = shareUrl;
 	});
     
     // Search for location and add markers
