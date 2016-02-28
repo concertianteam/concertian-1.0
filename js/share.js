@@ -72,9 +72,8 @@ var czech = {
 $(document).ready(function(){
 	var url = $(location).attr('href');
 	var urlId = url.split('/');
-	var eventId = urlId[4].split('?');
+	var eventId = urlId[3].split('?');
 	var eventID = eventId[1];
-	console.log(eventID);
 	loadconcertbyeventID(eventID);
 	
 	//Language handler
@@ -200,8 +199,10 @@ function buyTickets(eventID, price, origin, tickets, venuename, soldout, eventNa
         '</span>'+
     '</span>';
 	$(".shareBoxEvent").empty();
-	$(".shareBoxEvent").perfectScrollbar();
     $(".shareBoxEvent").append(elementTicketForm);
+	$(".shareBoxEvent").removeClass("edgetoedge black");
+	$(".outer").perfectScrollbar();
+	$(".outer").addClass("padding");
 	
 	//Submit process
 	if(tickets != null){
@@ -229,8 +230,8 @@ function buyTickets(eventID, price, origin, tickets, venuename, soldout, eventNa
 
 				if(formData.name != "" && formData.lastname != "" && formData.email != "" && formData.eventID != "" && formData.ticketPrice != "" && formData.time != ""){
 
-					$(".shareBoxEvent").empty();
-					$(".shareBoxEvent").append(
+					$(".outer").empty();
+					$(".outer").append(
 						'<span class="cardPayHeader">'+language.payheading+'</span>'+
 						'<form id="checkout">'+
 							'<span id="payment-form"></span>'+
@@ -310,7 +311,7 @@ function soldoutTickets(eventName){
     $(".shareBoxEvent").append(elementresponse);
 }
 function generateTicket(formData){
-    $(".shareBoxEvent").empty();
+    $(".outer").empty();
     var element = '<span class="checkemail">'+language.checkemail+'</span>'+
                   '<span class="checkemailIcon"></span>';
     $(".shareBoxEvent").append(element);
@@ -330,5 +331,5 @@ function errorMessage(){
     $(".shareBoxEvent").empty();
         var element = '<span class="checkemail" style="color: #546078;">'+language.checkemailWrong+'</span>'+
                   '<span class="checkemailIconWrong"></span>';
-    $(".shareBoxEvent").append(element);
+    $(".outer").append(element);
 }

@@ -840,17 +840,16 @@ function addElements(json){
 		var url = $(location).attr('href');
 		var shareUrl = null;
 		var shareUrl = url + 'share.html?' + eventID;
-		console.log(shareUrl);
         addLike(eventID);
 				FB.ui({
-				  method: 'share',
-				  picture: value.urlPhoto,
-				  href: shareUrl,
+				  method: 'feed',
+				  picture: value.imgUrl,
+				  link: shareUrl,
+				  redirect_uri: shareUrl,
 				  name: value.eventName,
 				  caption: value.venueName,
 				  description: value.date +" o "+value.time,
 				}, function(response){});
-		window.location.href = shareUrl;
 	});
     
     // Search for location and add markers
