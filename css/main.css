@@ -1594,7 +1594,7 @@ li.eventAudience{
 }
 .reservationIcon{
 	display: block;
-	background: url('../img/sprite.png') no-repeat -802px -3px;
+	background: #ffbb33;
 	width: 22px;
 	height: 24px;
 	margin-left: 50%;
@@ -2064,7 +2064,7 @@ li.eventAudience{
 	background: #546078;
 	cursor: pointer;
 }
-.seatActive{
+.active{
 	background: #ffbb33;
 }
 #reservationSaveButton{

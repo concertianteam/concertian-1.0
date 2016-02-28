@@ -809,7 +809,7 @@ function loadConcertForManager(){
           //Reservation handler
               $(".reservation").on('click', function(event){
 				  event.stopPropagation();
-                 createReservation(); 
+                  createReservation(); 
               });
           },
 		  'error': function(error){
@@ -1506,6 +1506,8 @@ var entry = "";
 var rowSelected = 0;
 var seatNumber = 0;
 var sc;
+var seatreservatiomMap = [];
+var mousedown = false;
 // Create reservations
 function createReservation(){
 	$("#reservationPopup").empty();
@@ -1520,6 +1522,7 @@ function createReservation(){
 	 );
 	$(".outer").perfectScrollbar();
 	for(var i = 0; i<12; i++){
+		var row = [];
 		$("#rows").append('<li class="row">'+
 							'<span class="rowNumber">'+i+'</span>'+
 							'<ul class="seats"></ul>'+
@@ -1529,11 +1532,13 @@ function createReservation(){
 						  	'</span>'+
 						  '</li>');
 		for(var j = 0; j<12; j++){
-			$("#rows").find(".row").eq(i).find(".seats").append('<li class="seat"></li>');
+			row[j] = "_";
+			$("#rows").find(".row").eq(i).find(".seats").append('<li id="'+i+':'+j+'" class="seat" ></li>');
 		}
+		seatreservatiomMap.push(row);
 	}
 	
-	$(".addRow").on('click', function(){
+	/*$(".addRow").on('click', function(){
 		rowNumber++;
 		rowSelected = rowNumber;
 		$(".reservationCore #rows").append('<li class="row"><span class="rowNumber">'+rowNumber+'</span></li>');
@@ -1541,15 +1546,39 @@ function createReservation(){
 	$(".addSeat").on('click', function(){
 		console.log(rowSelected);
 		$("#rows").children(rowSelected).find('#seats').append('<li class="seat"></li>');
-	});	
-	$(".seat").on('click', function(){
-		$(this).addClass("seatActive");
+	});	*/
+	$(".seat").mousedown(function(){
+		var seatID = $(this).attr("id").split(":");
+		mousedown = true;
+		state($(this), seatID);
 	});
+	$(".seat").mouseup(function(){
+		mousedown = false;
+	});
+	
+	$(".seat").mouseenter(function(){
+	if(mousedown){
+		var seatID = $(this).attr("id").split(":");
+		state($(this), seatID);
+	}
+	});
+	
 	// Kill reservation Popup
 	$(document).click( function(event){
 			$('#reservationPopup').fadeOut(200);
 	});
 	$("#reservationPopup").on('click', function(event){
 		event.stopPropagation();
-	})
+	});
+}
+function state(element, seatID){
+	if(element.hasClass("active")){
+		element.removeClass("active");
+		seatreservatiomMap[seatID[0]][seatID[1]] = "_";
+	}
+	else{
+		element.addClass("active");
+		seatreservatiomMap[seatID[0]][seatID[1]] = "a";
+	}
+	console.log(seatreservatiomMap.toString());
 }
