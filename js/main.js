@@ -323,6 +323,17 @@ $(document).ready(function() {
             $('.venue_logo').html('<img class="logo" src="img/default_avatar.png">');
             }
         }
+	
+	// Control apikey every 5 minutes
+	/*window.setInterval(function(){
+		console.log("5 minutes gone");
+	  if(Cookies.get('apiKey') === undefined){
+		  window.location = 'login.html';
+	  }
+	else{
+		
+	}
+	}, 5000);*/
     
     //Mode cookie reader
     if (Cookies.get('mode') === undefined){
@@ -563,7 +574,7 @@ $(document).ready(function() {
 	  $.ajaxSetup({ cache: true });
 	  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
 		FB.init({
-		  appId: '468349143348884',
+		  appId: '1128811043811214',
 		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
 		});     
 		$('#loginbutton,#feedbutton').removeAttr('disabled');
@@ -809,7 +820,7 @@ function loadConcertForManager(){
           //Reservation handler
               $(".reservation").on('click', function(event){
 				  event.stopPropagation();
-                  createReservation(); 
+                  chooseGridSize(); 
               });
           },
 		  'error': function(error){
@@ -1479,12 +1490,16 @@ function addPropagationElements(json){
         });
    	});
     //Share Button Handler
-    $("li#eventShareButton").on("click", function(){
+    $("#eventShareButton").on("click", function(){
         $(this).css("background", "#ffbb33");
 		var value = results[$(this).find(".eventShareButtonText").text()];
+		var eventID = value.idEvent;
+		var shareUrl = null;
+		var shareUrl = 'https://concertian.com/share.html?' + eventID;
 				FB.ui({
 				  method: 'feed',
 				  picture: value.imgUrl,
+				  link: shareUrl,
 				  name: value.eventName,
 				  caption: value.venueName,
 				  description: value.date +" o "+value.time+" lístky "+value.entry,
@@ -1501,6 +1516,24 @@ function addPropagationElements(json){
     });
 }
 
+//Choose grid size
+function chooseGridSize(){
+	$("#reservationPopup").empty();
+	$("#reservationPopup").show();
+	var gridelement = '<span class="uloptions">'+
+						'<ul>'+
+							'<li><span id="10" class="gridoption">Kapacita 100</span></li>'+
+							'<li><span id="15" class="gridoption">Kapacita 300</span></li>'+
+							'<li><span id="20" class="gridoption">Kapacita 400</span></li>'+
+						'</ul>'+
+					  '</span>';
+	$("#reservationPopup").append(gridelement);
+	$(".uloptions ul li").on('click', function(){
+		var sizeparameter = $(this).find('span').attr("id");
+		createReservation(sizeparameter);
+	});
+}
+
 var mapValue = ["a"];
 var entry = "";
 var rowSelected = 0;
@@ -1509,9 +1542,8 @@ var sc;
 var seatreservatiomMap = [];
 var mousedown = false;
 // Create reservations
-function createReservation(){
+function createReservation(sizeparameter){
 	$("#reservationPopup").empty();
-	$("#reservationPopup").show();
      $("#reservationPopup").append(
 		 	'<span class="outer">'+
 		 		'<span class="reservationCore">'+
@@ -1522,17 +1554,13 @@ function createReservation(){
 	 );
 	
 	$(".outer").perfectScrollbar();
-	for(var i = 0; i<12; i++){
+	for(var i = 0; i<sizeparameter; i++){
 		var row = [];
 		$("#rows").append('<li class="row">'+
 							'<span class="rowNumber">'+i+'</span>'+
 							'<ul class="seats"></ul>'+
-						  	'<span class="rowHandler">'+
-						  		'<span class="rowHandlerIconMark"></span>'+
-						  		'<span class="rowHandlerIconUnmark"></span>'+
-						  	'</span>'+
 						  '</li>');
-		for(var j = 0; j<12; j++){
+		for(var j = 0; j<sizeparameter; j++){
 			row[j] = "_";
 			$("#rows").find(".row").eq(i).find(".seats").append('<li id="'+i+':'+j+'" class="seat" ></li>');
 		}
