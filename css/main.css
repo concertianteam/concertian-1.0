@@ -1262,9 +1262,11 @@ div#columnSearch :-ms-input-placeholder {
     }
 	.shareBoxEvent{
 		width: 98% !important;
+		margin-left: 1% !important;
 	}
 	.shareBoxLeftImg{
 		width: 1% !important;
+		display: none !important;
 	}
 	.shareBoxLeftImg img{
 		padding: 0 !important;
@@ -1272,11 +1274,20 @@ div#columnSearch :-ms-input-placeholder {
 	}
 	.shareBoxRightImg{
 		width: 1% !important;
+		display: none !important;
 	}
 	.shareBoxRightImg img{
 		padding: 0 !important;
 		right: 0;
 		z-index: 10;
+	}
+	#shareBoxMoreConcerts{
+		width: 98% !important;
+		margin-left: 1% !important;
+	}
+	#buyTickets{
+		width: 98% !important;
+		margin-left: 1% !important;
 	}
 }
 /* ------------ Autocomplete ------------ */
