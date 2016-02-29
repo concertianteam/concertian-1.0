@@ -1496,13 +1496,15 @@ function addPropagationElements(json){
 		var eventID = value.idEvent;
 		var shareUrl = null;
 		var shareUrl = 'https://concertian.com/share.html?' + eventID;
+		var time = value.time.split(":");
 				FB.ui({
 				  method: 'feed',
 				  picture: value.imgUrl,
 				  link: shareUrl,
-				  name: value.eventName,
+				  redirect_uri: shareUrl,
+				  name: value.name,
 				  caption: value.venueName,
-				  description: value.date +" o "+value.time+" lístky "+value.entry,
+				  description: value.stringDate +" o "+time[0]+":"+time[1]+" cena vstupenky "+value.entry + value.detail,
 				}, function(response){});
 	});
     // Concert to share selector
