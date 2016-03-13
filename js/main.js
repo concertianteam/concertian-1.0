@@ -37,12 +37,13 @@ var slovak = {
     //mycalendar.html
     calendarTitle:"Môj program",
     deleteEventiconText:"Vymazať",
+	selectCategoryText:"Zvolte druh podujatia",
     createEventName:"Názov podujatia",
     createEventDate:"Dátum",
     createEventTime:"Čas",
     createEventDetails:"Popis podujatia",
     youtubeLink:"Odkaz na Youtube",
-    facebooklink:"Odkaz na Facebook",
+    facebooklinksource:"Odkaz na Facebook",
     createEventEntry:"Vstupné ( € )",
     createEventNotes:"Moje poznámky",
     createEventEmail:"Email",
@@ -69,6 +70,9 @@ var slovak = {
     propagationText:"Propagovať koncerty jednoducho na facebook",
     propagationTextButton:"PROPAGOVAŤ",
     //market.html
+	generateList:"Vygenerovať zoznam",
+	everviewSend:"Zoznam zakúpených vstupeniek bol odoslaný do vašej mailovej schránky",
+	everviewNotSend:"Zoznam zakúpených vstupeniek sa nepodarilo odoslať do vašej mailovej schránky",
     marketTitle:"Predaj vstupeniek",
     lidate:"DÁTUM",
     litime:"ČAS",
@@ -82,7 +86,7 @@ var slovak = {
 	notSoldany:"Nula predaných",
     soldText:"Do tohto momentu ste predali lístky spolu za",
     availableText:"POČET",
-    formTitle:"VYPLŇTE FORMULÁR A PREDÁVAJTE LÍSTKY",
+    formTitle:"UPRAVIŤ POČET VSTUPENIEK",
     placeOrderSubmit: "VYTVORIŤ ID PREDÁVAJÚCEHO",
     createID: "Pre spustenie predaja vstupeniek je nutné najprv vytvoriť ID predávajúceho",
     icdph:"IČ DPH",
@@ -117,12 +121,13 @@ var english = {
     //mycalendar.html
     calendarTitle:"My program",
     deleteEventiconText:"Delete",
+	selectCategoryText:"Choose category",
     createEventName:"Event name",
     createEventDate:"Date",
     createEventTime:"Time",
     createEventDetails:"Details",
 	youtubeLink:"Youtube",
-	facebooklink:"Facebook",
+	facebooklinksource:"Facebook",
     createEventEntry:"Entry price",
     createEventNotes:"Your notes",
     createEventEmail:"Email contact",
@@ -150,6 +155,9 @@ var english = {
     propagationTextButton:"PROMOTE",
     //market.html
     marketTitle:"Ticket market",
+	everviewSend:"Bought ticket overview list was successfully send to your mailbox",
+	everviewNotSend:"Bought ticket overview list was not delivered to your mailbox",
+	generateList:"Generate ticket list",
     lidate:"DATE",
     litime:"TIME",
     lieventName:"EVENT NAME",
@@ -162,7 +170,7 @@ var english = {
 	notSoldany:"Any sold",
     soldText:"Until know, you have earned",
     availableText:"QUANTITY",
-    formTitle:"Start selling your tickets",
+    formTitle:"EDIT NUMBER OF TICKETS",
     placeOrderSubmit:"CREATE MERCHANT ID",
     createID: "To start selling tickets is necessary to creat ID of merchant",
     icdph:"VAT NUMBER",
@@ -197,12 +205,13 @@ var czech = {
     //mycalendar.html
     calendarTitle:"Můj program",
     deleteEventiconText:"Vymazat",
+	selectCategoryText:"Zvolte druh akce",
     createEventName:"Název akce",
     createEventDate:"Datum",
     createEventTime:"Čas",
     createEventDetails:"Podrobnosti",
 	youtubeLink:"Odkaz na Youtube",
-	facebooklink:"Odkaz na Facebook",
+	facebooklinksource:"Odkaz na Facebook",
     createEventEntry:"Vstupní",
     createEventNotes:"Vaše poznamky",
     createEventEmail:"Kontaktní email",
@@ -230,6 +239,9 @@ var czech = {
     propagationTextButton:"PROPAGOVAT",
     //market.html
     marketTitle:"Prodej vstupenek.",
+	everviewSend:"Seznam zakoupených vstupenek byl odeslán do vaší mailové schránky",
+	everviewNotSend:"Seznam zakoupených vstupenek se nepodařilo odeslat do vaší mailové schránky",
+	generateList:"Vygenerovat seznam",
     lidate:"DATUM",
     litime:"ČAS",
     lieventName:"NÁZEV AKCE",
@@ -242,7 +254,7 @@ var czech = {
 	notSoldany:"Nula prodaných",
     soldText:"Do tohoto momentu jste prodali lístky spolu za",
     availableText:"POČET",
-    formTitle:"VYPLŇTE FORMULÁŘ A PRODÁVEJTE LÍSTKY",
+    formTitle:"UPRAVIT POČET VSTUPENEK",
     placeOrderSubmit: "VYTVOŘIT ID PRODÁVAJÍCÍHO",
     createID: "Pro spuštění prodeje vstupenek je nutné nejprve vytvořit ID prodávajícího",
     icdph:"IČ DPH",
@@ -777,9 +789,12 @@ function loadConcertForManager(){
                     '<span class="ticketsavailable">'+(value.tickets == null ? '0' : quantity)+'</span>'+
                     '<span class="sold" data-event="'+value.idEvent+'">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
 					'<span class="reservation">'+
+						 '<input type="hidden" id="eventIDreservation" value="'+value.idEvent+'">'+
+						 '<input type="hidden" id="quantity" value="'+(value.tickets == null ? null : quantity)+'">'+
 						 '<span class="reservationIcon"></span>'+
 					'</span>'+
 			'</span>'+
+			'<span class="generateTicketList">'+language.generateList+'<input type="hidden" id="inputidEvent" value="'+value.idEvent+'"</span>'+
 			'<span id="eom'+value.idEvent+'" class="email_overview_menu"></span>'+
 			'</span>';
 					$(".ticketsResultList").append(element);
@@ -795,32 +810,43 @@ function loadConcertForManager(){
         		return false;
 			});
 			  
+			//Generate ticket list
+			$(".generateTicketList").on('click', function(){
+				var idEvent = $(this).find("#inputidEvent").val();
+				console.log(idEvent);
+				sendListOutput(idEvent);	
+			});
+			  
           //Ticekts sold sum 
 		  $(".soldNumber").empty();
 		  $(".soldNumber").append(sum + '€');
 
           // Handler for strat ticket sell button
           $(".beginSellingButton").on('click', function(){
-              $("#placeOrderTicketSubmit").show();
-              $("#updateorderSubmit").hide();
-              var price = results[$(this).find(".length").text()].entry;
-              var idEvent = results[$(this).find(".length").text()].idEvent;
-			  var seatMap = results[$(this).find(".length").text()].seatMap;
-              $("input[name=priceofTicket]").val(price);
-              $("input[name=seatMap]").val(seatMap);
-              $("#eventSelect option").each(function(){
-                if($(this).val()==idEvent){
-                    $(this).attr("selected","selected");    
-                }
-              });
-              $("#placeOrderTicketSubmit").on('click', function(){
-                    submitsellTickets();
-              });
+				  var price = results[$(this).find(".length").text()].entry;
+				  var idEvent = results[$(this).find(".length").text()].idEvent;
+				  var available = results[$(this).find(".length").text()].availableTickets;
+			  
+			  console.log(results[$(this).find(".length").text()]);
+			    $("#reservationPopup").empty();
+				$("#reservationPopup").show();
+				var gridelement = '<span class="uloption">'+
+									'<span id="reservationYes" class="reservationbutton">Áno</span>'+
+									'<span id="reservationNo" class="reservationbutton">Nie</span>'+
+									'<span id="reservationNo" class="reservationbutton">Neviem</span>'+
+								  '</span>';
+				$("#reservationPopup").append(gridelement);
+			    $("#reservationNo").on('click', function(){
+					  createPopupQuantity(idEvent, price, null);
+				});
+			    $("#reservationYes").on('click', function(){
+				      chooseGridSize(idEvent, available, price);
+			    });
           });
           //Reservation handler
               $(".reservation").on('click', function(event){
 				  event.stopPropagation();
-                  chooseGridSize(); 
+				  console.log("doriešiť");
               });
           },
 		  'error': function(error){
@@ -829,6 +855,21 @@ function loadConcertForManager(){
 		  },
 	});
 }
+
+function createPopupQuantity(idEvent, price, seatString){
+	$("#reservationPopup").empty();
+	$("#reservationPopup").show();
+	var gridelement = '<span class="uloption">'+
+						'<input type="text" id="quantityNumber" name="quantityNumber" val="" required>'+
+						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'
+					  '</span>';
+	$("#reservationPopup").append(gridelement);
+	$("#submitQuantityNumber").on('click', function(){
+		  submitsellTickets(idEvent, $("#quantityNumber").val(), price, seatString);
+	});
+	
+}
+
 //Clear container statistics.html
 function clearStatistics(){
     var monthName = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -1077,10 +1118,10 @@ function appendTicketForm(){
     $(".ticketLegend").css('opacity', '1');
     $(".ticketSoldOverview").css('opacity', '1');
     $(".ticketsResultList").empty();
-      $(".ticketForm").empty();
+  	$(".ticketForm").empty();
       var element = 
 '<span class="formTitle">'+language["formTitle"]+'</span>'+
-'<form id="sellTickets">'+
+'<form id="updatesellTickets">'+
 '<label class="custom_input_label" for="eventSelect">'+
     '<select name="eventSelect" id="eventSelect"></select>'+
 '</label>'+  
@@ -1088,13 +1129,10 @@ function appendTicketForm(){
     '<span class="fieldName" id="placeOrderNumber">'+language["placeOrderNumber"]+'</span>'+
     '<input type="text" id="numberofTickets" name="numberofTickets" class="margin_bottom" required />'+
 '</label>'+
-'<input type="hidden" id="seatMap" name="seatMap" val=""/>'+
 '<input type="hidden" id="priceofTicket" name="priceofTicket" class="margin_bottom" val=""/>'+
-'<input type="submit" id="placeOrderTicketSubmit" value="'+language.startSelling+'">'+
 '<input type="submit" id="updateorderSubmit" value="'+language.update+'">'+
 '</form>';
       $(".ticketForm").append(element);
-      $("#placeOrderTicketSubmit").hide();
       $("#updateorderSubmit").show();
       $("#updateorderSubmit").on('click', function(){
          submitUpdatesellTickets(); 
@@ -1126,8 +1164,8 @@ function appendTicketForm(){
             });
 }
 // Handler for ticket form
-function submitsellTickets(){
-    $("#sellTickets").submit(function(event){
+function submitUpdatesellTickets(){
+    $("#updatesellTickets").submit(function(event){
         event.preventDefault();
         var apiKey = Cookies.get('apiKey');
         var formData = {
@@ -1135,35 +1173,6 @@ function submitsellTickets(){
     'availableTickets' : $('input[name=numberofTickets]').val(),
     'price'            : $('input[name=priceofTicket]').val(),
         }
-        $.ajax({ 'url' : 'https://api.concertian.com/tickets/',
-		  'method' : 'POST',
-		  'data' : formData,
-	  	  beforeSend: function (request)
-                {
-                    request.setRequestHeader("Authorization", apiKey);
-                    request.withCredentials = true;
-                },
-		  contentType : "application/x-www-form-urlencoded",
-		  'success' : function (json){
-			  $("#marketPlace").trigger( "click" );
-	  	},
-	  	'error': function(error){
-	  		console.log('Error. ' + error);
-	  	}
-    });
-    });   
-}
-// Handler for ticket form
-function submitUpdatesellTickets(){
-    $("#sellTickets").submit(function(event){
-        event.preventDefault();
-        var apiKey = Cookies.get('apiKey');
-        var formData = {
-    'idEvent'          : $('select[name=eventSelect]').val(),
-    'availableTickets' : $('input[name=numberofTickets]').val(),
-	'seatMap'		   : "null"
-        }
-		console.log(formData);
         $.ajax({ 'url' : 'https://api.concertian.com/tickets/',
 		  'method' : 'PUT',
 		  'data' : formData,
@@ -1181,6 +1190,33 @@ function submitUpdatesellTickets(){
 	  	}
     });
     });   
+}
+// Handler for ticket form
+function submitsellTickets(idEvent, available, price, seatString){
+        var apiKey = Cookies.get('apiKey');
+        var formData = {
+    'idEvent'          : idEvent,
+    'availableTickets' : available,
+	'price'			   : price,
+	'seatMap'		   : seatString,
+        }
+		console.log(formData);
+        $.ajax({ 'url' : 'https://api.concertian.com/tickets/',
+		  'method' : 'POST',
+		  'data' : formData,
+	  	  beforeSend: function (request)
+                {
+                    request.setRequestHeader("Authorization", apiKey);
+                    request.withCredentials = true;
+                },
+		  contentType : "application/x-www-form-urlencoded",
+		  'success' : function (json){
+			  $("#marketPlace").trigger( "click" );
+	  	},
+	  	'error': function(error){
+	  		console.log('Error. ' + error);
+	  	}
+    });
 }
 // Show bought tickets
 function boughtTickets(idEvent){
@@ -1519,7 +1555,7 @@ function addPropagationElements(json){
 }
 
 //Choose grid size
-function chooseGridSize(){
+function chooseGridSize(idEvent, availableTickets, price){
 	$("#reservationPopup").empty();
 	$("#reservationPopup").show();
 	var gridelement = '<span class="uloptions">'+
@@ -1531,8 +1567,7 @@ function chooseGridSize(){
 					  '</span>';
 	$("#reservationPopup").append(gridelement);
 	$(".uloptions ul li").on('click', function(){
-		var sizeparameter = $(this).find('span').attr("id");
-		createReservation(sizeparameter);
+		createReservation(idEvent, availableTickets, price,  $(this).find('span').attr("id"));
 	});
 }
 
@@ -1544,7 +1579,7 @@ var sc;
 var seatreservatiomMap = [];
 var mousedown = false;
 // Create reservations
-function createReservation(sizeparameter){
+function createReservation(idEvent, availableTickets, price,  sizeparameter){
 	$("#reservationPopup").empty();
      $("#reservationPopup").append(
 		 	'<span class="outer">'+
@@ -1556,13 +1591,13 @@ function createReservation(sizeparameter){
 	 );
 	
 	$(".outer").perfectScrollbar();
-	for(var i = 0; i<sizeparameter; i++){
+	for(var i = 0; i < sizeparameter; i++){
 		var row = [];
 		$("#rows").append('<li class="row">'+
 							'<span class="rowNumber">'+i+'</span>'+
 							'<ul class="seats"></ul>'+
 						  '</li>');
-		for(var j = 0; j<sizeparameter; j++){
+		for(var j = 0; j < sizeparameter; j++){
 			row[j] = "_";
 			$("#rows").find(".row").eq(i).find(".seats").append('<li id="'+i+':'+j+'" class="seat" ></li>');
 		}
@@ -1580,10 +1615,14 @@ function createReservation(sizeparameter){
 	});	*/
 	$(".seat").mousedown(function(){
 		var seatID = $(this).attr("id").split(":");
-		mousedown = true;
 		state($(this), seatID);
 	});
-	$(".seat").mouseup(function(){
+	
+	$("#reservationPopup").mousedown(function(){
+		mousedown = true;
+	});
+	
+	$("#reservationPopup").mouseup(function(){
 		mousedown = false;
 	});
 	
@@ -1593,22 +1632,24 @@ function createReservation(sizeparameter){
 			state($(this), seatID);
 		}
 	});
-	
+		
 	$("#reservationSaveButton").on('click', function(){
+		// build seatstring map
 		var seatString = "";
-		for(var i = 0; i<12; i++){
+		for(var i = 0; i<sizeparameter; i++){
 			seatString += '\'';
-			for(var j = 0; j<12; j++){
+			for(var j = 0; j<sizeparameter; j++){
 				seatString += seatreservatiomMap[i][j];
 			}
 			seatString += '\',';
 		}
-		console.log(seatString);
+		// submit sell ticket
+		createPopupQuantity(idEvent, price, seatString);
 	});
 	
 	// Kill reservation Popup
 	$(document).on('click', function(event){
-			$('#reservationPopup').fadeOut(200);
+		$('#reservationPopup').fadeOut(200);
 	});
 	$("#reservationPopup").on('click', function(event){
 		event.stopPropagation();
@@ -1623,4 +1664,24 @@ function state(element, seatID){
 		element.addClass("active");
 		seatreservatiomMap[seatID[0]][seatID[1]] = "a";
 	}
+}
+
+//Sending bought ticket ist output
+function sendListOutput(idEvent){
+	 $.ajax({ 'url' : 'https://api.concertian.com/tickets/merchant/tickets/event/'+idEvent,
+		  'method' : 'GET',
+          'beforeSend': function (request)
+                {
+                    request.setRequestHeader("Authorization", apiKey);
+                    request.withCredentials = true;
+                },
+		  'contentType' : "application/x-www-form-urlencoded",
+		  'success' : function (json){
+            window.alert(language.everviewSend);
+          },
+          'error': function(error){
+            console.log('Error. ' + error);
+            window.alert(language.everviewNotSend);
+		  },
+        });
 }

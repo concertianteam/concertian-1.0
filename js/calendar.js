@@ -17,12 +17,13 @@ function initCalendar(language) {
 
     $("#contentPanel #createConcertForm").load("concertForm.html", null, function() {
         $(".deleteEventiconText").text(window.language["deleteEventiconText"]);
+		$("#categorySelectorText").text(window.language["selectCategoryText"]);
         $("#createEventName").text(window.language["createEventName"]);
         $("#createEventDate").text(window.language["createEventDate"]);
         $("#createEventTime").text(window.language["createEventTime"]);
         $("#createEventDetails").text(window.language["createEventDetails"]);
        	$("#youtubeLink").text(window.language["youtubeLink"]);
-       	$("#facebooklink").text(window.language["facebooklink"]);
+       	$("#facebooklinksource").text(window.language["facebooklinksource"]);
         $("#createEventEntry").text(window.language["createEventEntry"]);
         $("#createEventNotes").text(window.language["createEventNotes"]);
         $("#createEventEmail").text(window.language["createEventEmail"]);
@@ -68,7 +69,19 @@ function initCalendar(language) {
            $("#visible_0").attr('checked', 'checked');
            $("#visible_1").attr('checked', false);
         });
-        
+		$('#categorySelector input').on('change', function() {
+			var selected = $(this).val();
+			
+			for(var i = 1; i < 5; i++){
+				if(i == selected){
+					$("#category" + i).addClass("clickedcategory");
+					$("#category_" + i).attr('checked', 'checked');
+			   	}else{
+					$("#category" + i).removeClass("clickedcategory");
+					$("#category_" + i).attr('checked', false);
+				}
+			}
+		});
         $('#deleteEvent').on('click', function(){
             $.ajax({
                 url: 'https://api.concertian.com/agents/events/' + $("#idEvent").val(),
@@ -105,6 +118,7 @@ function initCalendar(language) {
                     method: eventId ? 'PUT' : 'POST',
                     data:{
                         idVenue: idVenue,
+						category: $('input[name=category]:checked').val() ,
                         name: $("#name").val(),
                         date: $("#date").val(),
                         time: $("#time").val(),
@@ -129,7 +143,7 @@ function initCalendar(language) {
                         $("#mycalendar").trigger( "click" );
                     },
                     error: function (error) {
-                        console.log(data);
+                        console.log(error);
                         alert('Nastala chyba. Skúste to ešte raz. Ďakujeme.');
                     }
                 });
@@ -191,10 +205,23 @@ function renderEdit(eventId){
                 $("#note").val(data.note);
                 $("#performerEmail").val(data.performerEmail);
                 $("#performerPhoneNumber").val(data.performerPhoneNumber);
+                $("#category_" + data.category).attr('checked', 'checked');
+				$("#category_" + data.category).parent(".categoryInline").addClass("clickedcategory");
                 $("#status_" + data.status).attr('checked', 'checked'); 
                 $("#status" + data.status).addClass("clicked");
                 $("#visible_" + data.visible).attr('checked', 'checked');
                 $("#visible" + data.status).addClass("clicked");
+				console.log(data.category);
+				for(var i = 1; i < 5; i++){
+					if(i == data.category){
+					$("#category" + i).addClass("clickedcategory");
+					$("#category_" + i).attr('checked', 'checked');
+					}
+					else{
+					$("#category" + i).removeClass("clickedcategory");
+					$("#category_" + i).attr('checked', false);
+					}
+				}
             },
             contentType: "application/x-www-form-urlencoded"
         });

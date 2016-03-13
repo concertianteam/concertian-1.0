@@ -1,8 +1,23 @@
 $(document).ready(function(){
-	// Perfect scrollbar
-	$("document").ready(function(){
-		$(".wrapper").perfectScrollbar();
+	//Slider handler
+	$("#underBar").unslider({
+		autoplay: true,
+		delay: 8000,
+		speed: 2000,
+		arrows: false
 	});
+	$("#functionSlider").unslider({
+		keys: false, 
+		arrows: false,
+		nav: false
+	});
+	//  Delay is a custom function
+	$('.benefitSelection ul li').on('click', function() {
+	var slide =	$(this).attr("id");
+	$('#functionSlider').unslider('animate:' + slide);
+	});
+	// Perfect scrollbar
+	$(".wrapper").perfectScrollbar();
 	//Language handler
     if(Cookies.get('language') == null){
 		language = slovak;
@@ -66,9 +81,44 @@ $(document).ready(function(){
 		  },
         });
 	});
+	
+	// Load concerts for concert overview
+	// Load all concert by URL
+    var url = "https://api.concertian.com/users/events";
+	var page = 0;
+	$.ajax({ 'url' : url,
+		  'method' : 'POST',
+		  'data' : { 'results' : "20",
+			 		 'page' : page
+		 		   },
+	  	  contentType : "application/x-www-form-urlencoded",
+		  'success' : function (json){
+                            addElements(json);
+	  	            },
+	  	'error': function(error){
+	  		console.log('Error. ' + error);
+	  		$(".spinner").remove();
+            noResults();
+	  	}
+    });
+	
+	// Calculate outcome
+	var quantity = $("#quantity").val();
+	var unitprice = $("#unitprice").val();
+	var total = Math.round((quantity * unitprice) * 0.98);
+	$("#finalprice").val(total);
+	
+	$("#finalprice").append(total);
+	$("input[type='text']").change(function(){
+		var quantity = $("#quantity").val();
+		var unitprice = $("#unitprice").val();
+		var total = Math.round((quantity * unitprice) * 0.98);
+		$("#finalprice").val(total);
+	});
 });
 
 var language = {};
+var results ={};
 var slovak = {
 	registration: "REGISTRÁCIA",
 	terms: "OBCHODNÉ PODMIENKY",
@@ -82,6 +132,8 @@ var slovak = {
 	city: "Mesto",
 	checkbox_text: "Súhlasim Obchodnými podmienkami platnými pre túto službu",
 	registration_submit: "Dokončiť registráciu",
+	free: "vstup voľný",
+	moreonconcertian: "Viac koncertov na concertian.com",
 };
 var english = {
 	registration: "REGISTRATE",
@@ -96,6 +148,8 @@ var english = {
 	city: "City",
 	checkbox_text: "I agree with terms & conditions applying to this service",
 	registration_submit: "Finish registration",
+	free: "entry free",
+	moreonconcertian:"Find more concerts on concertian.com",
 };
 var czech = {
 	registration: "REGISTROVAT",
@@ -110,6 +164,8 @@ var czech = {
 	city: "Město",
 	checkbox_text: "Souhlasím Obchodními podmínkami platnými pro tuto službu",
 	registration_submit: "Dokončit registraci",
+	free:"vstup volny",
+	moreonconcertian:"Více koncertů na concertian.coV",
 };
 
 // Set language
@@ -281,10 +337,39 @@ function responseScript(response){
 				break;
 	}
 }
-//Terms en or sk/cz
-//function termsLanguage(){
-    //switch(Cookies.get('language')){
-      //  case slovak:
-        //    windo
-    //}
-//}
+// load all concert add elements
+function addElements(json){
+	$(".outer").append('<span class="gotoconcertian">'+language["moreonconcertian"]+'</span>');
+	for(var i = 0; i < json.events.length; i++){
+		var value = json.events[i];
+        var arr = value.stringDate.split('-');
+		var time = value.time.split(':');	
+        results[length + i] = value;
+        
+		var element = 
+					'<span class="resultElement">'+
+                    '<span class="firstPart">'+
+						'<span class="date">'+arr[2]+" "+arr[1]+'</span>'+
+					'</span>'+
+                    '<span class="secondPart">'+
+						'<span class="time">'+time[0]+":"+time[1]+'</span>'+
+					'</span>'+
+                    '<span class="thirdPart">'+
+						'<img class="resultImg" src="'+value.imgUrl+'">'+	
+					'</span>'+
+                    '<span class="forthPart">'+value.eventName+'<br>'+value.venueName+'</span>'+
+                    '<span class="fifthPart hvr-fade">'+
+						'<span class="price ' + (value.entry == 0 ? "freeText" : '') +'">' + (value.entry == 0 ? language["free"] : value.entry) + '</span>'+
+            '<span class="price_tag '+(value.entry == 0 ? 'hide' : '')+'">'+ (value.state === 'Czech Republic' ? 'czk':'eur') + '</span>'+	
+					'<input type="hidden" id="hyper" value="'+value.id+'">'+
+					'</span>'+
+					'</span>';
+		$(".outer").append(element);
+	}
+	$(".outer").append('<span class="gotoconcertian">'+language["moreonconcertian"]+'</span>');
+	$(".fifthPart").on('click', function(){
+		var url = $(this).find("#hyper").val();
+		var linkUrl = 'https://concertian.com/share.html?' + url;
+		window.location = linkUrl;
+	});
+}

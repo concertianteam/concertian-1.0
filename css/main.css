@@ -345,10 +345,10 @@ header{
 }
 .color_mode .concertianLogo{
 	display: block;
-	background: url('../img/sprite.png') no-repeat -925px -2px;
-	width: 45px;
-	height: 45px;
-	margin-left: 7px;
+	background: url('../img/sprite_page.png') no-repeat -7px 0;
+	width: 50px;
+	height: 50px;
+	margin-left: 4px;
 }
 .color_mode ul{
     list-style: none;
@@ -1091,10 +1091,108 @@ input[name="submit"]{
 	border-radius: 4px;
     padding: 0;
 }
+#categorySelector{
+	display: block;
+	width: 100%;
+	height: 100px;
+	margin-top: 2%;
+}
+#categorySelectorText{
+	display: block;
+	height: 40px;
+	width: 100%;
+}
+#categorySelector input[type="radio"]{
+	display: none !important;
+}
 .inline{
     display: inline-block;
     float: left;
     width: 50%;
+}
+.categoryInline{
+	display: inline-block;
+	width: 24%;
+	margin-right: 1% !important;
+	float: left;
+	height: 40px;
+	border-radius: 4px !important;
+	cursor: pointer !important;
+}
+.clickedcategory{
+	opacity: 1 !important;
+}
+.categoryInline label{
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 20px;
+}
+#category1{
+	background: #ffcd29;
+	cursor: pointer;
+}
+#category2{
+	background: #ff3333;
+	cursor: pointer;
+}
+#category3{
+	background: #2d425c;
+	cursor: pointer;
+}
+#category4{
+	background: #783e47;
+	cursor: pointer;
+}
+.categoryOpacity{
+	opacity: 0.5;
+}
+.categoryOpacity:hover{
+	opacity: 1 !important;
+}
+.category1icon{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	background: url('../img/sprite.png') no-repeat -1152px -8px;
+	width: 29px;
+	height: 29px;
+	margin-top: 13px;
+	margin-left: 27%;
+}
+.category2icon{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	background: url('../img/sprite.png') no-repeat -1098px -8px;
+	width: 29px;
+	height: 30px;
+	margin-top: 13px;
+	margin-left: 27%;
+}
+.category3icon{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	background: url('../img/sprite.png') no-repeat -986px -9px;
+	width: 29px;
+	height: 27px;
+	margin-top: 13px;
+	margin-left: 27%;
+}
+.category4icon{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	background: url('../img/sprite.png') no-repeat -1040px -10px;
+	width: 29px;
+	height: 25px;
+	margin-top: 14px;
+	margin-left: 27%;
 }
 #myCalendar{
     display: inline-block;
@@ -1134,7 +1232,7 @@ input[name="submit"]{
     width: 33.3%;
     float: left;
     height: 40px;
-    margin: 0;
+    margin-top: 2px !important;
     padding: 0;
     border: none;
     background: #ffbb33;
@@ -1150,22 +1248,21 @@ input[name="submit"]{
 }
 .deleteEventicon{
     display: block;
-    background: url('../img/sprite_page.png') no-repeat -484px -13px;
+    background: url('../img/sprite.png')no-repeat -835px -8px;
 	width: 24px;
-	height: 24px;
-	margin-bottom: 2px;
+	height: 25px;
 }
 .saveEventicon{
     display: block;
-    background: url('../img/sprite_page.png')  no-repeat -399px -13px;
-	width: 24px;
-	height: 24px;
+    background: url('../img/sprite.png')  no-repeat -914px -8px;
+	width: 21px;
+	height: 25px;
 }
 .cancelEventicon{
     display: block;
-    background: url('../img/sprite_page.png')no-repeat -541px -13px;
-	width: 24px;
-	height: 24px;
+    background: url('../img/sprite.png') no-repeat -875px -8px;
+	width: 21px;
+	height: 25px;
 }
 .eventformInputs{
     position: relative;
@@ -1195,6 +1292,7 @@ span .fieldName{
 .group{
     display: block;
     width: 100%;
+	height: auto;
 }
 .group p{
     display: inline-block;
@@ -1592,6 +1690,18 @@ li.eventAudience{
     width: 15%;
     height: 100%;
 }
+.generateTicketList{
+	position: relative;
+	height: 40px;
+	background: #ffcd29;
+	border-radius: 4px;
+	color: #fff;
+	text-align: center;
+	font-size: 1.2em;
+	cursor: pointer;
+	box-sizing: border-box;
+	padding: 0 10%;
+}
 .reservationIcon{
 	display: block;
 	background: url('../img/sprite.png') no-repeat -777px -6px;
@@ -1683,9 +1793,9 @@ li.eventAudience{
     transition: transform 0s ease 0s, opacity 0s ease 0s;
     font-weight: 100;
 }
-#sellTickets input,
-#sellTickets select,
-#sellTickets textarea,
+#updatesellTickets input,
+#updatesellTickets select,
+#updatesellTickets textarea,
 #placeOrder input,
 #placeOrder select,
 #placeOrder textarea{
@@ -1703,7 +1813,7 @@ li.eventAudience{
     color: #283036;
 }
 #placeOrder input[type="submit"],
-#sellTickets input[type="submit"]{
+#updatesellTickets input[type="submit"]{
     width: 100%;
     height: 45px;
     border: none;
@@ -1715,7 +1825,7 @@ li.eventAudience{
 	cursor: pointer;
 }
 #placeOrder input[type="submit"]:hover,
-#sellTickets input[type="submit"]:hover{
+#updatesellTickets input[type="submit"]:hover{
     background: #ffc95c;
 }
 /* -------------- Manage account ----------- */
@@ -1956,6 +2066,24 @@ li.eventAudience{
 	box-sizing: border-box;
 	padding-top: 5%;
 	padding-bottom: 5%;
+}
+/* -------- Creat reservation selector ------ */
+.reservationbutton{
+	display: inline-block;
+	width: 30%;
+	margin-right: 3% !important;
+	height: auto;
+	background: #ffbb33;
+	margin: 0;
+	float: left;
+	text-align: center;
+	color: #fff;
+	font-size: 1.5em;
+	box-sizing: border-box;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	border-radius: 4px;
+	cursor: pointer;
 }
 /* -------- Grid size selector ------ */
 .uloptions{
@@ -2200,3 +2328,4 @@ li.eventAudience{
     box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.15) inset;
     transition: width 0.6s ease 0s;
 }
+

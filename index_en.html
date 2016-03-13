@@ -7,12 +7,16 @@
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Ubuntu:300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<link type="text/css" rel="stylesheet" href="css/page.css">
+	<link type="text/css" rel="stylesheet" href="css/unslider.css">
+	<link type="text/css" rel="stylesheet" href="css/unslider-dots.css">
 	<script src="js/jquery-1.12.0.min.js"></script>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="js/page.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.jquery.min.js"></script>
+	<script type="text/javascript" src="js/unslider-min.js"></script>
 	<script type="text/javascript" src="js/js.cookie.js"></script>
+	<script src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
 </head>
 <body>
 	<header>
@@ -20,10 +24,10 @@
 		<a href="https://concertian.com"><span id="logoPart">
 			<span class="logoPart_text"></span>
 			<span class="logoPart_img"></span>
-		</span></a>
+        </span></a>
 		<span id="navigationPart">
 			<ul>
-				<li><span><a class="login" href="login.html">LOG IN</a></span></li>
+                <li><span><a class="login" href="login.html">LOG IN</a></span></li>
 				<li>
 					<span id="languageButton">LANGUAGE
 						<ul class="languagemenu">
@@ -39,110 +43,131 @@
 						</ul>
 					</span>
 				</li>
-				<li><a href="registration.html">REGISTRATION</a></li>
-				<li><a id="hide" href="terms_en.html">TERMS & SERVICES</a></li>
+				<li><a href="registration.html">REGISTRATE</a></li>
+				<li><a id="hide" href="terms_en.html">TERMS&SERVICES</a></li>
 			</ul>
 		</span>
 		</div>
 		<div id="underBar">
-			<span class="leftPart">
-				<span class="leftPartHeading">SMART TERM,<br>MY CALENDAR,<br>GOSOCIAL,<br><strong>a</strong> TICKETAGENT</span>
-				<span class="leftPartHeadingSub">four ingredients you need for successful event</span>
-				<a href="registration.html"><span class="leftPartButton">Free for first 15 days</span></a>
-				<span class="pack">
-					<span class="bounceArrow"></span>
+			<ul>
+				<li><img class="slideImg" src="img/landing_background_1.jpg">
+				<span class="landingHeading1">
+					<span class="biggerText">Changing</span>	
+					<span class="smallerText">the way, we sell and buy tickets</span>
 				</span>
-			</span>
-			<span class="rightPart">
-				<img class="rightPartImg" src="img/mockup1.png">
-			</span>
+				<span class="buttons">
+					<a href="registration.html"><span class="buttonOrganiser">organiser</span></a>
+					<a href="https://concertian.com"><span class="buttonCustomer">event tickets</span></a>
+				</span>
+				</li>
+				<li><img class="slideImg" src="img/landing_background_2.jpg">
+				<span class="provisionText">sales commission</span>
+				<span class="slide2img">
+					<img class="landingmockupImg" src="img/mockup6.png">	
+				</span>
+				<span class="landingHeading2">
+					<ul>
+						<li><span class="tick"></span>the lowest commission on the market</li>
+						<li><span class="tick"></span>helpdesk available 24/7</li>
+						<li><span class="tick"></span>best event manager tool</li>
+						<li><a href="registration.html"><span class="buttonOrganiser slide2">organiser</span></a></li>
+					</ul>
+				</span>
+				</li>
+				<li><img class="slideImg" src="img/landing_background_3.jpg">
+				<span class="landingHeading3">
+					<span class="biggerText">Online tickets</span>	
+					<span class="smallerText">directly to your mail,<br>or smartphone</span>
+					<a href="registration.html"><span class="buttonOrganiser small">sell tickets</span></a>
+				</span>
+				<span class="landingmockup">
+					<img class="landingmockupImg" src="img/mockup5.png">
+				</span>
+				</li>
+			</ul>
 		</div>
 	</header>
 	<div id="queteFirst">
-		<span class="queteFirstText">"Finally a tool that will help eliminate unsuccessful events. Win -win situation for both performer and organizer ..."</span>
+		<span class="queteFirstText">"Finally, a tool that will help eliminate unsuccessful events. Win -win situation for both performer and organizer ..."</span>
 	</div>
-	<section id="tablet">
-		<span class="leftMockup">
-			<img class="leftMockupImg" src="img/mockup2.png">
+	<section id="concertOverview"><span class="outer"></span></section>
+	<section id="functionOverview">
+		<span class="functionHeading">4 <strong>benefits of concertian management tool</strong></span>
+		<span class="benefitSelection">
+			<ul>
+				<li id="0">
+					<span class="term"></span>
+					<span class="functionText">TERM VALIDATOR</span>
+				</li>
+				<li id="1">
+					<span class="calendar"></span>
+					<span class="functionText">EVENT CALENDAR</span>
+				</li>
+				<li id="2">
+					<span class="propagation"></span>
+					<span class="functionText">PROPAGATION</span>
+				</li>
+				<li id="3">
+					<span class="selltickets"></span>
+					<span class="functionText">ONLINE TICKET SALE</span>
+				</li>
+			</ul>
 		</span>
-		<span class="functionTable">
-				<ul>
-					<li>
-						<span class="create">
-							<span class="createicon"></span>
-							<span class="text">Create</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="editicon"></span>
-							<span class="text">Edit</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="deleteicon"></span>
-							<span class="text">Delete</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="publicicon"></span>
-							<span class="text">Publish</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="noteicon"></span>
-							<span class="text">Note</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">	
-							<span class="cloudicon"></span>
-							<span class="text">Integrate</span>
-						</span>
-					</li>
-				</ul>
+		<span id="functionSlider">
+			<ul>
+				<li>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup1.png">
+					</span>
+					<span class="promoText">
+						<span class="promoTextMain">Concert cubes – they contain all events</span>
+						<span class="promoTextSub">Complex event data processing serves you’re the best overview of all upcoming events, giving your ability to always choose best term for your event.</span>
+					</span>
+				</li>
+				<li>
+					<span class="promoText">
+						<span class="promoTextMain">Keep everything within your calendar</span>
+						<span class="promoTextSub">Accessible via cloud from your pc or tablet, covering all your information storing needs. Notes, contact, terms and many more safely stored in one place.</span>
+					</span>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup2.png">
+					</span>
+				</li>
+				<li>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup4.png">
+					</span>
+					<span class="promoText">
+						<span class="promoTextMain">Promote on concertian or facebook</span>
+						<span class="promoTextSub">After creating concert via concertian calendar is really important to send it public. Do it easily with one click and post event on your facebook timeline without any extra work. </span>
+					</span>
+				</li>
+				<li>
+					<span class="promoText">
+						<span class="promoTextMain">We are the best partner for selling tickets online</span>
+						<span class="promoTextSub">Take advantage of presale launched via system of online ticket selling and get feedback on upcoming event. If the ticket presale was hugely successful, why not to announce a second term. </span>
+					</span>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup3.png">
+					</span>
+				</li>
+			</ul>
 		</span>
 	</section>
-	<div id="queteSecond">
-		<span class="functionList">
+	<section id="calculation">
+		<span class="functionHeading white">Let’s do some math and make it clear<br><p class="smaller">In the case of selling 100 tickets for 10 euros (try to adjust the values)</p></span>
+		<span class="calculationForm">
 			<ul>
-				<li>
-					<span class="listStyle">1</span>
-					<span class="primaryText">SMART TERM</span>
-					<span class="secondaryText"><strong>Always choose the best date and time for concert in your venue, based on nice and simple overview of all concerts in your neighbourhood. </strong>Minimize the risk of unsuccessful evening, because of more attractive event taking place at the same time.<strong> Get new ideas and inspire yourself by performers written under each concert.</strong></span>
-				</li>
-				<li>
-					<span class="listStyle">2</span>
-					<span class="primaryText">MY CALENDAR</span>
-					<span class="secondaryText"><strong>Taking best of google calendar and mixing it with needs of venue manager (or any event organizer) we were able to</strong> bring you your new better “program-diary”<strong>. Create, edit and manage concerts with all information, like dates, quick contacts and notes - all at one place.</strong></span>
-				</li>
+				<li><input type="text" id="quantity" placeholder="ks" value="100" required/><span class="inputtext">pcs</span></li>
+				<li class="plus"><span class="plusIcon"></span></li>
+				<li><input type="text" id="unitprice" placeholder="€" value="10" required/><span class="inputtext">€</span></li>
+				<li class="equel"><span class="equelIcon"></span></li>
+				<li class="finalprice"><input type="text" id="finalprice" placeholder="" value="" /><span class="inputtext">€</span></li>
 			</ul>
 		</span>
-	</div>
-	<section id="postToFacebook">
-		<span class="buttonPart">
-			<span class="buttonPartHeading">Try it now for first 15 days absolutely free </span>
-			<a href="registration.html"><span class="buttonPartButton">REGISTRATE</span></a>
-		</span>
-		<span class="postToFacebookText">
-			<ul>
-				<li>
-					<span class="listStyle">3</span>
-					<span class="primaryText">GO SOCIAL</span>
-					<span class="secondaryText"><strong>Just one step to</strong> make events appear on your facebook fanpage<strong>All you need is to include event picture and some catchy description while creating concert. Do not forget, that your concerts are also accessible through concert search engine concertian.com.</strong></span>
-				</li>
-				<li> 
-					<span class="listStyle">4</span>
-					<span class="primaryText">TICKET AGENT</span>
-					<span class="secondaryText"><strong>Sell tickets online – it easy and the fact, that</strong> we do not take any commission, makes this app worth of give a try. Tickets are delivered to customers via email in pdf form <strong>and a hour before beginning of event will venue manager receive a list for easy verification of bought tickets. </strong></span>
-				</li>
-			</ul>
-		</span>
-		<span class="postToFacebookMockup">
-			<img class="postToFacebookMockupImg" src="img/mockup4.png">
+		<span class="detailText">
+			<span class="biggerText"></span>
+			<span class="smallerText"></span>
 		</span>
 	</section>
 	<section id="propagation">
@@ -155,27 +180,42 @@
 	<section id="bottom">
 		<span class="pricingHeading">Monthly without commitment</span>
 		<span class="pricing">
-			<span class="pricingPrice">19€<br><strong>monthly</strong></span>
+			<span class="pricingPrice">19€<br><strong>monthly</strong><span class="free"><img src="img/freesign.png"></span></span>
 			<span class="benefits">
 				<ul>
-					<li><strong>Term</strong>analyzer for an event</li>
-					<li><strong>Personal diary</strong> for managing program</li>
-					<li>Advertisement of your program <strong>on concertian.com</strong></li>
-					<li><strong>Posting events</strong> directly to  facebook</li>
-					<li>Tool for selling<strong>online tickets</strong></li>
+					<li><strong>Term analyzer</strong> for an event</li>
+					<li><strong>Personal diary</strong>for program management</li>
+					<li>Program advertisement<strong> on concertian.com</strong></li>
+					<li>Posting events<strong> directly to facebook</strong></li>
+					<li>Sell <strong>tickets online</strong> via presale </li>
 				</ul>
 			</span>
 		</span>
 	</section>
 	<section id="bottomCTA">
-		<span class="CTAheading"><strong>Do not miss the opportunity to use system concertian </strong>for free first 15 days</span>
-		<a href="registration.html"><span class="CTAbutton">TRY IT NOW</span></a>
+		<span class="CTAheading"><strong>Do not miss the opportunity to use system concertian and it's benefits  </strong> for free</span>
+		<a href="registration.html"><span class="CTAbutton">Try it now</span></a>
 	</section>
 	<section id="footer">
 			<span class="socialicons">
 				<div class="addthis_sharing_toolbox"></div>
 			</span>
-			<span class="authors"><p>quawer s.r.o<br>Braneckého 4 <br>Nitra 949 01</p></span>
+			<span class="authors">
+				<a href="http://studio.quawer.com">
+				<span class="author">
+					<span class="authortext">Authors of project</span>
+					<span class="official">quawer s.r.o.</span>
+					<span class="quawerlogo"></span>
+				</span>
+				</a>
+				<a href="https://www.webglobe.sk/">
+				<span class="support">
+					<span class="supporttext">Project was supported</span>
+					<span class="official">Webglobe - Yegon, s.r.o.</span>
+					<span class="webglobelogo"></span>
+				</span>
+				</a>
+			</span>
 	</section>
 </body>
     <script type="text/javascript">

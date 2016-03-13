@@ -7,12 +7,16 @@
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Ubuntu:300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<link type="text/css" rel="stylesheet" href="css/page.css">
+	<link type="text/css" rel="stylesheet" href="css/unslider.css">
+	<link type="text/css" rel="stylesheet" href="css/unslider-dots.css">
 	<script src="js/jquery-1.12.0.min.js"></script>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="js/page.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.jquery.min.js"></script>
+	<script type="text/javascript" src="js/unslider-min.js"></script>
 	<script type="text/javascript" src="js/js.cookie.js"></script>
+	<script src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
 </head>
 <body>
 	<header>
@@ -23,7 +27,7 @@
         </span></a>
 		<span id="navigationPart">
 			<ul>
-				<li><span><a class="login" href="login.html">LOG IN</a></span></li>
+                <li><span><a class="login" href="login.html">LOG IN</a></span></li>
 				<li>
 					<span id="languageButton">LANGUAGE
 						<ul class="languagemenu">
@@ -45,137 +49,175 @@
 		</span>
 		</div>
 		<div id="underBar">
-			<span class="leftPart">
-				<span class="leftPartHeading">SMART TERM,<br>MY CALENDAR,<br>GOSOCIAL,<br><strong>a</strong> TICKETAGENT</span>
-				<span class="leftPartHeadingSub">pro úspěšné akci nepotřebujete nic víc</span>
-				<a href="registration.html"><span class="leftPartButton">Prvních 15 dní zdarma</span></a>
-				<span class="pack">
-					<span class="bounceArrow"></span>
+			<ul>
+				<li><img class="slideImg" src="img/landing_background_1.jpg">
+				<span class="landingHeading1">
+					<span class="biggerText">Měníme</span>	
+					<span class="smallerText">způsob prodeje vstupenek</span>
 				</span>
-			</span>
-			<span class="rightPart">
-				<img class="rightPartImg" src="img/mockup1.png">
-			</span>
+				<span class="buttons">
+					<a href="registration.html"><span class="buttonOrganiser">pořádám akci</span></a>
+					<a href="https://concertian.com"><span class="buttonCustomer">vstupenky na akce</span></a>
+				</span>
+				</li>
+				<li><img class="slideImg" src="img/landing_background_2.jpg">
+				<span class="provisionText">Provize z prodeje</span>
+				<span class="slide2img">
+					<img class="landingmockupImg" src="img/mockup6.png">	
+				</span>
+				<span class="landingHeading2">
+					<ul>
+						<li><span class="tick"></span>Nejnižší provize na trhu</li>
+						<li><span class="tick"></span>Okamžitý servis</li>
+						<li><span class="tick"></span>Váš nástroj na správu akcí</li>
+						<li><a href="registration.html"><span class="buttonOrganiser slide2">Pořádám akci</span></a></li>
+					</ul>
+				</span>
+				</li>
+				<li><img class="slideImg" src="img/landing_background_3.jpg">
+				<span class="landingHeading3">
+					<span class="biggerText">Vstupenky</span>	
+					<span class="smallerText">
+ přímo na email <br>nebo do smartphonu</span>
+					<a href="registration.html"><span class="buttonOrganiser small">pořádám akci</span></a>
+				</span>
+				<span class="landingmockup">
+					<img class="landingmockupImg" src="img/mockup5.png">
+				</span>
+				</li>
+			</ul>
 		</div>
 	</header>
 	<div id="queteFirst">
-		<span class="queteFirstText">"win win situace pro organizátora a i vystupujících, <br> lepší přehled rovná se lepší koncerty"</span>
+		<span class="queteFirstText">"win win situace pro organizátora a i vystupujících, lepší přehled rovná se lepší koncerty"</span>
 	</div>
-	<section id="tablet">
-		<span class="leftMockup">
-			<img class="leftMockupImg" src="img/mockup2.png">
+	<section id="concertOverview"><span class="outer"></span></section>
+	<section id="functionOverview">
+		<span class="functionHeading">4 <strong> výhody systému concertian</strong></span>
+		<span class="benefitSelection">
+			<ul>
+				<li id="0">
+					<span class="term"></span>
+					<span class="functionText">OVĚŘOVÁNÍ TERMÍNU</span>
+				</li>
+				<li id="1">
+					<span class="calendar"></span>
+					<span class="functionText">PROGRAM PODNIKU</span>
+				</li>
+				<li id="2">
+					<span class="propagation"></span>
+					<span class="functionText">PROPAGACE</span>
+				</li>
+				<li id="3">
+					<span class="selltickets"></span>
+					<span class="functionText">PRODEJ VSTUPENEK</span>
+				</li>
+			</ul>
 		</span>
-		<span class="functionTable">
-				<ul>
-					<li>
-						<span class="create">
-							<span class="createicon"></span>
-							<span class="text">Vytvořte</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="editicon"></span>
-							<span class="text">Upravte</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="deleteicon"></span>
-							<span class="text">Smažte</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="publicicon"></span>
-							<span class="text">Zveřejněte</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">
-							<span class="noteicon"></span>
-							<span class="text">Poznámkujte</span>	
-						</span>
-					</li>
-					<li>
-						<span class="create">	
-							<span class="cloudicon"></span>
-							<span class="text">Sjednoťte</span>
-						</span>
-					</li>
-				</ul>
+		<span id="functionSlider">
+			<ul>
+				<li>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup1.png">
+					</span>
+					<span class="promoText">
+						<span class="promoTextMain">Kostky - skrývají všechny akce</span>
+						<span class="promoTextSub">Systém zpracovává a následně prezentuje uživateli časový přehled akcí podle vyhledávacích kritérií, přičemž Vy máte vždy nejlepší výchozí pozici na volbu toho správného termínu.</span>
+					</span>
+				</li>
+				<li>
+					<span class="promoText">
+						<span class="promoTextMain">Kalendář, který zachová vše</span>
+						<span class="promoTextSub">Všechny akce vytváříte a manažujete v rámci prostředí tohoto kalendáři pro manažera - "eventy" vytvářet, upravujete a přesouvejte. Přikládejte si poznámky k vystupujícím, abyste měli všechny informace i do budoucna. Dělejte to odkudkoliv, iz Vašeho tabletu.</span>
+					</span>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup2.png">
+					</span>
+				</li>
+				<li>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup4.png">
+					</span>
+					<span class="promoText">
+						<span class="promoTextMain">Promo na concertian nebo facebook. Obě!</span>
+						<span class="promoTextSub">Po vytvoření akce stačí doplnit už jen lákavý obrázek akce a kliknout propagovat. Vaše akci automaticky odeslány na Vaši časovou osu na Facebook a stejně je dostupné ve vyhledávači concertian.</span>
+					</span>
+				</li>
+				<li>
+					<span class="promoText">
+						<span class="promoTextMain">Vstupenky s nejnižší marží? Ano s concertian.</span>
+						<span class="promoTextSub">Předprodej a prodej online vstupenek nebyl nikdy jednodušší. Využijte sílu jisté návštěvnosti zabezpečené formou předprodeje. Buďte nachystaný na to jaká návštěvnost Vás čeká. Komunikujte se zákazníky, co si už vstupenku zakoupili.</span>
+					</span>
+					<span class="promoImg">
+						<img class="promoImgsrc" src="img/mockup3.png">
+					</span>
+				</li>
+			</ul>
 		</span>
 	</section>
-	<div id="queteSecond">
-		<span class="functionList">
+	<section id="calculation">
+		<span class="functionHeading white">Abychom v tom měli jasno :)<br><p class="smaller">Při 100 vstupenkách po 10 eur (hodnoty si můžete přepsat)</p></span>
+		<span class="calculationForm">
 			<ul>
-				<li>
-					<span class="listStyle">1</span>
-					<span class="primaryText">SMART TERM</span>
-					<span class="secondaryText"><strong>Přehledné zobrazení všech koncertů z okolí, abyste pro koncert ve vašem klubu zvolili vždy ten nejlepší termín.  </strong>Minimalizujte riziko nízké návštěvnosti z důvodu atraktivnějšího akce ve stejném čase<strong>, nebo se inspirujte vystupujícími interprety a využijte možnost přímé zprávy.</strong></span>
-				</li>
-				<li>
-					<span class="listStyle">2</span>
-					<span class="primaryText">MY CALENDAR</span>
-					<span class="secondaryText"><strong>Hravá a intuitivní forma řízení a správy programu</strong> inspirovaná Google kalendářem a přizpůsobena požadavkům každého organizátora<strong>. Vytvářejte, editujte a spravujte své akce přehlednou formou se vším všudy - termíny, rychlé kontakty a technické poznámky.</strong></span>
-				</li>
+				<li><input type="text" id="quantity" placeholder="ks" value="100" required/><span class="inputtext">ks</span></li>
+				<li class="plus"><span class="plusIcon"></span></li>
+				<li><input type="text" id="unitprice" placeholder="€" value="10" required/><span class="inputtext">€</span></li>
+				<li class="equel"><span class="equelIcon"></span></li>
+				<li class="finalprice"><input type="text" id="finalprice" placeholder="" value="" /><span class="inputtext">€</span></li>
 			</ul>
 		</span>
-	</div>
-	<section id="postToFacebook">
-		<span class="buttonPart">
-			<span class="buttonPartHeading">Vyzkoušejte nyní na 15 dnů zdarma </span>
-			<a href="registration.html"><span class="buttonPartButton">REGISTRACE</span></a>
-		</span>
-		<span class="postToFacebookText">
-			<ul>
-				<li>
-					<span class="listStyle">3</span>
-					<span class="primaryText">GO SOCIAL</span>
-					<span class="secondaryText"><strong>Přidejte koncerty</strong> jedním krokem na Váš fanpage<strong> – obrázek a popis nahrajete pouze jednou ao ostatní se již postará systém concertian. Stejně jsou akce rázem přístupné ve vyhledávači koncertů concertian.com.</strong></span>
-				</li>
-				<li> 
-					<span class="listStyle">4</span>
-					<span class="primaryText">TICKET AGENT</span>
-					<span class="secondaryText"><strong>Prodávat vstupenky online se vyplatí. O to víc, když</strong> si nebereme žádnou provizi a zakoupené vstupenky obratem doručíme formou pdf<strong>. . Hodinu před vystoupením Vám bude doručení seznam zakoupených vstupenek na rychlé a bezpečné ověřování.</strong></span>
-				</li>
-			</ul>
-		</span>
-		<span class="postToFacebookMockup">
-			<img class="postToFacebookMockupImg" src="img/mockup4.png">
+		<span class="detailText">
+			<span class="biggerText"></span>
+			<span class="smallerText"></span>
 		</span>
 	</section>
 	<section id="propagation">
-		<span class="propagationHeading">Prodávejte vstupenky online</span>
-		<span class="propagationSubheading">Je to jednoduché - zadejte množství a jednotkovou cenu.</span>
+		<span class="propagationHeading">PRODÁVEJTE VSTUPENKY ONLINE</span>
+		<span class="propagationSubheading">Je to jednoduché - zadajte množstvo a jednotkovú cenu.</span>
 		<span class="propagationMockup">
 			<img class="propagationMockupImg" src="img/mockup3.png">
 		</span>
 	</section>
 	<section id="bottom">
-		<span class="pricingHeading">Měsíčně bez vázanosti</span>
+		<span class="pricingHeading">Mesačne bez viazanosti</span>
 		<span class="pricing">
-			<span class="pricingPrice">19€<br><strong>měsíčně</strong></span>
+			<span class="pricingPrice">19€<br><strong>měsíčně</strong><span class="free"><img src="img/freesign.png"></span></span>
 			<span class="benefits">
 				<ul>
-					<li><strong>Analýza</strong>termínu pro akci</li>
-					<li><strong>Zpráva koncertů</strong> ve vašem kalendáři</li>
-					<li>Propagace koncertů <strong>na concertian.com</strong></li>
-					<li><strong>Zasílání akcí</strong> přímo na facebook</li>
-					<li><strong>Jednoduchý</strong> prodej online vstupenek</li>
+					<li><strong>ANALÝZA</strong> TERMÍNU PRO AKCI</li>
+					<li><strong>ZPRÁVA KONCERTŮ</strong> VE VAŠEM KALENDÁŘI</li>
+					<li>PROPAGACE KONCERTŮ <strong>NA CONCERTIAN.COM</strong></li>
+					<li>ZASÍLÁNÍ AKCÍ<strong> PŘÍMO NA FACEBOOK</strong></li>
+					<li>JEDNODUCHÝ<strong> PRODEJ ONLINE VSTUPENEK</strong></li>
 				</ul>
 			</span>
 		</span>
 	</section>
 	<section id="bottomCTA">
-		<span class="CTAheading"><strong>Využijte možnost vyzkoušet prodej vstupenek online a další výhody </strong> na 15 dní zdarma </span>
+		<span class="CTAheading"><strong>Využijte možnost vyzkoušet prodej vstupenek online a další výhody zdarma </strong> </span>
 		<a href="registration.html"><span class="CTAbutton">Začít</span></a>
 	</section>
 	<section id="footer">
 			<span class="socialicons">
 				<div class="addthis_sharing_toolbox"></div>
 			</span>
-			<span class="authors"><p>quawer s.r.o<br>Braneckého 4 <br>Nitra 949 01</p></span>
+			<span class="authors">
+				<a href="http://studio.quawer.com">
+				<span class="author">
+					<span class="authortext">autor</span>
+					<span class="official">quawer s.r.o.</span>
+					<span class="quawerlogo"></span>
+				</span>
+				</a>
+				<a href="https://www.webglobe.sk/">
+				<span class="support">
+					<span class="supporttext">
+projekt podpořili</span>
+					<span class="official">Webglobe - Yegon, s.r.o.</span>
+					<span class="webglobelogo"></span>
+				</span>
+				</a>
+			</span>
 	</section>
 </body>
     <script type="text/javascript">
