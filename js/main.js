@@ -826,8 +826,53 @@ function addElements(json){
 		var origin = value.state;
 		var venuename = value.venueName;
 		var soldout = available - sold;
+		var seatMap = value.tickets.seatMap;
+		
 		if(price != ""){
-			buyTickets(eventID, price, origin, tickets, venuename, soldout, eventName);
+			if(seatMap != null){
+				$("#popup").empty();
+				$("#popup").append('<span class="outer">'+
+										'<span class="closeButton">'+
+											'<span class="closeIcon"></span>'+
+										'</span>'+
+								  '</span>');
+				$("#popup").fadeIn(100);
+				$("#popup .outer").perfectScrollbar();
+				var sc = $('#popup .outer').seatCharts({
+			map: seatMap.split(','),
+			seats: {
+				a: {
+					click   : function () {
+								console.log($(this).val());
+							},
+					price   : price,
+					classes : 'front-seat' //your custom CSS class
+				}
+
+			},
+			click: function () {
+				if (this.status() == 'available') {
+					//do some stuff, i.e. add to the cart
+					console.log();
+					return 'selected';
+				} else if (this.status() == 'selected') {
+					//seat has been vacated
+					return 'available';
+				} else if (this.status() == 'unavailable') {
+					//seat has been already booked
+					return 'unavailable';
+				} else {
+					return this.style();
+				}
+			}
+		});
+
+		//Make all available 'c' seats unavailable
+		sc.find('c.available').status('unavailable');
+			}
+			else{
+				buyTickets(eventID, price, origin, tickets, venuename, soldout, eventName);
+			}
 		}
     });
     
