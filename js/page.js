@@ -82,26 +82,6 @@ $(document).ready(function(){
         });
 	});
 	
-	// Load concerts for concert overview
-	// Load all concert by URL
-    var url = "https://api.concertian.com/users/events";
-	var page = 0;
-	$.ajax({ 'url' : url,
-		  'method' : 'POST',
-		  'data' : { 'results' : "20",
-			 		 'page' : page
-		 		   },
-	  	  contentType : "application/x-www-form-urlencoded",
-		  'success' : function (json){
-                            addElements(json);
-	  	            },
-	  	'error': function(error){
-	  		console.log('Error. ' + error);
-	  		$(".spinner").remove();
-            noResults();
-	  	}
-    });
-	
 	// Calculate outcome
 	var quantity = $("#quantity").val();
 	var unitprice = $("#unitprice").val();
@@ -336,40 +316,4 @@ function responseScript(response){
 			}
 				break;
 	}
-}
-// load all concert add elements
-function addElements(json){
-	$(".outer").append('<span class="gotoconcertian">'+language["moreonconcertian"]+'</span>');
-	for(var i = 0; i < json.events.length; i++){
-		var value = json.events[i];
-        var arr = value.stringDate.split('-');
-		var time = value.time.split(':');	
-        results[length + i] = value;
-        
-		var element = 
-					'<span class="resultElement">'+
-                    '<span class="firstPart">'+
-						'<span class="date">'+arr[2]+" "+arr[1]+'</span>'+
-					'</span>'+
-                    '<span class="secondPart">'+
-						'<span class="time">'+time[0]+":"+time[1]+'</span>'+
-					'</span>'+
-                    '<span class="thirdPart">'+
-						'<img class="resultImg" src="'+value.imgUrl+'">'+	
-					'</span>'+
-                    '<span class="forthPart">'+value.eventName+'<br>'+value.venueName+'</span>'+
-                    '<span class="fifthPart hvr-fade">'+
-						'<span class="price ' + (value.entry == 0 ? "freeText" : '') +'">' + (value.entry == 0 ? language["free"] : value.entry) + '</span>'+
-            '<span class="price_tag '+(value.entry == 0 ? 'hide' : '')+'">'+ (value.state === 'Czech Republic' ? 'czk':'eur') + '</span>'+	
-					'<input type="hidden" id="hyper" value="'+value.id+'">'+
-					'</span>'+
-					'</span>';
-		$(".outer").append(element);
-	}
-	$(".outer").append('<span class="gotoconcertian">'+language["moreonconcertian"]+'</span>');
-	$(".fifthPart").on('click', function(){
-		var url = $(this).find("#hyper").val();
-		var linkUrl = 'https://concertian.com/share.html?' + url;
-		window.location = linkUrl;
-	});
 }

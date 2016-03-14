@@ -150,6 +150,7 @@ header{
 	position: relative;
 	width: 100%;
 	height: 100%;
+	background-size: cover;
 }
 .landingHeading1{
 	position: absolute;
@@ -160,7 +161,7 @@ header{
 	margin-top: 2%;
 	margin-left: 2%;
 	color: #fff;
-	font-size: 3em;
+	font-size: 2em;
 	text-align: center;
 }
 .provisionText{
@@ -262,7 +263,7 @@ header{
 	position: absolute;
 	display: block;
 	width: 40%;
-	height: 70px;
+	height: 60px;
 	top: 5%;
 	margin-top: 10%;
 	margin-left: 6%;
@@ -278,7 +279,7 @@ header{
 	text-align: center;
 	box-sizing: border-box;
 	padding-top: 12px;
-	font-size: 1.8em;
+	font-size: 1.4em;
 	border-radius: 4px;
 	cursor: pointer;
 }
@@ -298,12 +299,21 @@ header{
 	text-align: center;
 	box-sizing: border-box;
 	padding-top: 12px;
-	font-size: 1.8em;
+	font-size: 1.4em;
 	border-radius: 4px;
 	cursor: pointer;
 }
 .buttonCustomer:hover{
 	background: #ffcd29;
+}
+.pointer{
+	position: absolute;
+	display: none;
+	width: 391px;
+	height: 130px;
+	bottom: 160px;
+	left: 40px;
+	background: url('../img/mockup7.png') no-repeat;
 }
 .bounceArrow{
 	display: block;

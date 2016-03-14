@@ -586,7 +586,7 @@ $(document).ready(function() {
 	  $.ajaxSetup({ cache: true });
 	  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
 		FB.init({
-		  appId: '1128811043811214',
+		  appId: '468349143348884',
 		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
 		});     
 		$('#loginbutton,#feedbutton').removeAttr('disabled');
@@ -1485,7 +1485,6 @@ function getMinutes(time){
 //Load concerts for manager
 function addPropagationElements(json){
     var length = results.length;
-    
     for(var i = 0; i < json.events.length; i++){
     	var value = json.events[i];
         results[length + i] = value;
@@ -1493,7 +1492,7 @@ function addPropagationElements(json){
         var element = 
             '<span class="propagationElement">'+
                 '<ul>'+
-                    '<li id="eventShareButton">'+
+                    '<li class="eventShareButton">'+
         '<span class="eventShareButtonText">'+ (length + i) +'</span>'+
                     '</li>'+
                     '<li class="eventDate">'+arr[2]+' '+arr[1]+'<br>'+arr[0]+'</li>'+
@@ -1526,10 +1525,12 @@ function addPropagationElements(json){
         });
    	});
     //Share Button Handler
-    $("#eventShareButton").on("click", function(){
+    $(".eventShareButton").on("click", function(){
         $(this).css("background", "#ffbb33");
 		var value = results[$(this).find(".eventShareButtonText").text()];
+		console.log(value);
 		var eventID = value.idEvent;
+		console.log(eventID);
 		var shareUrl = null;
 		var shareUrl = 'https://concertian.com/share.html?' + eventID;
 		var time = value.time.split(":");
@@ -1545,8 +1546,8 @@ function addPropagationElements(json){
 	});
     // Concert to share selector
     $("#propagationButton").on('click', function(){        
-        $("#shareButton").addClass("display");
-        $("li#eventShareButton").each(function(){
+        $("li #shareButton").addClass("display").css('width', '20px');
+        $(".eventShareButton").each(function(){
             $(this).addClass("display");
         });
         $("li.eventAudience").hide();

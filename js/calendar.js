@@ -122,7 +122,7 @@ function initCalendar(language) {
                         name: $("#name").val(),
                         date: $("#date").val(),
                         time: $("#time").val(),
-                        detail: $("#detail").val(),
+                        detail: $("#detailtext").val(),
                         youtubeVideo: $("#youtube").val(),
 						seatMap: "null",
                         entry: $("#entry").val(),
@@ -198,7 +198,7 @@ function renderEdit(eventId){
                 $("#name").val(data.name);
                 $("#date").val(data.date);
                 $("#time").val(data.time);
-                $("#detail").val(data.detail);
+                $("#detailtext").val(data.detail);
                 $("#youtube").val(data.youtubeVideo);
                 $("#entry").val(data.entry);
                 $("#imgUrl").val(data.imgUrl);

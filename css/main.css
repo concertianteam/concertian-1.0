@@ -1417,7 +1417,7 @@ span .fieldName{
 }
 .propagationElement li{
     display: inline-block;
-    width: 120px !important;
+    width: 120px;
     vertical-align: middle;
     height: 100px;
     overflow-y: scroll;
@@ -1466,12 +1466,12 @@ li.eventName{
 li.eventAudience{
     color: #ffbb33;
 }
-#eventShareButton{
-    display: none;
+.eventShareButton{
+    display: none !important;
     vertical-align: middle;
     width: 20px !important;
     margin-right: 10% !important;
-    height: 20px;
+    height: 20px !important;
     border-radius: 4px;
     background: transparent;
     border: 2px solid #ffbb33;
@@ -1479,6 +1479,7 @@ li.eventAudience{
 }
 .display{
     display: inline-block !important;
+	width: 20px !important;
 }
 .eventShareButtonText{
     font-size: 0 !important;
@@ -1517,11 +1518,12 @@ li.eventAudience{
     .propagationList ul li{
         width: 140px !important;
     }
-    .propagationElement li{
+    .propagationElement ul li{
         width: 140px !important;
     }
-    #eventShareButton{
-        margin-right: 15% !important;
+    .propagationElement ul .eventShareButton{
+		width: 20px !important;
+		margin-right: 0 !important;
     }
 }
 @media screen and (max-width: 900px) {
