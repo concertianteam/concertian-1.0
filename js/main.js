@@ -97,6 +97,8 @@ var slovak = {
     placeOrderNumber:"POČET LÍSTKOV",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
 	save:"Uložiť",
+	reservationText:"Nastaviť rezerváciu miesta?",
+	setnumberoftickets:"Nastavte počet vstupeniek",
     //manageaccount.html
     text2:"Meno",
     text3:"Priezvisko",
@@ -181,6 +183,8 @@ var english = {
     placeOrderNumber:"NUMBER OF TICKETS",
     placeOrderUnitprice:"UNIT PRICE",
 	save:"Save",
+	reservationText:"Set seat reservation?",
+	setnumberoftickets:"Set nubmer od tickets",
     //manageaccount.html
     text2:"Name",
     text3:"Surname",
@@ -265,6 +269,8 @@ var czech = {
     placeOrderNumber:"POČET VSTUPENEK",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
 	save:"Uložiť",
+	reservationText:"Nastavit možnost rezervaci místa?",
+	setnumberoftickets:"Nastavte počet vstupenek",
     //manageaccount.html
     text2:"Jméno",
     text3:"Příjmení",
@@ -586,7 +592,7 @@ $(document).ready(function() {
 	  $.ajaxSetup({ cache: true });
 	  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
 		FB.init({
-		  appId: '468349143348884',
+		  appId: '1128811043811214',
 		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
 		});     
 		$('#loginbutton,#feedbutton').removeAttr('disabled');
@@ -831,9 +837,9 @@ function loadConcertForManager(){
 			    $("#reservationPopup").empty();
 				$("#reservationPopup").show();
 				var gridelement = '<span class="uloption">'+
+									'<span class="reservationText">'+language.reservationText+'</span>'+
 									'<span id="reservationYes" class="reservationbutton">Áno</span>'+
 									'<span id="reservationNo" class="reservationbutton">Nie</span>'+
-									'<span id="reservationNo" class="reservationbutton">Neviem</span>'+
 								  '</span>';
 				$("#reservationPopup").append(gridelement);
 			    $("#reservationNo").on('click', function(){
@@ -860,7 +866,10 @@ function createPopupQuantity(idEvent, price, seatString){
 	$("#reservationPopup").empty();
 	$("#reservationPopup").show();
 	var gridelement = '<span class="uloption">'+
+						'<label class="custom_input_label" for="quantityNumber">'+
+						'<span class="fieldName">'+language.setnumberoftickets+'</span>'+
 						'<input type="text" id="quantityNumber" name="quantityNumber" val="" required>'+
+						'</label>'+
 						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'
 					  '</span>';
 	$("#reservationPopup").append(gridelement);

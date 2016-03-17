@@ -2135,6 +2135,12 @@ li.eventAudience{
 	margin: 0;
 	padding: 0;
 }
+.reservationText{
+    display: block;
+    text-align: center;
+    font-size: 2em;
+	margin-bottom: 10px;
+}
 .reservationCore{
 	display: block;
 	width: 100%;
@@ -2143,6 +2149,38 @@ li.eventAudience{
 	margin: 0 !important;
 	box-sizing: border-box;
 	padding-left: 5%;
+}
+#reservationYes{
+	margin-left: 17%;
+}
+#quantityNumber{
+ 	display: block;
+    font-weight: 100;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 16px 0px 0px;
+    padding: 0px 14px;
+    width: 100%;
+    outline: 0px none;
+    border: medium none;
+	height: 45px;
+    background-color: transparent;
+    background-image: none;
+    color: #283036;
+}
+#submitQuantityNumber{
+	display: block;
+    width: 50%;
+	margin-left: 20%;
+    height: 50px;
+    border: none;
+    border-radius: 4px;
+    background: #ffbb33;
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: 100;
+	cursor: pointer;
+	margin-top: 10px;
 }
 #rows{
 	display: block;
