@@ -97,6 +97,15 @@ var slovak = {
     placeOrderNumber:"POČET LÍSTKOV",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
 	save:"Uložiť",
+	reservationText:"Nastaviť rezerváciu miesta?",
+	setnumberoftickets:"Nastavte počet vstupeniek",
+    //manageaccount.html
+    text2:"Meno",
+    text3:"Priezvisko",
+    text4:"Obchodné meno",
+    text5:"Zaplatiť 19€",
+    unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
+    unsubscribeTextButton:"ZRUŠIŤ ODBER"
 };
 var english = {
     calendarLang: 'en',
@@ -174,6 +183,15 @@ var english = {
     placeOrderNumber:"NUMBER OF TICKETS",
     placeOrderUnitprice:"UNIT PRICE",
 	save:"Save",
+	reservationText:"Set seat reservation?",
+	setnumberoftickets:"Set nubmer od tickets",
+    //manageaccount.html
+    text2:"Name",
+    text3:"Surname",
+    text4:"Company name",
+    text5:"Pay 19€",
+    unsubscribeText:"By clicking unsubscribe, you are not going to be able to use concertian LITE anymore.Therefore you should consider your decision and its impact on your club visit rate. You will be able to access your account until the end of your current month subscription.",
+    unsubscribeTextButton:"UNSUBSCRIBE"
 };
 var czech = {
 	calendarLang: 'cs',
@@ -251,6 +269,15 @@ var czech = {
     placeOrderNumber:"POČET VSTUPENEK",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
 	save:"Uložiť",
+	reservationText:"Nastavit možnost rezervaci místa?",
+	setnumberoftickets:"Nastavte počet vstupenek",
+    //manageaccount.html
+    text2:"Jméno",
+    text3:"Příjmení",
+    text4:"Obchodní jméno",
+    text5:"Zaplatit 19€",
+    unsubscribeText:"Kliknutím na přerušit odběr, již nebude možné více využívat balíček concertian LITE. Přerušit odběr je možné v jakémkoli okamžiku bez ohledu na to jestli jste s námi měsíc, dva nebo 6 měsíců. Samozřejmě je třeba zvážit dopad na pokles návštěvnosti ve vašem klubu, jelikož po zrušení odběru nebude moci následující měsíc již přistupovat do aplikace.",
+    unsubscribeTextButton:"ZRUŠIT ODBĚR"
 };
 
 //Document READY FUNCTION
@@ -513,7 +540,7 @@ $(document).ready(function() {
 	  $.ajaxSetup({ cache: true });
 	  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
 		FB.init({
-		  appId: '468349143348884',
+		  appId: '1128811043811214',
 		  version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
 		});     
 		$('#loginbutton,#feedbutton').removeAttr('disabled');
@@ -751,9 +778,9 @@ function loadConcertForManager(){
 			    $("#reservationPopup").empty();
 				$("#reservationPopup").show();
 				var gridelement = '<span class="uloption">'+
+									'<span class="reservationText">'+language.reservationText+'</span>'+
 									'<span id="reservationYes" class="reservationbutton">Áno</span>'+
 									'<span id="reservationNo" class="reservationbutton">Nie</span>'+
-									'<span id="reservationNo" class="reservationbutton">Neviem</span>'+
 								  '</span>';
 				$("#reservationPopup").append(gridelement);
 			    $("#reservationNo").on('click', function(){
@@ -780,8 +807,12 @@ function createPopupQuantity(idEvent, price, seatString){
 	$("#reservationPopup").empty();
 	$("#reservationPopup").show();
 	var gridelement = '<span class="uloption">'+
+						'<label class="custom_input_label" for="quantityNumber">'+
+						'<span class="fieldName">'+language.setnumberoftickets+'</span>'+
 						'<input type="text" id="quantityNumber" name="quantityNumber" val="" required>'+
 						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'+
+						'</label>'+
+						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'
 					  '</span>';
 	$("#reservationPopup").append(gridelement);
 	$("#submitQuantityNumber").on('click', function(){
