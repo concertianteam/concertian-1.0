@@ -13,6 +13,8 @@
 	<script type="text/javascript" src="js/perfect-scrollbar.jquery.min.js"></script>
 	<script type="text/javascript" src="js/js.cookie.js"></script>
     <script type="text/javascript" src="js/unslider-min.js"></script>
+    <script type="text/javascript" src="https://js.braintreegateway.com/v2/braintree.js"></script>
+    <script type="text/javascript" src="js/payment.js"></script>
 </head>
 <body>
 	<header id="registration">
@@ -46,10 +48,28 @@
 		</div>
 		<div id="underBar">
 			<span id="appendOuter">
-				<form id="verify" name="email_verification">
-                        <label class="custom_input_label"><span class="fieldName" id="verifyemailfieldname"></span><input type="email" id="email" name="email" placeholder="concertian@club.com"></label>
-                        <label><input type="submit" name="submit" id="submit" class="hvr-buzz-out"></label>
-                </form>
+				<span class="paymentBox">
+                        <form id="checkout" method="post" action="php/transactionCheckout.php">
+                        <span class="leftForm">
+                            <label class="custom_input_label" for="firstName">
+                                <span class="fieldName" id="text2"></span>
+                                <input type="text" id="firstName" name="first_name" required />
+                            </label>
+                            <label class="custom_input_label" for="lastName">
+                                <span class="fieldName" id="text3"></span>
+                                <input type="text" id="lastName" name="last_name" required />
+                            </label>  
+                            <label class="custom_input_label" for="company">
+                                <span class="fieldName" id="text4"></span>
+                                <input type="text" id="company" name="company" class="margin_bottom" required />
+                            </label>      
+                        </span>
+                        <span class="rightForm">
+                            <span id="payment-form"></span>
+                            <input type="submit" id="text5" value="ZAPLATIŤ 19€">
+                        </span>
+                        </form>
+                </span>
 			</span>
 		</div>
 	</header>

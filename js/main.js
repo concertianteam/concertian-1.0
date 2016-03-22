@@ -97,13 +97,6 @@ var slovak = {
     placeOrderNumber:"POČET LÍSTKOV",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
 	save:"Uložiť",
-    //manageaccount.html
-    text2:"Meno",
-    text3:"Priezvisko",
-    text4:"Obchodné meno",
-    text5:"Zaplatiť 19€",
-    unsubscribeText:"Kliknutím na prerušiť odber, už nebude možné viac využívať balík concertian LITE. Prerušiť odber je možné v ktoromkoľvek momente bez ohľadu na to či ste s nami mesiac, dva alebo 6 mesiacov. Samozrejme treba zvážiť dopad na pokles návštevnosti vo vašom klube, nakoľko po zrušení odberu nebude môcť nasledujúci mesiac už pristupovať do aplikácie.",
-    unsubscribeTextButton:"ZRUŠIŤ ODBER"
 };
 var english = {
     calendarLang: 'en',
@@ -181,13 +174,6 @@ var english = {
     placeOrderNumber:"NUMBER OF TICKETS",
     placeOrderUnitprice:"UNIT PRICE",
 	save:"Save",
-    //manageaccount.html
-    text2:"Name",
-    text3:"Surname",
-    text4:"Company name",
-    text5:"Pay 19€",
-    unsubscribeText:"By clicking unsubscribe, you are not going to be able to use concertian LITE anymore.Therefore you should consider your decision and its impact on your club visit rate. You will be able to access your account until the end of your current month subscription.",
-    unsubscribeTextButton:"UNSUBSCRIBE"
 };
 var czech = {
 	calendarLang: 'cs',
@@ -265,13 +251,6 @@ var czech = {
     placeOrderNumber:"POČET VSTUPENEK",
     placeOrderUnitprice:"JEDNOTKOVÁ CENA",
 	save:"Uložiť",
-    //manageaccount.html
-    text2:"Jméno",
-    text3:"Příjmení",
-    text4:"Obchodní jméno",
-    text5:"Zaplatit 19€",
-    unsubscribeText:"Kliknutím na přerušit odběr, již nebude možné více využívat balíček concertian LITE. Přerušit odběr je možné v jakémkoli okamžiku bez ohledu na to jestli jste s námi měsíc, dva nebo 6 měsíců. Samozřejmě je třeba zvážit dopad na pokles návštěvnosti ve vašem klubu, jelikož po zrušení odběru nebude moci následující měsíc již přistupovat do aplikace.",
-    unsubscribeTextButton:"ZRUŠIT ODBĚR"
 };
 
 //Document READY FUNCTION
@@ -492,58 +471,6 @@ $(document).ready(function() {
         });
     });
     
-    //Go to settings
-    $("#settings").on('click', function(){
-        $("#contentPanel").empty();
-        addspinner();
-        $("#contentPanel").load("manageaccount.html", null, function(){
-			$.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
-			        
-			        var clientToken;
-			
-			            $.ajax({
-			                url: "php/generateClientToken.php",
-			                success: function (ret) {
-			                    $('#payment-form').empty();
-			                    clientToken = ret;
-			                    braintree.setup(clientToken, 'dropin',{
-			                        container: "payment-form"
-			                    });
-			                }
-			            });
-			    
-			    //TRANSACTION CHECKOUT
-			    $('#checkout').submit(function(event) {
-			    event.preventDefault();
-			        $.ajax({
-			          url: 'php/transactionCheckout.php',
-			          dataType: 'json',
-			          success: function(data) {
-			            window.location = "response.html";
-			          },
-			          error: function(data){
-			            window.location = "response.html";
-			          }
-			        });
-			        event.preventDefault();
-			    });
-			    
-			    //Braintree Manage Account
-			    $("#unsubscribebutton").on('click', function(){
-			        var subscription = Cookies.get('subscriptionId');
-			        $.ajax({
-			          url: 'php/cancelsubscription.php?subscription=' + subscription,
-			          success: function(data) {
-			            window.location = "response.html";
-			          }
-			        });
-			    });
-			});
-            setLanguage();
-            $("#contentPanel").remove(".spinner");
-        });
-    });
-    
     //* Mouse position tracker *//
 	$(document).mousemove(function(e){
            mouseX = e.pageX;
@@ -643,13 +570,6 @@ function setLanguage(){
     $("#placeOrderCompanyName").text(language["placeOrderCompanyName"]);
     $("#placeOrderAddress").text(language["placeOrderAddress"]);
     $("#placeOrderAccountNumber").text(language["placeOrderAccountNumber"]);
-    //manageaccount.html
-    $("#text2").append(language["text2"]);
-    $("#text3").append(language["text3"]);
-    $("#text4").append(language["text4"]);
-    $("#text5").append(language["text5"]);
-    $(".unsubscribetext").append(language["unsubscribeText"]);
-    $("#unsubscribebutton").append(language["unsubscribeTextButton"]);
 }
 
 // ADDING SPINER WHILE LOADING #contentPanel
@@ -861,7 +781,7 @@ function createPopupQuantity(idEvent, price, seatString){
 	$("#reservationPopup").show();
 	var gridelement = '<span class="uloption">'+
 						'<input type="text" id="quantityNumber" name="quantityNumber" val="" required>'+
-						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'
+						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'+
 					  '</span>';
 	$("#reservationPopup").append(gridelement);
 	$("#submitQuantityNumber").on('click', function(){

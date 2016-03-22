@@ -41,7 +41,7 @@ $(document).ready(function(){
         $(".languagemenu").fadeIn(200);
     });
     $(document).click( function(){
-    $('.languagemenu').fadeOut(200);
+        $('.languagemenu').fadeOut(200);
     });
     
     //SET COOKIE FOR LANGUAGE
@@ -106,6 +106,7 @@ var slovak = {
 	submit_verify: "Aktivovať účet",
 	email: "Email",
 	password: "Heslo",
+    domain: "webová doména",
 	name: "Názov podniku",
 	address: "Adresa",
 	country: "Krajina",
@@ -114,6 +115,10 @@ var slovak = {
 	registration_submit: "Dokončiť registráciu",
 	free: "vstup voľný",
 	moreonconcertian: "Viac koncertov na concertian.com",
+    text2:"Meno",
+    text3:"Priezvisko",
+    text4:"Obchodné meno",
+    text5:"Zaplatiť 19€",
 };
 var english = {
 	registration: "REGISTRATE",
@@ -122,6 +127,7 @@ var english = {
 	submit_verify: "Activate account",
 	email: "Email",
 	password: "Password",
+    domain: "Web domain",
 	name: "Venue name",
 	address: "Address",
 	country: "Country",
@@ -130,6 +136,10 @@ var english = {
 	registration_submit: "Finish registration",
 	free: "entry free",
 	moreonconcertian:"Find more concerts on concertian.com",
+    text2:"Name",
+    text3:"Surname",
+    text4:"Company name",
+    text5:"Pay 19€",
 };
 var czech = {
 	registration: "REGISTROVAT",
@@ -138,6 +148,7 @@ var czech = {
 	submit_verify: "Aktivovat účet",
 	email: "Email",
 	password: "Heslo",
+    domain: "Webová doména",
 	name: "Název podniku",
 	address: "Adresa",
 	country: "Země",
@@ -146,6 +157,10 @@ var czech = {
 	registration_submit: "Dokončit registraci",
 	free:"vstup volny",
 	moreonconcertian:"Více koncertů na concertian.coV",
+    text2:"Jméno",
+    text3:"Příjmení",
+    text4:"Obchodní jméno",
+    text5:"Zaplatit 19€",
 };
 
 // Set language
@@ -153,15 +168,20 @@ function setLanguage(){
 	 $("#registration_nav").text(language["registration"]);
 	 $("#hide").text(language["terms"]);
 	 $("#verifyemailfieldname").text(language["verifyemailfieldname"]);
-	 $("#submit").attr("value", language["submit_verify"]);
+	 $("#submit").prop("value", language["submit_verify"]);
 	 $("#inputemail").text(language["email"]);
 	 $("#inputpassword").text(language["password"]);
+	 $("#inputdomain").text(language["domain"]);
 	 $("#inputname").text(language["name"]);
 	 $("#inputaddress").text(language["address"]);
 	 $("#inputcountry").text(language["country"]);
 	 $("#inputcity").text(language["city"]);
 	 $(".checkbox_text").text(language["checkbox_text"]);
 	 $("#submitregistration").attr("value", language["registration_submit"]);
+    $("#text2").append(language["text2"]);
+    $("#text3").append(language["text3"]);
+    $("#text4").append(language["text4"]);
+    $("#text5").append(language["text5"]);
 }
 
 // Filling out registrate formula
@@ -223,6 +243,7 @@ var formData = {
     'email'          : $('input[name=email]').val(),
     'name'           : $('input[name=venue_name]').val(),
     'password'       : $('input[name=password]').val(),
+    'domain'       : $('input[name=domain]').val(),
     'addressFirst'   : $('input[name=address]').val(),
     'state'          : $('input[name=state]').val(),
     'city'           : $('input[name=city]').val(),
@@ -254,30 +275,30 @@ function responseScript(response){
 				switch(Cookies.get('language')){
                 case "slovak":
             $(".response_button").append("Prihlásenie");
-            $(".response_text").append( "<p>Registrácia prebehla úspešne,<br> potvrdzovací email bol zaslaný do Vašej emailovej schránky. Využívajte aplikáciu na 15 dní zadarmo<p>");
+            $(".response_text").append( "<p>Registrácia prebehla úspešne,<br> potvrdzovací email bol zaslaný do Vašej emailovej schránky.<p>");
             $(".response_button").click(function() {
-                  location.href='login.html';
+                  location.href='payment.html';
             });
                     break;
                 case "english":
             $(".response_button").append("Log In");
-            $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox. Now you are able to use app for free, next 15 days.<p>");
+            $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox.<p>");
             $(".response_button").click(function() {
-                  location.href='login.html';
+                  location.href='payment.html';
             });
                     break;
                 case "czech":
             $(".response_button").append("Přihlášení");
-            $(".response_text").append( "<p>Registrace proběhla úspěšně,<br> potvrzovací email byl zaslán do Vaší emailové schránky. Využívejte aplikaci na 15 dní zdarma.<p>");
+            $(".response_text").append( "<p>Registrace proběhla úspěšně,<br> potvrzovací email byl zaslán do Vaší emailové schránky.<p>");
             $(".response_button").click(function() {
-                  location.href='login.html';
+                  location.href='payment.html';
             });   
                     break;
                 default:
             $(".response_button").append("Log In");
-            $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox. Now you are able to use app for free, next 15 days.<p>");
+            $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox.<p>");
             $(".response_button").click(function() {
-                  location.href='login.html';
+                  location.href='payment.html';
             }); 
                     break;
             }
