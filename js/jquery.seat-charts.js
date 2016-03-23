@@ -161,6 +161,16 @@
 									seatCharts.attr('aria-activedescendant', seat.settings.id);
 									seat.node().focus();
 								}
+								if (callback == 'click') {
+									//if there's already a focused element, we have to remove focus from it first
+									if (seatCharts.attr('aria-activedescendant') !== undefined) {
+										seats[seatCharts.attr('aria-activedescendant')].blur();
+									}
+									seatCharts.attr('aria-activedescendant', seat.settings.id);
+									var seatPosition = $(this).attr('id'));	
+									buyTickets();
+									seat.node().focus();
+								}
 							
 								/*
 								 * User can pass his own callback function, so we have to first check if it exists

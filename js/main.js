@@ -838,17 +838,13 @@ function addElements(json){
 								  '</span>');
 				$("#popup").fadeIn(100);
 				$("#popup .outer").perfectScrollbar();
-				var sc = $('#popup .outer').seatCharts({
+			var sc = $('#popup .outer').seatCharts({
 			map: seatMap.split(','),
 			seats: {
 				a: {
-					click   : function () {
-								console.log($(this).val());
-							},
 					price   : price,
 					classes : 'front-seat' //your custom CSS class
 				}
-
 			},
 			click: function () {
 				if (this.status() == 'available') {
