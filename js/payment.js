@@ -1,6 +1,5 @@
 $(document).ready(function(){
     
-	        
     var clientToken;
 			
         $.ajax({
@@ -21,10 +20,14 @@ $(document).ready(function(){
               url: 'php/transactionCheckout.php',
               dataType: 'json',
               success: function(data) {
-                window.location = "response.html";
+                $('#appendOuter').empty();
+                $('#appendOuter').append('.response_text');
+                console.log(data);
               },
               error: function(data){
-                window.location = "response.html";
+                $('#appendOuter').empty();
+                $('#appendOuter').append('.response_text');
+                console.log(data);
               }
             });
             event.preventDefault();

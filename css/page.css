@@ -994,6 +994,9 @@ input{
 :-moz-placeholder { /* Firefox 18- */
   color: #ccc;
 }
+#verify{
+    margin-top: 5%;
+}
 /* -------- After verify email --------------- */
 .group{
 	display: block;
@@ -1037,6 +1040,8 @@ input{
 	color: #00060a;
 	font-size: 2em;
     text-align: center;
+    box-sizing: border-box;
+    padding-top: 5%;
 }
 .response_button{
 	display: block;
@@ -1068,7 +1073,7 @@ input{
     height: 100%;
     float: left;
     box-sizing: border-box;
-    padding: 10px 20px;
+    padding: 30px 20px;
 }
 @media screen and (max-height: 600px){
     .paymentBox{

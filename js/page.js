@@ -171,7 +171,6 @@ function setLanguage(){
 	 $("#submit").prop("value", language["submit_verify"]);
 	 $("#inputemail").text(language["email"]);
 	 $("#inputpassword").text(language["password"]);
-	 $("#inputdomain").text(language["domain"]);
 	 $("#inputname").text(language["name"]);
 	 $("#inputaddress").text(language["address"]);
 	 $("#inputcountry").text(language["country"]);
@@ -243,7 +242,6 @@ var formData = {
     'email'          : $('input[name=email]').val(),
     'name'           : $('input[name=venue_name]').val(),
     'password'       : $('input[name=password]').val(),
-    'domain'       : $('input[name=domain]').val(),
     'addressFirst'   : $('input[name=address]').val(),
     'state'          : $('input[name=state]').val(),
     'city'           : $('input[name=city]').val(),

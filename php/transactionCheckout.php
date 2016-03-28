@@ -16,7 +16,7 @@ $customer = Braintree_Customer::create(array(
 if ($customer->success) {
     $subscription = Braintree_Subscription::create([
         'paymentMethodToken' => $customer->customer->paymentMethods[0]->token,
-        'planId' => 'qtzg'
+        'planId' => 'qttw'
     ]);
     //echo $subscription->subscription->id;
 
@@ -43,8 +43,6 @@ if ($customer->success) {
     curl_exec($curl);
 
     setcookie('successfull', 3, time() + (86400 * 30), "/");
-    header('Location: ../response.html');
 } else {
     setcookie('successfull', 4, time() + (86400 * 30), "/");
-    header('Location: ../response.html');
 }
