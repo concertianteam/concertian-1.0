@@ -1,3 +1,7 @@
+html{
+    height: 100%;
+    background: no-repeat !important;
+}
 body{
     position: absolute;
     width: 100%;
@@ -22,91 +26,29 @@ strong{
 }
 /* ------------------ Share body ---------------*/
 #shareBody{
-	background: #ffbb33 !important;	
+	background: rgb(255,205,41);
+    background: -moz-linear-gradient(top,  rgba(255,205,41,1) 0%, rgba(255,205,41,1) 0%, rgba(255,187,51,1) 100%, rgba(255,187,51,1) 101%);
+    background: -webkit-linear-gradient(top,  rgba(255,205,41,1) 0%,rgba(255,205,41,1) 0%,rgba(255,187,51,1) 100%,rgba(255,187,51,1) 101%);
+    background: linear-gradient(to bottom,  rgba(255,205,41,1) 0%,rgba(255,205,41,1) 0%,rgba(255,187,51,1) 100%,rgba(255,187,51,1) 101%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffcd29', endColorstr='#ffbb33',GradientType=0 );
+    overflow-y: scroll;
 }
 #shareHeader{
 	height: 80px;
-}
-#shareBox{
-	display: block;
-	width: 100%;
-	 /* Firefox */
-    height: -moz-calc(100% - 230px);
-    /* WebKit */
-    height: -webkit-calc(100% - 230px);
-    /* Opera */
-    height: -o-calc(100% - 230px);
-    /* Standard */
-    height: calc(100% - 230px);
-	box-sizing: border-box;
-}
-.shareBoxLeftImg{
-	display: inline-block;
-	float: left;
-	width: 25%;
-	height: 100%;
-}
-.shareBoxLeftImg img{
-	position: absolute;
-	top: 20%;
-	box-sizing: border-box;
-	padding-left: 10%;
-}
-.shareBoxRightImg{
-	display: inline-block;
-	float: right;
-	width: 25%;
-	height: 100%;
-}
-.shareBoxRightImg img{
-	position: absolute;
-	bottom: 10%;
-	box-sizing: border-box;
-	padding-left: 5%;
-}
-.shareBoxEvent{
-	display: inline-block;
-	width: 50%;
-	height: 100%;
-	background: #fff;
-	border-radius: 4px;
 }
 .padding{
 	box-sizing: border-box;
 	padding: 2%;
 }
-#shareBoxMoreConcerts{
-	display: block;
-	width: 50%;
-	height: 40px;
-	margin-bottom: 10px;
-	margin-top: 10px;
-	text-align: center;
-	background: #ffcd29;
-	color: #fff;
-	border-radius: 4px;
-	cursor: pointer;
-	margin-left: 25%;
-	margin-right: 25%;
-	font-size: 1.6em;
-	box-sizing: border-box;
-	padding-top: 2px;
-}
-#buyTickets{
-	display: block;
-	width: 50%;
-	height: 40px;
-	margin-top: 10px;
-	text-align: center;
-	background: #FF4747;
-	color: #fff;
-	border-radius: 4px;
-	cursor: pointer;
-	margin-left: 25%;
-	margin-right: 25%;
-	font-size: 1.6em;
-	box-sizing: border-box;
-	padding-top: 2px;
+#shareCore{
+    display: block;
+    width: 70%;
+    margin-left: 15%;
+    height: auto;
+    min-height: 400px;
+    background: #333;
+    color: #fff;
+    margin-top: 20px !important;
 }
 /* ---------------- Top ----------- */
 header{
@@ -124,7 +66,8 @@ header{
 }
 #logo{
     display: inline-block;
-    width: 400px;
+    width: 60%;
+    float: left;
     height: 100%;
     box-sizing: border-box;
     padding-top: 8px;
@@ -188,15 +131,7 @@ header{
 }
 .share_concertian{
     display: inline-block;
-    float: right;
-    /* Firefox */
-    width: -moz-calc(100% - 400px);
-    /* WebKit */
-    width: -webkit-calc(100% - 400px);
-    /* Opera */
-    width: -o-calc(100% - 400px);
-    /* Standard */
-    width: calc(100% - 400x);
+    width: 40%;
     height: 100%;
 }
 .share_concertian ul{
@@ -836,9 +771,44 @@ div#columnSearch :-ms-input-placeholder {
 	display: block;
 	width: 100%;
 	height: auto;
-	min-height: 150px;
+	min-height: 250px;
 	box-sizing: border-box;
 	padding: 1% 2%;
+}
+.leftColumn{
+    display: inline-block;
+    width: 50%;
+    height: auto;
+    float: left;
+}
+.rightColumn{
+    display: inline-block;
+    width: 50%;
+    height: auto;
+}
+.sharevenueName{
+    display: inline-block;
+    vertical-align: top;
+    width: auto;
+    height: 60px;
+    text-align: left;
+    font-size: 2em;
+    margin-top: 10px;
+}
+.sharevenueNamePicture{
+    display: inline-block;
+    vertical-align: top;
+    width: 50px;
+    height: 50px;
+    border-radius: 90px;
+    background-color: #ffbb33;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+.sharevenueNamePictureImg{
+    width: 100%;
+    height: 100%;
+    border-radius: 90px;
 }
 .maindetailCore{
 	display: block;
@@ -1049,7 +1019,23 @@ div#columnSearch :-ms-input-placeholder {
         float: right;
     }
 }
+@media screen and (max-width: 980px) {
+    .language_selector{
+        display: none;
+    }
+}
 @media screen and (max-width: 952px) {
+    #logo{
+        width: 50%;
+        margin-left: 10%;
+    }
+    .share_concertian{
+        width: 30% !important;
+        margin-right: 10%;
+    }
+    .logo_text{
+        display: none;
+    }
     #columnMap{
         display: none;
     }
@@ -1087,9 +1073,30 @@ div#columnSearch :-ms-input-placeholder {
         display: inline-block !important;
     }
 }
-@media screen and (max-width: 665px) {
+@media screen and (max-width: 675px) {
+    #shareCore{
+        width: 90%;
+        margin-left: 5%;
+    }
+    #shareHeader{
+        width: 90%;
+        margin-left: 5%;
+    }
+    .leftColumn{
+        display: block;
+        width: 100%;
+    }
+    .rightColumn{
+        display: block;
+        width: 100%;
+    }
+    .titlerow{
+        padding: 0 !important;
+    }
     #logo{
-        width: 50%;
+        display: inline-block !important;
+        float: left;
+        height: 100%;
         vertical-align: middle;
     }
     .languagemenu{
@@ -1100,10 +1107,10 @@ div#columnSearch :-ms-input-placeholder {
         padding-left: 0 !important;
     }
     .share_concertian{
-        width: 50%;
+        display: inline-block !important;
+        float: right;
+        height: 100%;
         vertical-align: middle;
-        box-sizing: border-box;
-        padding-top: 10px;
     }
     .logo_text{
         display: none;
@@ -1183,19 +1190,13 @@ div#columnSearch :-ms-input-placeholder {
         left: 10%;
         width: 80%;
     }
-	.shareBoxEvent{
-		width: 80% !important;
-	}
-	.shareBoxLeftImg{
-		width: 10% !important;
-	}
+
+
 	.shareBoxLeftImg img{
 		padding: 0 !important;
 		z-index: 10;
 	}
-	.shareBoxRightImg{
-		width: 10% !important;
-	}
+
 	.shareBoxRightImg img{
 		padding: 0 !important;
 		right: 0;
@@ -1260,35 +1261,20 @@ div#columnSearch :-ms-input-placeholder {
         left: 1%;
         width: 98%;
     }
-	.shareBoxEvent{
-		width: 98% !important;
-		margin-left: 1% !important;
-	}
-	.shareBoxLeftImg{
-		width: 1% !important;
-		display: none !important;
-	}
+
+
 	.shareBoxLeftImg img{
 		padding: 0 !important;
 		z-index: 10;
 	}
-	.shareBoxRightImg{
-		width: 1% !important;
-		display: none !important;
-	}
+
 	.shareBoxRightImg img{
 		padding: 0 !important;
 		right: 0;
 		z-index: 10;
 	}
-	#shareBoxMoreConcerts{
-		width: 98% !important;
-		margin-left: 1% !important;
-	}
-	#buyTickets{
-		width: 98% !important;
-		margin-left: 1% !important;
-	}
+
+
 }
 /* ------------ Autocomplete ------------ */
 /* Overlays */

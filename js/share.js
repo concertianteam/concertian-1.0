@@ -125,18 +125,26 @@ function buildContent(json){
 				'<span class="header">'+
 					'<img class="img" src="'+( value.imgUrl == "" ? 'img/default.jpg' : value.imgUrl) +'">'+
 				'</span>'+
-				'<span class="detailCore">'+
-					'<span class="maindetailCore">'+value.eventName+'</span>'+
-					'<span class="subdetailCore">'+(value.detail == "" ? language["nodata"] : value.detail)+'</span>'+
-				'</span>'+
-				'<span class="youtube '+(value.youtubeVideo == null ? "center" : "")+'">'+
-					'<iframe width="100%" height="auto" class="'+(value.youtubeVideo == null ? "youtubeIcon" : "")+'" style="display: block; width: 100%; height: auto; margin: 0; padding: 0; border: none;" src="'+(value.youtubeVideo == null ? "" : value.youtubeVideo)+'"></iframe>'+
-				'</span>'+
-				'<span class="buyTicketButton ' + (value.entry == 0 ? "freeText" : '') +'">'+(value.entry == "" ? language["free"] : language["submitPayment"] + " " +value.entry + "€")+'</span>'+
+    '<span class="detailCore">'+
+        '<span class="leftColumn">'+
+            '<span class="sharevenueNamePicture">'+
+                '<img class="sharevenueNamePictureImg" src="'+value.urlPhoto+'">'+
+            '</span>'+
+            '<span class="sharevenueName">'+value.venueName+'</span>'+
+            '<span class="maindetailCore">'+value.eventName+'</span>'+
+            '<span class="subdetailCore">'+(value.detail == "" ? language["nodata"] : value.detail)+'</span>'+
+    '</span>'+
+    '<span class="rightColumn">'+
+            '<span class="youtube '+(value.youtubeVideo == null ? "center" : "")+'">'+
+                '<iframe width="100%" height="auto" class="'+(value.youtubeVideo == null ? "youtubeIcon" : "")+'" style="display: block; width: 100%; height: auto; margin: 0; padding: 0; border: none;" src="'+(value.youtubeVideo == null ? "" : value.youtubeVideo)+'"></iframe>'+
+            '</span>'+
+            '<span class="buyTicketButton ' + (value.entry == 0 ? "freeText" : '') +'">'+(value.entry == "" ? language["free"] : language["submitPayment"] + " " +value.entry + "€")+'</span>'+
+    '</span>'+
+        '</span>'+
 			'</span>';
-	$(".shareBoxEvent").empty();
-	$(".shareBoxEvent").append(elementDetail);
-	$(".shareBoxEvent").addClass("edgetoedge black");
+	$("#shareBoxResults").empty();
+	$("#shareBoxResults").append(elementDetail);
+	$("#shareBoxResults").addClass("edgetoedge black");
 	$(".outer").perfectScrollbar();
 	
 	//Buy ticket via popup
@@ -161,7 +169,6 @@ function buildContent(json){
 			}
 			else{
 				$(".buyTicketButton").css('opacity', 0.5);
-				$("#buyTickets").css('opacity', 0.5);
 			}
 		});
 }
@@ -198,11 +205,10 @@ function buyTickets(eventID, price, origin, tickets, venuename, soldout, eventNa
             '</form>'+
         '</span>'+
     '</span>';
-	$(".shareBoxEvent").empty();
-    $(".shareBoxEvent").append(elementTicketForm);
-	$(".shareBoxEvent").removeClass("edgetoedge black");
+	$("#popup").empty();
+	$("#popup").show();
+    $("#popup").append(elementTicketForm);
 	$(".outer").perfectScrollbar();
-	$(".outer").addClass("padding");
 	
 	//Submit process
 	if(tickets != null){
@@ -230,14 +236,16 @@ function buyTickets(eventID, price, origin, tickets, venuename, soldout, eventNa
 
 				if(formData.name != "" && formData.lastname != "" && formData.email != "" && formData.eventID != "" && formData.ticketPrice != "" && formData.time != ""){
 
-					$(".outer").empty();
-					$(".outer").append(
+					$("#popup").empty();
+					$("#popup").append(
+                        '<span class="outer">'+
 						'<span class="cardPayHeader">'+language.payheading+'</span>'+
 						'<form id="checkout">'+
 							'<span id="payment-form"></span>'+
 							'<input type="hidden" name="price" id="price" val="'+ price +'">'+
 							'<input type="submit" id="submit" value="'+language.submitForm+' '+price+'€">'+
-						'</form>');
+						'</form>'+
+                        '</span>');
 					$.getScript("https://js.braintreegateway.com/v2/braintree.js").done(function(){
 
 				var clientToken;
@@ -296,9 +304,8 @@ function askbuyTickets(venuename){
             '<span class="responseBoxIcon"></span>'+
             '<span class="responseBoxtext">'+venuename+' '+ language.responsebox+'</span>'+
          '</span>';
-    $(".shareBoxEvent").empty();
-	$(".shareBoxEvent").removeClass("edgetoedge black");
-    $(".shareBoxEvent").append(elementresponse);
+    $("#popup .outer").empty();
+    $("#popup .outer").append(elementresponse);
 }
 function soldoutTickets(eventName){
      var elementresponse =
@@ -306,12 +313,11 @@ function soldoutTickets(eventName){
             '<span class="responseBoxIcon"></span>'+
             '<span class="responseBoxtext">'+eventName+' '+ language.responsebox2+'</span>'+
          '</span>';
-	$(".shareBoxEvent").empty();
-	$(".shareBoxEvent").removeClass("edgetoedge black");
-    $(".shareBoxEvent").append(elementresponse);
+	$("#popup .outer").empty();
+    $("#popup .outer").append(elementresponse);
 }
 function generateTicket(formData){
-    $(".outer").empty();
+    $("#popup .outer").empty();
     var element = '<span class="checkemail">'+language.checkemail+'</span>'+
                   '<span class="checkemailIcon"></span>';
     $(".shareBoxEvent").append(element);
@@ -328,7 +334,7 @@ function generateTicket(formData){
          });
 }
 function errorMessage(){
-    $(".shareBoxEvent").empty();
+    $("#popup .outer").empty();
         var element = '<span class="checkemail" style="color: #546078;">'+language.checkemailWrong+'</span>'+
                   '<span class="checkemailIconWrong"></span>';
     $(".outer").append(element);
