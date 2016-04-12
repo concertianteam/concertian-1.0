@@ -206,7 +206,7 @@ function filloutform(json,email){
 		$( "#response1" ).append( "<p>Emailovou adresu, kterou jste zadali nemáme v databázi. Prosím zaregistrujte se.</p>");
                     break;
 				default:
-		$( "#response1" ).append( "<p>Emailovú adresu, ktroú ste zadali nemáme v databáze. Prosím zaregistrujte sa.</p>");
+		$( "#response1" ).append( "<p>Emailovú adresu, ktorú ste zadali nemáme v databáze. Prosím zaregistrujte sa.</p>");
                     break;
             }
 	}
@@ -275,28 +275,28 @@ function responseScript(response){
             $(".response_button").append("Prihlásenie");
             $(".response_text").append( "<p>Registrácia prebehla úspešne,<br> potvrdzovací email bol zaslaný do Vašej emailovej schránky.<p>");
             $(".response_button").click(function() {
-                  location.href='payment.html';
+                  location.href='login.html';
             });
                     break;
                 case "english":
             $(".response_button").append("Log In");
             $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox.<p>");
             $(".response_button").click(function() {
-                  location.href='payment.html';
+                  location.href='login.html';
             });
                     break;
                 case "czech":
             $(".response_button").append("Přihlášení");
             $(".response_text").append( "<p>Registrace proběhla úspěšně,<br> potvrzovací email byl zaslán do Vaší emailové schránky.<p>");
             $(".response_button").click(function() {
-                  location.href='payment.html';
+                  location.href='login.html';
             });   
                     break;
                 default:
             $(".response_button").append("Log In");
             $(".response_text").append( "<p>Registration was successful,<br> confirmation email was sent to your mailbox.<p>");
             $(".response_button").click(function() {
-                  location.href='payment.html';
+                  location.href='login.html';
             }); 
                     break;
             }
@@ -323,7 +323,7 @@ function responseScript(response){
             $(".response_button").click(function() {
                   location.href='registration.html';
             });
-            $(".response_button").append("Zpět");
+            $(".response_button").app<end("Zpět");
                     break;
                 default:
             $(".response_text").append( "<p>Zadaný email sa už používa. Skúste to ešte raz.</p>");

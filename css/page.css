@@ -800,6 +800,7 @@ header{
 	border-bottom: 2px solid #fff;
     padding-top: 2%;
 	padding-bottom: 5%;
+    text-decoration: line-through;
 }
 .benefits ul{
 	display: block;

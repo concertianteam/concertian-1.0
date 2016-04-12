@@ -87,6 +87,7 @@ var slovak = {
     soldText:"Do tohto momentu ste predali lístky spolu za",
     availableText:"POČET",
     formTitle:"UPRAVIŤ POČET VSTUPENIEK",
+    startwithsettingcapacity:"Začnite kliknutím na začať predaj.",
     placeOrderSubmit: "VYTVORIŤ ID PREDÁVAJÚCEHO",
     createID: "Pre spustenie predaja vstupeniek je nutné najprv vytvoriť ID predávajúceho",
     icdph:"IČ DPH",
@@ -173,6 +174,7 @@ var english = {
     soldText:"Until know, you have earned",
     availableText:"QUANTITY",
     formTitle:"EDIT NUMBER OF TICKETS",
+    startwithsettingcapacity:"Start by clicking selling start button",
     placeOrderSubmit:"CREATE MERCHANT ID",
     createID: "To start selling tickets is necessary to creat ID of merchant",
     icdph:"VAT NUMBER",
@@ -259,6 +261,7 @@ var czech = {
     soldText:"Do tohoto momentu jste prodali lístky spolu za",
     availableText:"POČET",
     formTitle:"UPRAVIT POČET VSTUPENEK",
+    startwithsettingcapacity:"Začněte kliknutím na začít prodej.",
     placeOrderSubmit: "VYTVOŘIT ID PRODÁVAJÍCÍHO",
     createID: "Pro spuštění prodeje vstupenek je nutné nejprve vytvořit ID prodávajícího",
     icdph:"IČ DPH",
@@ -591,7 +594,7 @@ function setLanguage(){
     $(".lireservation").text(language["lireservation"]);
     $(".liavailable").text(language["availableText"]);
     $(".soldText").text(language["soldText"]);
-    $("#placeOrderSubmit").attr("placeholder", language["placeOrderSubmit"]);
+    $("#placeOrderSubmit").val(language["placeOrderSubmit"]);
     $("#icdph").text(language["icdph"]);
     $("#vatid").text(language["vatid"]);
     $("#placeOrderCompanyName").text(language["placeOrderCompanyName"]);
@@ -735,13 +738,8 @@ function loadConcertForManager(){
 					'<input type="hidden" id="seatMaprender" name="seatMaprender" value="'+ value.seatMap +'">'+
                     '<span class="ticketsavailable">'+(value.tickets == null ? '0' : quantity)+'</span>'+
                     '<span class="sold" data-event="'+value.idEvent+'">'+(value.tickets == null ? '<span class="beginSellingButton">'+language.begin+'<span class="length">' + (length + i) + '</span></span>' : value.tickets.sold)+'</span>'+
-					'<span class="reservation">'+
-						 '<input type="hidden" id="eventIDreservation" value="'+value.idEvent+'">'+
-						 '<input type="hidden" id="quantity" value="'+(value.tickets == null ? null : quantity)+'">'+
-						 '<span class="reservationIcon"></span>'+
-					'</span>'+
+                    '<span class="generateTicketList">'+language.generateList+'<input type="hidden" id="inputidEvent" value="'+value.idEvent+'"</span>'+
 			'</span>'+
-			'<span class="generateTicketList">'+language.generateList+'<input type="hidden" id="inputidEvent" value="'+value.idEvent+'"</span>'+
 			'<span id="eom'+value.idEvent+'" class="email_overview_menu"></span>'+
 			'</span>';
 					$(".ticketsResultList").append(element);
@@ -773,28 +771,10 @@ function loadConcertForManager(){
 				  var price = results[$(this).find(".length").text()].entry;
 				  var idEvent = results[$(this).find(".length").text()].idEvent;
 				  var available = results[$(this).find(".length").text()].availableTickets;
-			  
-			  console.log(results[$(this).find(".length").text()]);
-			    $("#reservationPopup").empty();
-				$("#reservationPopup").show();
-				var gridelement = '<span class="uloption">'+
-									'<span class="reservationText">'+language.reservationText+'</span>'+
-									'<span id="reservationYes" class="reservationbutton">Áno</span>'+
-									'<span id="reservationNo" class="reservationbutton">Nie</span>'+
-								  '</span>';
-				$("#reservationPopup").append(gridelement);
-			    $("#reservationNo").on('click', function(){
-					  createPopupQuantity(idEvent, price, null);
-				});
-			    $("#reservationYes").on('click', function(){
-				      chooseGridSize(idEvent, available, price);
-			    });
+                $("#reservationPopup").empty();
+                $("#reservationPopup").show();
+                createPopupQuantity(idEvent, price, null);
           });
-          //Reservation handler
-              $(".reservation").on('click', function(event){
-				  event.stopPropagation();
-				  console.log("doriešiť");
-              });
           },
 		  'error': function(error){
 			console.log('Error. ' + error);
@@ -810,9 +790,8 @@ function createPopupQuantity(idEvent, price, seatString){
 						'<label class="custom_input_label" for="quantityNumber">'+
 						'<span class="fieldName">'+language.setnumberoftickets+'</span>'+
 						'<input type="text" id="quantityNumber" name="quantityNumber" val="" required>'+
+                        '</label>'+
 						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'+
-						'</label>'+
-						'<input type="submit" id="submitQuantityNumber" val="'+language["startSelling"]+'">'
 					  '</span>';
 	$("#reservationPopup").append(gridelement);
 	$("#submitQuantityNumber").on('click', function(){
@@ -1134,7 +1113,12 @@ function submitUpdatesellTickets(){
                 },
 		  contentType : "application/x-www-form-urlencoded",
 		  'success' : function (json){
-			  $("#marketPlace").trigger( "click" );
+              if(json.success == false){
+                  window.alert(language["startwithsettingcapacity"]);
+              }
+              else{
+               $("#marketPlace").trigger( "click" );   
+              }
 	  	},
 	  	'error': function(error){
 	  		console.log('Error. ' + error);
